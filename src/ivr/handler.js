@@ -1,3 +1,11 @@
+//so if i understand the handler structure,
+//what we are doing is: export functions that are decision points
+//so that we can redirect to them
+//or maybe it's that we export functions that end with the need to send POST request
+//back to the router
+//so how should we handle the client.calls.create() request?  seems like this breaks the
+//router/handler abstraction
+
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 var request = require('request');
 
@@ -23,18 +31,23 @@ exports.welcome = function welcome(sid) {
   return responseStr;
 };
 
-exports.menu = function menu(digit) {
-  const optionActions = {
-    '1': guestCallsHost,
-    '2': setHostInterval,
-  };
-
-  return (optionActions[digit])
-    ? optionActions[digit]()
-    : redirectWelcome();
+exports.menu = function menu(digit,sid) {
+  var responseTwiml;
+  switch(digit){
+	case '1':
+		responseTwiml=guestCallsHost(sid);
+		break;
+	case '2':
+		responseTwiml=setHostInterval();
+		break;
+	default:
+		responseTwiml=redirectWelcome();
+		break;
+  }
+  return responseTwiml;
 };
 
-exports.guestCallsHost=function guestCallsHost(sid){
+function guestCallsHost(sid){
 	baseUrl=process.env.PHONETREETESTER_URL+"callHost";
 	
 	//todo: find more secure source of unique conference ID (maybe hash of sid)
@@ -61,8 +74,9 @@ exports.guestCallsHost=function guestCallsHost(sid){
 	return response.toString();
 };
 
-exports.setHostInterval=function setHostInterval(){
-	
+function setHostInterval(){
+	const response=new VoiceResponse();
+	response.say("Setting host interval.");
 }
 
 
