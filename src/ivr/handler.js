@@ -40,9 +40,9 @@ exports.menu = function menu(digit,sid) {
 	case '2':
 		responseTwiml=setHostInterval();
 		break;
-	default:
-		responseTwiml=redirectWelcome();
-		break;
+	//default:
+	//	responseTwiml=redirectWelcome();
+	//	break;
   }
   return responseTwiml;
 };
