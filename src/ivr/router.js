@@ -23,6 +23,6 @@ router.post('/planets', (req, res) => {
 
 router.post('/guestCallsHost',(req,res) => {
 	
-}
+});
 
 module.exports = router;
