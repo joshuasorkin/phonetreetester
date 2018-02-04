@@ -5,6 +5,8 @@ var request = require('request');
 
 
 exports.welcome = function welcome(sid) {
+	
+	console.log("welcome: sid is "+sid);
   const voiceResponse = new VoiceResponse();
   //const bodyUrl = '';
 
@@ -17,7 +19,8 @@ exports.welcome = function welcome(sid) {
 	gather.say("Welcome to Vent.  Press 1 to call a host.  Press 2 to set your own host interval.");
   //gather.play({loop: 3}, bodyUrl);
 
-  return voiceResponse.toString();
+  responseStr=voiceResponse.toString();
+  return responseStr;
 };
 
 exports.menu = function menu(digit) {
