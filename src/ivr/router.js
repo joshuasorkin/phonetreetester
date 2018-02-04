@@ -5,7 +5,8 @@ const router = new Router();
 
 // POST: /ivr/welcome
 router.post('/welcome', (req, res) => {
-  res.send(welcome());
+	const sid=req.body.CallSid;
+	res.send(welcome(sid));
 });
 
 // POST: /ivr/menu
@@ -19,5 +20,9 @@ router.post('/planets', (req, res) => {
   const digit = req.body.Digits;
   res.send(planets(digit));
 });
+
+router.post('/guestCallsHost',(req,res) => {
+	
+}
 
 module.exports = router;

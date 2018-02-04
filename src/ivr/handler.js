@@ -1,32 +1,69 @@
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
+var request = require('request');
 
-exports.welcome = function welcome() {
+
+
+
+exports.welcome = function welcome(sid) {
   const voiceResponse = new VoiceResponse();
-  const bodyUrl = 'http://howtodocs.s3.amazonaws.com/et-phone.mp3';
+  //const bodyUrl = '';
 
-console.log("welcome: before gather");
   const gather = voiceResponse.gather({
     action: '/ivr/menu',
     numDigits: '1',
     method: 'POST',
+	timeout: 10
   });
-	gather.say("Choose 1 for extraction.  Choose 2 to list the planets.");
+	gather.say("Welcome to Vent.  Press 1 to call a host.  Press 2 to set your own host interval.");
   //gather.play({loop: 3}, bodyUrl);
 
   return voiceResponse.toString();
 };
 
 exports.menu = function menu(digit) {
-	console.log("menu: before optionActions");
   const optionActions = {
-    '1': giveExtractionPointInstructions,
-    '2': listPlanets,
+    '1': guestCallsHost,
+    '2': setHostInterval,
   };
 
   return (optionActions[digit])
     ? optionActions[digit]()
     : redirectWelcome();
 };
+
+exports.guestCallsHost=function guestCallsHost(sid){
+	baseUrl=process.env.PHONETREETESTER_URL+"callHost";
+	
+	//todo: find more secure source of unique conference ID (maybe hash of sid)
+	
+	/*
+	conferenceName=sid;
+	params={'conferenceName':conferenceName};
+	url=buildGetUrl(baseUrl,params);	
+	var call=client.calls.create({
+		url:url,
+		to: CELL_PHONE_NUMBER,
+		from: process.env.TWILIO_PHONE_NUMBER,
+		method: 'GET'
+	});
+	*/
+	
+	const response = new VoiceResponse();
+	response.say({
+		voice: 'alice',
+		language: 'en-AU'
+	},"Thank you for calling Vent. Please wait while we find a host.");
+	const dial = response.dial();
+	dial.conference(sid);
+	return response.toString();
+};
+
+exports.setHostInterval=function setHostInterval(){
+	
+}
+
+
+
 
 exports.planets = function planets(digit) {
   const optionActions = {
@@ -107,4 +144,16 @@ function redirectWelcome() {
   twiml.redirect('/ivr/welcome');
 
   return twiml.toString();
+}
+
+//creates a url from an array of key-value pairs
+//should probably move this to a separate utility class
+function buildGetUrl(baseUrl,paramArray){
+	url=baseUrl+"?";
+	Object.keys(paramArray).forEach(function(key){
+		url+=key+"="+encodeURIComponent(paramArray[key])+"&";
+	});
+	url=url.slice(0,-1);
+	return url;
+	
 }
