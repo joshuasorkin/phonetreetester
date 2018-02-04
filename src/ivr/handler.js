@@ -10,7 +10,7 @@ console.log("welcome: before gather");
     numDigits: '1',
     method: 'POST',
   });
-
+	gather.say("Choose 1 for extraction.  Choose 2 to list the planets.");
   //gather.play({loop: 3}, bodyUrl);
 
   return voiceResponse.toString();
