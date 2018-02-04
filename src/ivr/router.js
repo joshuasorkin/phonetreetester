@@ -12,7 +12,8 @@ router.post('/welcome', (req, res) => {
 // POST: /ivr/menu
 router.post('/menu', (req, res) => {
   const digit = req.body.Digits;
-  return res.send(menu(digit));
+  const sid=req.body.sid;
+  return res.send(menu(digit,sid));
 });
 
 // POST: /ivr/planets

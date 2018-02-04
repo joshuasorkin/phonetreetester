@@ -33,6 +33,7 @@ exports.welcome = function welcome(sid) {
 
 exports.menu = function menu(digit,sid) {
   var responseTwiml;
+  console.log(digit);
   switch(digit){
 	case '1':
 		responseTwiml=guestCallsHost(sid);
