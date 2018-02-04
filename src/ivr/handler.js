@@ -4,18 +4,20 @@ exports.welcome = function welcome() {
   const voiceResponse = new VoiceResponse();
   const bodyUrl = 'http://howtodocs.s3.amazonaws.com/et-phone.mp3';
 
+console.log("welcome: before gather");
   const gather = voiceResponse.gather({
     action: '/ivr/menu',
     numDigits: '1',
     method: 'POST',
   });
 
-  gather.play({loop: 3}, bodyUrl);
+  //gather.play({loop: 3}, bodyUrl);
 
   return voiceResponse.toString();
 };
 
 exports.menu = function menu(digit) {
+	console.log("menu: before optionActions");
   const optionActions = {
     '1': giveExtractionPointInstructions,
     '2': listPlanets,
