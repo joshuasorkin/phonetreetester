@@ -36,6 +36,7 @@ exports.welcome = function welcome(sid) {
 
 exports.menu = function menu(digit,sid) {
 	console.log("menu: starting");
+	console.log("menu: digit "+digit);
   var responseTwiml;
   switch(digit){
 	case '1':
