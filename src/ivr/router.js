@@ -13,7 +13,8 @@ router.post('/welcome', (req, res) => {
 router.post('/menu', (req, res) => {
   const digit = req.body.Digits;
   const sid=req.body.sid;
-  return res.send(menu(digit,sid));
+  //return res.send(menu(digit,sid));
+  return res.send(welcome(sid));
 });
 
 // POST: /ivr/planets

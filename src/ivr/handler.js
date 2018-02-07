@@ -18,10 +18,13 @@ exports.welcome = function welcome(sid) {
   const voiceResponse = new VoiceResponse();
   //const bodyUrl = '';
 
+  params={'sid':sid}
+  url=buildGetUrl('/ivr/menu',params);
+  
   const gather = voiceResponse.gather({
     action: '/ivr/menu',
     numDigits: '1',
-    method: 'POST',
+    method: 'GET',
 	timeout: 10
   });
 	gather.say("Welcome to Vent.  Press 1 to call a host.  Press 2 to set your own host interval.");
@@ -33,7 +36,6 @@ exports.welcome = function welcome(sid) {
 
 exports.menu = function menu(digit,sid) {
   var responseTwiml;
-  console.log(digit);
   switch(digit){
 	case '1':
 		responseTwiml=guestCallsHost(sid);
