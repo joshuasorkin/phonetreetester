@@ -52,7 +52,7 @@ exports.menu = function menu(digit,sid) {
 
 function guestCallsHost(sid){
 	baseUrl=process.env.PHONETREETESTER_URL+"callHost";
-	
+	console.log("guestCallsHost: baseURL "+baseURL);
 	//todo: find more secure source of unique conference ID (maybe hash of sid)
 	
 	/*
@@ -74,7 +74,9 @@ function guestCallsHost(sid){
 	},"Thank you for calling Vent. Please wait while we find a host.");
 	const dial = response.dial();
 	dial.conference(sid);
-	return response.toString();
+	responseStr=response.toString();
+	console.log("guestCallsHost: "+responseStr);
+	return responseStr;
 };
 
 function setHostInterval(){
