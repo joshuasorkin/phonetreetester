@@ -35,9 +35,11 @@ exports.welcome = function welcome(sid) {
 };
 
 exports.menu = function menu(digit,sid) {
+	console.log("menu: starting");
   var responseTwiml;
   switch(digit){
 	case '1':
+		console.log("menu: chose 1");
 		responseTwiml=guestCallsHost(sid);
 		break;
 	case '2':
