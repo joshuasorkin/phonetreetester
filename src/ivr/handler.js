@@ -189,7 +189,7 @@ function buildGetUrl(baseUrl,paramArray){
 }
 
 function sayAliceAustralia(voiceResponse,text){
-	response.say({
+	voiceResponse.say({
 		voice: 'alice',
 		language: 'en-AU'
 	},text);
