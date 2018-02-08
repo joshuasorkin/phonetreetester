@@ -1,5 +1,5 @@
 const Router = require('express').Router;
-const {welcome, menu, planets} = require('./handler');
+const {welcome, menu, callHost, planets} = require('./handler');
 
 const router = new Router();
 
