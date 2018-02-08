@@ -9,6 +9,10 @@
 //todo: refactor methods like buildGetUrl() and sayAliceAustralia() into SRO-observant files/classes
 
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
+const client=require('twilio')(
+	process.env.TWILIO_ACCOUNT_SID,
+	process.env.TWILIO_AUTH_TOKEN
+);
 var request = require('request');
 const languageConfig="en-AU";
 
