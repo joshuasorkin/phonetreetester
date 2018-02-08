@@ -91,7 +91,7 @@ function setHostInterval(){
 	return response.toString();
 }
 
-function callHost(sid){
+exports.callHost=function callHost(sid){
 	const response=new VoiceResponse();
 	conferenceName=req.query.conferenceName;
 	
