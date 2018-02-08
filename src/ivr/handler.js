@@ -30,7 +30,6 @@ exports.welcome = function welcome(sid) {
 	timeout: 10
   });
 	sayAlice(gather,languageConfig,"Welcome to Vent.  Press 1 to call a host.  Press 2 to set your own host interval.");
-	//gather.say("Welcome to Vent.  Press 1 to call a host.  Press 2 to set your own host interval.");
   //gather.play({loop: 3}, bodyUrl);
 
   responseStr=voiceResponse.toString();
@@ -58,11 +57,11 @@ exports.menu = function menu(digit,sid) {
 
 
 function guestCallsHost(sid){
-	baseUrl=process.env.PHONETREETESTER_URL+"callHost";
+	baseUrl='/ivr/callHost';
 	console.log("guestCallsHost: baseUrl "+baseUrl);
 	//todo: find more secure source of unique conference ID (maybe hash of sid)
 	
-	/*
+	
 	conferenceName=sid;
 	params={'conferenceName':conferenceName};
 	url=buildGetUrl(baseUrl,params);	
@@ -72,7 +71,7 @@ function guestCallsHost(sid){
 		from: process.env.TWILIO_PHONE_NUMBER,
 		method: 'GET'
 	});
-	*/
+	
 	
 	const response = new VoiceResponse();
 	response.say({
@@ -92,6 +91,23 @@ function setHostInterval(){
 	return response.toString();
 }
 
+function callHost(sid){
+	const response=new VoiceResponse();
+	conferenceName=req.query.conferenceName;
+	
+	params={'conferenceName':conferenceName};
+	
+	baseUrl=process.env.VENT_URL+'handleHostResponseToOfferedGuest';
+	url=buildGetUrl(baseUrl,params);
+	
+	gather=response.gather({
+		action:url,
+		method:'GET'
+	});
+	gather.say("You have a call from Vent.  Press 1 to accept, press any other key to refuse.");
+	response.say("We didn't receive input.  Goodbye!");
+	return response.toString();
+}
 
 
 

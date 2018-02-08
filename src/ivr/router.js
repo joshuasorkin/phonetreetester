@@ -10,7 +10,7 @@ router.post('/welcome', (req, res) => {
 	res.send(welcome(sid));
 });
 
-// POST: /ivr/menu
+// GET: /ivr/menu
 router.get('/menu', (req, res) => {
   const digit = req.query.Digits;
   const sid=req.query.sid;
@@ -19,6 +19,16 @@ router.get('/menu', (req, res) => {
   return res.send(menu(digit,sid));
   //return res.send(welcome(sid));
 });
+
+// GET: /ivr/callHost
+router.get('/callHost', (req, res) => {
+  const conferenceName=req.query.conferenceName;
+  console.log("/ivr/callHost: conferenceName "+conferenceName);
+  return res.send(callHost(conferenceName));
+});
+
+
+
 
 // POST: /ivr/planets
 router.post('/planets', (req, res) => {
