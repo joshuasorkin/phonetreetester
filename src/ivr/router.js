@@ -10,9 +10,9 @@ router.post('/welcome', (req, res) => {
 });
 
 // POST: /ivr/menu
-router.post('/menu', (req, res) => {
-  const digit = req.body.Digits;
-  const sid=req.body.sid;
+router.get('/menu', (req, res) => {
+  const digit = req.query.Digits;
+  const sid=req.query.sid;
   console.log("/ivr/menu: digit "+digit);
   console.log("/ivr/menu: sid "+sid);
   return res.send(menu(digit,sid));
