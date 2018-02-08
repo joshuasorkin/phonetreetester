@@ -6,6 +6,7 @@ const router = new Router();
 // POST: /ivr/welcome
 router.post('/welcome', (req, res) => {
 	const sid=req.body.CallSid;
+	console.log("/welcome: sid "+sid);
 	res.send(welcome(sid));
 });
 

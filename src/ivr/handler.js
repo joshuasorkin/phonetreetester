@@ -22,7 +22,7 @@ exports.welcome = function welcome(sid) {
   url=buildGetUrl('/ivr/menu',params);
   
   const gather = voiceResponse.gather({
-    action: '/ivr/menu',
+    action: url,
     numDigits: '1',
     method: 'GET',
 	timeout: 10
