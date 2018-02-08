@@ -6,6 +6,8 @@
 //so how should we handle the client.calls.create() request?  seems like this breaks the
 //router/handler abstraction
 
+//todo: refactor methods like buildGetUrl() and sayAliceAustralia() into SRO-observant files/classes
+
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 var request = require('request');
 
@@ -27,7 +29,8 @@ exports.welcome = function welcome(sid) {
     method: 'GET',
 	timeout: 10
   });
-	gather.say("Welcome to Vent.  Press 1 to call a host.  Press 2 to set your own host interval.");
+	sayAliceAustralia(gather,"Welcome to Vent.  Press 1 to call a host.  Press 2 to set your own host interval.");
+	//gather.say("Welcome to Vent.  Press 1 to call a host.  Press 2 to set your own host interval.");
   //gather.play({loop: 3}, bodyUrl);
 
   responseStr=voiceResponse.toString();
@@ -52,6 +55,7 @@ exports.menu = function menu(digit,sid) {
   }
   return responseTwiml;
 };
+
 
 function guestCallsHost(sid){
 	baseUrl=process.env.PHONETREETESTER_URL+"callHost";
@@ -182,4 +186,11 @@ function buildGetUrl(baseUrl,paramArray){
 	url=url.slice(0,-1);
 	return url;
 	
+}
+
+function sayAliceAustralia(voiceResponse,text){
+	response.say({
+		voice: 'alice',
+		language: 'en-AU'
+	},text);
 }
