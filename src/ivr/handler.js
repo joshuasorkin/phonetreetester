@@ -10,7 +10,7 @@
 
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 var request = require('request');
-
+const languageConfig="en-AU";
 
 
 
@@ -29,7 +29,7 @@ exports.welcome = function welcome(sid) {
     method: 'GET',
 	timeout: 10
   });
-	sayAliceAustralia(gather,"Welcome to Vent.  Press 1 to call a host.  Press 2 to set your own host interval.");
+	sayAlice(gather,languageConfig,"Welcome to Vent.  Press 1 to call a host.  Press 2 to set your own host interval.");
 	//gather.say("Welcome to Vent.  Press 1 to call a host.  Press 2 to set your own host interval.");
   //gather.play({loop: 3}, bodyUrl);
 
@@ -188,9 +188,9 @@ function buildGetUrl(baseUrl,paramArray){
 	
 }
 
-function sayAliceAustralia(voiceResponse,text){
+function sayAlice(voiceResponse,language,text){
 	voiceResponse.say({
 		voice: 'alice',
-		language: 'en-AU'
+		language: language
 	},text);
 }
