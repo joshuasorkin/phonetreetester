@@ -71,7 +71,7 @@ function guestCallsHost(sid){
 	url=buildGetUrl(baseUrl,params);	
 	var call=client.calls.create({
 		url:url,
-		to: CELL_PHONE_NUMBER,
+		to: process.env.CELL_PHONE_NUMBER,
 		from: process.env.TWILIO_PHONE_NUMBER,
 		method: 'GET'
 	});
