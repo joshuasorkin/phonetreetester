@@ -55,7 +55,7 @@ exports.menu = function menu(digit,sid) {
 
 function guestCallsHost(sid){
 	baseUrl=process.env.PHONETREETESTER_URL+"callHost";
-	console.log("guestCallsHost: baseURL "+baseURL);
+	console.log("guestCallsHost: baseUrl "+baseUrl);
 	//todo: find more secure source of unique conference ID (maybe hash of sid)
 	
 	/*
