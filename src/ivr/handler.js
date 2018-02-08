@@ -91,9 +91,8 @@ function setHostInterval(){
 	return response.toString();
 }
 
-exports.callHost=function callHost(sid){
+exports.callHost=function callHost(conferenceName){
 	const response=new VoiceResponse();
-	conferenceName=req.query.conferenceName;
 	
 	params={'conferenceName':conferenceName};
 	
@@ -107,7 +106,7 @@ exports.callHost=function callHost(sid){
 	gather.say("You have a call from Vent.  Press 1 to accept, press any other key to refuse.");
 	response.say("We didn't receive input.  Goodbye!");
 	return response.toString();
-}
+};
 
 
 
