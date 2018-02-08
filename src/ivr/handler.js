@@ -96,7 +96,7 @@ exports.callHost=function callHost(conferenceName){
 	
 	params={'conferenceName':conferenceName};
 	
-	baseUrl=process.env.VENT_URL+'handleHostResponseToOfferedGuest';
+	baseUrl='/ivr/handleHostResponseToOfferedGuest';
 	url=buildGetUrl(baseUrl,params);
 	
 	gather=response.gather({
@@ -108,6 +108,19 @@ exports.callHost=function callHost(conferenceName){
 	return response.toString();
 };
 
+exports.handleHostResponseToOfferedGuest=function handleHostResponseToOfferedGuest(digits,conferenceName){
+	const response=new VoiceResponse();
+	if (digits=="1"){
+		response.say("Thank you, now connecting you to guest.");
+		dial=response.dial();
+		dial.conference(conferenceName);
+	}
+	else{
+		response.say("You didn't press 1.");
+	}
+	responseTwiml=response.toString();
+	return responseTwiml;
+}
 
 
 exports.planets = function planets(digit) {

@@ -1,5 +1,10 @@
 const Router = require('express').Router;
-const {welcome, menu, callHost, planets} = require('./handler');
+const {
+	welcome, 
+	menu, 
+	callHost, 
+	handleHostResponseToOfferedGuest,
+	planets} = require('./handler');
 
 const router = new Router();
 
@@ -25,6 +30,14 @@ router.get('/callHost', (req, res) => {
   const conferenceName=req.query.conferenceName;
   console.log("/ivr/callHost: conferenceName "+conferenceName);
   return res.send(callHost(conferenceName));
+});
+
+// GET: /ivr/handleHostResponseToOfferedGuest
+router.get('/handleHostResponseToOfferedGuest',(req,res)=>{
+	var digits=req.query.Digits;
+	var conferenceName=req.query.conferenceName;
+	
+	res.send(handleHostResponseToOfferedGuest(digits,conferenceName));
 });
 
 
