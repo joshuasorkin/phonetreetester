@@ -85,6 +85,7 @@ function guestCallsHost(sid){
 function setHostInterval(){
 	const response=new VoiceResponse();
 	response.say("Setting host interval.");
+	return response.toString();
 }
 
 
