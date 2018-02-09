@@ -21,15 +21,16 @@ router.get('/menu', (req, res) => {
   const sid=req.query.sid;
   console.log("/ivr/menu: digit "+digit);
   console.log("/ivr/menu: sid "+sid);
-  return res.send(menu(digit,sid));
+  res.send(menu(digit,sid));
   //return res.send(welcome(sid));
 });
 
 // GET: /ivr/callHost
 router.get('/callHost', (req, res) => {
+	console.log("reached callHost endpoint");
   const conferenceName=req.query.conferenceName;
   console.log("/ivr/callHost: conferenceName "+conferenceName);
-  return res.send(callHost(conferenceName));
+  res.send(callHost(conferenceName));
 });
 
 // GET: /ivr/handleHostResponseToOfferedGuest

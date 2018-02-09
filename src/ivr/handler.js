@@ -21,6 +21,14 @@ const languageConfig="en-AU";
 exports.welcome = function welcome(sid) {
 	
 	console.log("welcome: sid is "+sid);
+	
+	//adding this to check if client is instantiated
+	client
+  .calls(sid)
+  .fetch()
+  .then(call => console.log(call.to));
+	
+	
   const voiceResponse = new VoiceResponse();
   //const bodyUrl = '';
 
