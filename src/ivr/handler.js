@@ -28,7 +28,7 @@ exports.welcome = function welcome(sid) {
   .fetch()
   .then(call => console.log(call.to));
 	
-	console.log(client.toString());
+	console.log("welcome: client is "+client.toString());
 	
   const voiceResponse = new VoiceResponse();
   //const bodyUrl = '';
