@@ -68,7 +68,8 @@ function guestCallsHost(sid){
 	
 	conferenceName=sid;
 	params={'conferenceName':conferenceName};
-	url=buildGetUrl(baseUrl,params);	
+	url=buildGetUrl(baseUrl,params);
+	console.log("guestCallsHost: url "+url);
 	var call=client.calls.create({
 		url:url,
 		to: process.env.CELL_PHONE_NUMBER,
@@ -78,10 +79,7 @@ function guestCallsHost(sid){
 	
 	
 	const response = new VoiceResponse();
-	response.say({
-		voice: 'alice',
-		language: 'en-AU'
-	},"Thank you for calling Vent. Please wait while we find a host.");
+	sayAlice(response,languageConfig,"Thank you for calling Vent. Please wait while we find a host.");
 	const dial = response.dial();
 	dial.conference(sid);
 	responseStr=response.toString();
