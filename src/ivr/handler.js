@@ -22,6 +22,9 @@ exports.welcome = function welcome(sid) {
 	
 	console.log("welcome: sid is "+sid);
 	
+	console.log("welcome: list client properties");
+	console.log(Object.getOwnPropertyNames(client));
+	
 	//adding this to check if client is instantiated
 	client
   .calls(sid)
