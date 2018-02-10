@@ -77,7 +77,8 @@ function guestCallsHost(sid){
 	console.log("guestCallsHost: baseUrl "+baseUrl);
 	//todo: find more secure source of unique conference ID (maybe hash of sid)
 	
-	
+	console.log("guestCallsHost: cell phone number "+process.env.CELL_PHONE_NUMBER);
+	console.log("guestCallsHost: twilio phone number "+process.env.TWILIO_PHONE_NUMBER);	
 	conferenceName=sid;
 	params={'conferenceName':conferenceName};
 	url=buildGetUrl(baseUrl,params);
