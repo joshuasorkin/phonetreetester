@@ -29,7 +29,7 @@ exports.welcome = function welcome(sid) {
 	client
   .calls(sid)
   .fetch()
-  .then(call => console.log(call.to)).catch(function(error){
+  .then(call => console.log("call.to "+call.to)).catch(function(error){
 	console.log("error: "+error.toString());
   });
 		
