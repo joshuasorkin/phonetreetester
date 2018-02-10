@@ -30,7 +30,7 @@ exports.welcome = function welcome(sid) {
   .calls(sid)
   .fetch()
   .then(call => console.log(call.to)).catch(function(error){
-	console.log(error.toString());
+	console.log("error: "+error.toString());
   });
 		
   const voiceResponse = new VoiceResponse();
