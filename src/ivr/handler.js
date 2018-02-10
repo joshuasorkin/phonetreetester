@@ -29,10 +29,10 @@ exports.welcome = function welcome(sid) {
 	client
   .calls(sid)
   .fetch()
-  .then(call => console.log(call.to));
-	
-	console.log("welcome: client is "+client.toString());
-	
+  .then(call => console.log(call.to)).catch(function(error){
+	console.log(error.toString());
+  });
+		
   const voiceResponse = new VoiceResponse();
   //const bodyUrl = '';
 
