@@ -1,0 +1,7 @@
+queries:
+-randomized list of inactive users
+
+functions:
+	update user status
+		active: inbound call, outbound call
+		inactive: call ends

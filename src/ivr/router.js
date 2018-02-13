@@ -5,8 +5,12 @@ const {
 	callHost, 
 	handleHostResponseToOfferedGuest,
 	planets} = require('./handler');
+var bodyParser = require('body-parser');
 
+	
 const router = new Router();
+router.use(bodyParser.urlencoded({ extended: false }))
+
 
 // POST: /ivr/welcome
 router.post('/welcome', (req, res) => {
