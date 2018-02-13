@@ -28,6 +28,9 @@ app.use(function(req, res, next) {
   next(err);
 });
 
+//disabling production error handler to try to expose clients.call.create() error
+/*
+
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
@@ -37,5 +40,7 @@ app.use(function(err, req, res, next) {
     error: (app.get('env') === 'development') ? err : {},
   });
 });
+
+*/
 
 module.exports = app;
