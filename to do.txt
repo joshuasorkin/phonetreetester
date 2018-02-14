@@ -1,6 +1,14 @@
 queries:
--randomized list of inactive users
+	randomized list of inactive users
+	guest minutes used daily
+	minutes used daily
+	earned minutes used daily ((guest minutes used daily) - (universal guest minutes))
+	earned minutes (sum(completed host interval) * (host interval factor) + sum(completed host call))
+	earned minutes used
+	available minutes ((universal guest minutes) - (guest minutes used today) + (earned minutes) - (earned minutes used))
 
+can get 
+	
 functions:
 	update user status
 		active: inbound call, outbound call
