@@ -42,7 +42,7 @@ getUser('+19991112222', function(err, user) {
 
 
 
-var db=require('./database');
+var db=require('./src/ivr/database');
 
 /*
 db.getUser('+19991112222', function(err, user) {
