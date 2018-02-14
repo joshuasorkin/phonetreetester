@@ -2,7 +2,7 @@
 const {Pool,Client}=require('pg');
 
 const pool=new Pool({
-	connectionString:process.env.DATABASE_URL,
+	connectionString:process.env.HEROKU_POSTGRESQL_OLIVE_URL,
 	ssl:true
 });
 
