@@ -43,6 +43,17 @@ module.exports = {
 
 		});
 	},
+	getAllUsers(callback){
+		queryStr='select * from users';
+		console.log(queryStr);
+		pool.query(queryStr,(err,res)=>{
+			console.log("in getAllUsers, before callback");
+			console.log("result length, in getAllUsers: "+res.rows.length);
+			callback(res.rows);
+			console.log("in getAllUsers, after callback");
+
+		});
+	},
 	updateUserStatus(callback){
 		queryStr='update users set status=\''+statusValue+'\' where id='+id;
 		console.log(queryStr);
