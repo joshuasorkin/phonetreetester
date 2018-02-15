@@ -62,6 +62,7 @@ db.getUser('+19991112222', function(err, user) {
 
 //testAddUser('+58390688539');
 testGetAvailableUsers();
+testGetAllUsers();
 
 function testAddUser(phonenumber){
 	db.addUser(phonenumber,function(result){
@@ -72,6 +73,17 @@ function testAddUser(phonenumber){
 function testGetAvailableUsers(){
 	db.getAvailableUsers(function(result){
 		console.log("running callback function that was passed to getAvailableUsers");
+		console.log("result length: "+result.length);
+		result.forEach(function(element){
+			console.log("logging element");
+			console.log(JSON.stringify(element));
+		});
+	});
+}
+
+function testGetAllUsers(){
+	db.getAllUsers(function(result){
+		console.log("running callback function that was passed to getAllUsers");
 		console.log("result length: "+result.length);
 		result.forEach(function(element){
 			console.log("logging element");
