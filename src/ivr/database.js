@@ -33,7 +33,7 @@ module.exports = {
 		
 	},
 	getAvailableUsers(callback){
-		queryStr='select * from users where status=\'available\' and now()>=starttime and now()<=endtime';
+		queryStr='select * from (select * from users where status=\'available\' and now()>=starttime and now()<=endtime) order by random()';
 		console.log(queryStr);
 		pool.query(queryStr,(err,res)=>{
 			console.log("in getAvailableUsers, before callback");
