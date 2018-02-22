@@ -74,7 +74,7 @@ exports.menu = function menu(digit,sid) {
 
 
 function guestCallsHost(sid){
-	baseUrl='/ivr/callHost';
+	baseUrl=process.env.PHONETREETESTER_URL+'ivr/callHost';
 	console.log("guestCallsHost: baseUrl "+baseUrl);
 	//todo: find more secure source of unique conference ID (maybe hash of sid)
 	
@@ -103,7 +103,7 @@ function guestCallsHost(sid){
 	*/
 	
 	var call=client.calls.create({
-		url:url,
+		url:baseUrl,
 		to: process.env.CELL_PHONE_NUMBER,
 		from: process.env.TWILIO_PHONE_NUMBER,
 	}).then(x=>console.log("guestCallsHost: logging return value of client calls create "+x));
