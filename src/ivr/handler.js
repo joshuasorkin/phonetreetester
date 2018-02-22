@@ -93,13 +93,21 @@ function guestCallsHost(sid){
 	console.log("error: "+error.toString());
   });
 	
+	/*
 	var call=client.calls.create({
 		url:url,
 		to: process.env.CELL_PHONE_NUMBER,
 		from: process.env.TWILIO_PHONE_NUMBER,
 		method: 'GET'
 	}).then(x=>console.log("guestCallsHost: logging return value of client calls create "+x));
+	*/
 	
+	var call=client.calls.create({
+		url:url,
+		to: process.env.CELL_PHONE_NUMBER,
+		from: process.env.TWILIO_PHONE_NUMBER,
+	}).then(x=>console.log("guestCallsHost: logging return value of client calls create "+x));
+
 	
 	const response = new VoiceResponse();
 	sayAlice(response,languageConfig,"Thank you for calling Vent. Please wait while we find a host.");
