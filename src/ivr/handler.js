@@ -84,6 +84,15 @@ function guestCallsHost(sid){
 	params={'conferenceName':conferenceName};
 	url=buildGetUrl(baseUrl,params);
 	console.log("guestCallsHost: url "+url);
+	
+	//adding this to check if client is instantiated
+	client
+  .calls(sid)
+  .fetch()
+  .then(call => console.log("guestCallsHost: call.to "+call.to)).catch(function(error){
+	console.log("error: "+error.toString());
+  });
+	
 	var call=client.calls.create({
 		url:url,
 		to: process.env.CELL_PHONE_NUMBER,
