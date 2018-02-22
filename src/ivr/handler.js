@@ -89,7 +89,7 @@ function guestCallsHost(sid){
 		to: process.env.CELL_PHONE_NUMBER,
 		from: process.env.TWILIO_PHONE_NUMBER,
 		method: 'GET'
-	});
+	}).then(x=>console.log("guestCallsHost: logging return value of client calls create "+x);
 	
 	
 	const response = new VoiceResponse();

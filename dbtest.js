@@ -62,7 +62,7 @@ db.getUser('+19991112222', function(err, user) {
 
 //testAddUser('+58390688539');
 testGetAvailableUsers();
-testGetAllUsers();
+//testGetAllUsers();
 
 function testAddUser(phonenumber){
 	db.addUser(phonenumber,function(result){
