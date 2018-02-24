@@ -15,42 +15,44 @@ const client=require('twilio')(
 );
 var request = require('request');
 const languageConfig="en-AU";
+var db=require('database');
 
 
 
+exports.welcome = function welcome(fromNum,sid) {
 
-exports.welcome = function welcome(sid) {
-	
-	console.log("welcome: sid is "+sid);
-	
-	console.log("welcome: list client properties");
-	console.log(Object.getOwnPropertyNames(client));
-	
-	//adding this to check if client is instantiated
-	client
-  .calls(sid)
-  .fetch()
-  .then(call => console.log("call.to "+call.to)).catch(function(error){
-	console.log("error: "+error.toString());
-  });
-		
-  const voiceResponse = new VoiceResponse();
-  //const bodyUrl = '';
+	console.log("welcome: fromNum is "+fromNum);
+  console.log("welcome: sid is "+sid);
+	var userInitialStatus;
+  db.getUser(fromNum,function(row){
+	  if(row==null){
+		db.addUser(fromNum,function(result){
+			console.log(result.toString());
+		});
+	  }
+	  else{
+		  userInitialStatus=row['status'].toString();
+		  console.log('welcome: userInitialStatus '+userInitialStatus);
+	  }
+  }).then(
+	  const voiceResponse = new VoiceResponse();
+	  //const bodyUrl = '';
 
-  params={'sid':sid}
-  url=buildGetUrl('/ivr/menu',params);
-  
-  const gather = voiceResponse.gather({
-    action: url,
-    numDigits: '1',
-    method: 'GET',
-	timeout: 10
-  });
-	sayAlice(gather,languageConfig,"Welcome to Vent.  Press 1 to call a host.  Press 2 to set your own host interval.");
-  //gather.play({loop: 3}, bodyUrl);
+	  params={'sid':sid}
+	  url=buildGetUrl('/ivr/menu',params);
+	  
+	  const gather = voiceResponse.gather({
+		action: url,
+		numDigits: '1',
+		method: 'GET',
+		timeout: 10
+	  });
+		sayAlice(gather,languageConfig,"Welcome to Vent.  Press 1 to call a host.  Press 2 to set your own host interval.");
+	  //gather.play({loop: 3}, bodyUrl);
 
-  responseStr=voiceResponse.toString();
-  return responseStr;
+	  responseStr=voiceResponse.toString();
+	  return responseStr;
+  )
 };
 
 exports.menu = function menu(digit,sid) {
@@ -77,21 +79,11 @@ function guestCallsHost(sid){
 	baseUrl=process.env.PHONETREETESTER_URL+'ivr/callHost';
 	console.log("guestCallsHost: baseUrl "+baseUrl);
 	//todo: find more secure source of unique conference ID (maybe hash of sid)
-	
-	console.log("guestCallsHost: cell phone number "+process.env.CELL_PHONE_NUMBER);
-	console.log("guestCallsHost: twilio phone number "+process.env.TWILIO_PHONE_NUMBER);	
+		
 	conferenceName=sid;
 	params={'conferenceName':conferenceName};
 	url=buildGetUrl(baseUrl,params);
 	console.log("guestCallsHost: url "+url);
-	
-	//adding this to check if client is instantiated
-	client
-  .calls(sid)
-  .fetch()
-  .then(call => console.log("guestCallsHost: call.to "+call.to)).catch(function(error){
-	console.log("error: "+error.toString());
-  });
 	
 	
 	var call=client.calls.create({
@@ -101,14 +93,6 @@ function guestCallsHost(sid){
 		method: 'GET'
 	}).then(x=>console.log("guestCallsHost: logging return value of client calls create "+x));
 	
-	/*
-	var call=client.calls.create({
-		url:baseUrl,
-		to: process.env.CELL_PHONE_NUMBER,
-		from: process.env.TWILIO_PHONE_NUMBER,
-	}).then(x=>console.log("guestCallsHost: logging return value of client calls create "+x));
-	*/
-
 	
 	const response = new VoiceResponse();
 	sayAlice(response,languageConfig,"Thank you for calling Vent. Please wait while we find a host.");
