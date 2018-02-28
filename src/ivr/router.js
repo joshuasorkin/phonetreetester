@@ -6,20 +6,19 @@ const {
 	handleHostResponseToOfferedGuest,
 	planets} = require('./handler');
 var bodyParser = require('body-parser');
-const client=require('twilio')(
-	process.env.TWILIO_ACCOUNT_SID,
-	process.env.TWILIO_AUTH_TOKEN
-);
-	
+
+
 const router = new Router();
 router.use(bodyParser.urlencoded({ extended: false }));
 
 
 // POST: /ivr/welcome
 router.post('/welcome', (req, res) => {
+	
+	const fromNum=req.body.From;
 	const sid=req.body.CallSid;
 	console.log("/welcome: sid "+sid);
-	res.send(welcome(sid));
+	res.send(welcome(fromNum,sid));
 });
 
 // GET: /ivr/menu
@@ -28,14 +27,6 @@ router.get('/menu', (req, res) => {
   const sid=req.query.sid;
   console.log("/ivr/menu: digit "+digit);
   console.log("/ivr/menu: sid "+sid);
-  
-  //checking if we can make call from router
-  	var call=client.calls.create({
-		url:'/ivr/callHost?conferenceName='+sid,
-		to: process.env.CELL_PHONE_NUMBER,
-		from: process.env.TWILIO_PHONE_NUMBER,
-		method: 'GET'
-	});
   
   res.send(menu(digit,sid));
   //return res.send(welcome(sid));
@@ -57,13 +48,8 @@ router.get('/handleHostResponseToOfferedGuest',(req,res)=>{
 	res.send(handleHostResponseToOfferedGuest(digits,conferenceName));
 });
 
-
-
-
-// POST: /ivr/planets
-router.post('/planets', (req, res) => {
-  const digit = req.body.Digits;
-  res.send(planets(digit));
+router.get('/statusChange',(req,res)=> {
+	console.log("statusChange: status has changed.");
 });
 
 router.post('/guestCallsHost',(req,res) => {

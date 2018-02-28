@@ -52,7 +52,7 @@ exports.welcome = function welcome(fromNum,sid) {
 
 	  responseStr=voiceResponse.toString();
 	  return responseStr;
-  )
+  );
 };
 
 exports.menu = function menu(digit,sid) {
