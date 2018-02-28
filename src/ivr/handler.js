@@ -35,7 +35,7 @@ exports.welcome = function welcome(fromNum,sid) {
 		  console.log('welcome: userInitialStatus '+userInitialStatus);
 	  }
   }).then(
-	  const voiceResponse = new VoiceResponse();
+	  var voiceResponse = new VoiceResponse();
 	  //const bodyUrl = '';
 
 	  params={'sid':sid}
