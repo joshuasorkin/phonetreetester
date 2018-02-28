@@ -49,7 +49,7 @@ router.get('/handleHostResponseToOfferedGuest',(req,res)=>{
 });
 
 router.get('/statusChange',(req,res)=> {
-	console.log("statusChange: status has changed.");
+	console.log("statusChange: status has changed to "+req.query.CallStatus);
 });
 
 router.post('/guestCallsHost',(req,res) => {
