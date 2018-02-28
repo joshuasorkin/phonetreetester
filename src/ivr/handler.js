@@ -23,36 +23,60 @@ exports.welcome = function welcome(fromNum,sid) {
 
 	console.log("welcome: fromNum is "+fromNum);
   console.log("welcome: sid is "+sid);
+  
+  const voiceResponse = new VoiceResponse();
+  //const bodyUrl = '';
+
+  params={'sid':sid}
+  url=buildGetUrl('/ivr/menu',params);
+  
+  const gather = voiceResponse.gather({
+	action: url,
+	numDigits: '1',
+	method: 'GET',
+	timeout: 10
+  });
+	sayAlice(gather,languageConfig,"Welcome to Vent.  Press 1 to call a host.  Press 2 to set your own host interval.");
+  //gather.play({loop: 3}, bodyUrl);
+
+  responseStr=voiceResponse.toString();
+  return responseStr;
+  
+  /*
 	var userInitialStatus;
   db.getUser(fromNum,function(row){
+	  var result;
 	  if(row==null){
 		db.addUser(fromNum,function(result){
 			console.log(result.toString());
-		});
+		})
 	  }
 	  else{
 		  userInitialStatus=row['status'].toString();
 		  console.log('welcome: userInitialStatus '+userInitialStatus);
 	  }
-  }).then(
-	  var voiceResponse = new VoiceResponse();
-	  //const bodyUrl = '';
+	  return row
+  }).then(function(result)
+		  var voiceResponse = new VoiceResponse();
+		  //const bodyUrl = '';
 
-	  params={'sid':sid}
-	  url=buildGetUrl('/ivr/menu',params);
-	  
-	  const gather = voiceResponse.gather({
-		action: url,
-		numDigits: '1',
-		method: 'GET',
-		timeout: 10
-	  });
-		sayAlice(gather,languageConfig,"Welcome to Vent.  Press 1 to call a host.  Press 2 to set your own host interval.");
-	  //gather.play({loop: 3}, bodyUrl);
+		  params={'sid':sid}
+		  url=buildGetUrl('/ivr/menu',params);
+		  
+		  const gather = voiceResponse.gather({
+			action: url,
+			numDigits: '1',
+			method: 'GET',
+			timeout: 10
+		  });
+			sayAlice(gather,languageConfig,"Welcome to Vent.  Press 1 to call a host.  Press 2 to set your own host interval.");
+		  //gather.play({loop: 3}, bodyUrl);
 
-	  responseStr=voiceResponse.toString();
-	  return responseStr;
+		  responseStr=voiceResponse.toString();
+		  return responseStr;
+	  )
   );
+  */
 };
 
 exports.menu = function menu(digit,sid) {
