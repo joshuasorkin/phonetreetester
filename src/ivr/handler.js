@@ -16,7 +16,7 @@ const client=require('twilio')(
 var request = require('request');
 const languageConfig="en-AU";
 //var db=require('./src/ivr/database');
-
+var db=require('./database');
 
 
 exports.welcome = function welcome(fromNum,sid) {
@@ -97,6 +97,22 @@ exports.menu = function menu(digit,sid) {
   }
   return responseTwiml;
 };
+
+exports.statusChange=function statusChange(status){
+	switch(status){
+		case 'initiated':
+			break;
+		case 'ringing':
+			break;
+		case 'answered':
+			break;
+		case 'completed':
+			break;
+		default:
+			console.log("statusChange: unrecognized status "+status);
+			break;
+	}
+}
 
 
 function guestCallsHost(sid){
