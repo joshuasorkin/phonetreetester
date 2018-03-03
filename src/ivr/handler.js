@@ -63,8 +63,7 @@ exports.welcome = function welcome(fromNum,sid) {
 	  }
 	  return row
   }).then(function(result){
-		  return buildPreMainMenuGather(sid);})
-  );
+		  return buildPreMainMenuGather(sid);});
   
   
 };
