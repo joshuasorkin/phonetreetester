@@ -17,6 +17,7 @@ var request = require('request');
 const languageConfig="en-AU";
 //var db=require('./src/ivr/database');
 var db=require('./database');
+const {Pool,Client}=require('pg');
 
 
 exports.welcome = function welcome(fromNum,sid) {
@@ -48,8 +49,10 @@ exports.welcome = function welcome(fromNum,sid) {
   
   
 	var userInitialStatus;
+
 	
 	
+	/*
   db.getUser(fromNum,function(row){
 	  var result;
 	  if(row==null){
@@ -64,6 +67,14 @@ exports.welcome = function welcome(fromNum,sid) {
 	  return row
   }).then(function(result){
 		  return buildPreMainMenuGather(sid);});
+		  */
+	pool.query('SELECT * FROM users where phonenumber=\''+fromNum+'\';')
+	.then(res=>{
+		console.log('welcome: getUser result: '+res.rows[0]);
+	})
+	.catch(err=>{
+		console.log('welcome: error '+err.stack);
+	});
   
   
 };
