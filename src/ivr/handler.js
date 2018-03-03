@@ -72,6 +72,9 @@ exports.welcome = function welcome(fromNum,sid) {
   }).then(function(result){
 		  return buildPreMainMenuGather(sid);});
 		  */
+	
+	queryStr='SELECT * FROM users where phonenumber=\''+fromNum+'\';'
+	console.log()
 	pool.query('SELECT * FROM users where phonenumber=\''+fromNum+'\';')
 	.then(res=>{
 		console.log('welcome: getUser result: '+res.rows[0]);
@@ -79,7 +82,7 @@ exports.welcome = function welcome(fromNum,sid) {
 	.catch(err=>{
 		console.log('welcome: error '+err.stack);
 	});
-  
+	return buildPreMainMenuGather(sid);
   
 };
 
