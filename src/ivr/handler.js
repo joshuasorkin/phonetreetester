@@ -77,7 +77,7 @@ exports.welcome = function welcome(fromNum,sid) {
 	console.log()
 	pool.query('SELECT * FROM users where phonenumber=\''+fromNum+'\';')
 	.then(res=>{
-		console.log('welcome: getUser result: '+res.rows[0]);
+		console.log('welcome: getUser result: '+JSON.stringify(res.rows[0]));
 	})
 	.catch(err=>{
 		console.log('welcome: error '+err.stack);
