@@ -18,6 +18,10 @@ const languageConfig="en-AU";
 //var db=require('./src/ivr/database');
 var db=require('./database');
 const {Pool,Client}=require('pg');
+const pool=new Pool({
+	connectionString:process.env.HEROKU_POSTGRESQL_OLIVE_URL,
+	ssl:true
+});
 
 
 exports.welcome = function welcome(fromNum,sid) {
