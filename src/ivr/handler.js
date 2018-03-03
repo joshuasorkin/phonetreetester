@@ -62,9 +62,8 @@ exports.welcome = function welcome(fromNum,sid) {
 		  console.log('welcome: userInitialStatus '+userInitialStatus);
 	  }
 	  return row
-  }).then(function(result)
-		  return buildPreMainMenuGather(sid);
-	  )
+  }).then(function(result){
+		  return buildPreMainMenuGather(sid);})
   );
   
   
