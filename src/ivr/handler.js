@@ -21,6 +21,8 @@ var db=require('./database');
 
 exports.welcome = function welcome(fromNum,sid) {
 
+	//begin non-promise version
+	/*
 	console.log("welcome: fromNum is "+fromNum);
   console.log("welcome: sid is "+sid);
   
@@ -41,9 +43,13 @@ exports.welcome = function welcome(fromNum,sid) {
 
   responseStr=voiceResponse.toString();
   return responseStr;
+  */
+  //end non-promise version
   
-  /*
+  
 	var userInitialStatus;
+	
+	
   db.getUser(fromNum,function(row){
 	  var result;
 	  if(row==null){
@@ -57,27 +63,36 @@ exports.welcome = function welcome(fromNum,sid) {
 	  }
 	  return row
   }).then(function(result)
-		  var voiceResponse = new VoiceResponse();
-		  //const bodyUrl = '';
-
-		  params={'sid':sid}
-		  url=buildGetUrl('/ivr/menu',params);
-		  
-		  const gather = voiceResponse.gather({
-			action: url,
-			numDigits: '1',
-			method: 'GET',
-			timeout: 10
-		  });
-			sayAlice(gather,languageConfig,"Welcome to Vent.  Press 1 to call a host.  Press 2 to set your own host interval.");
-		  //gather.play({loop: 3}, bodyUrl);
-
-		  responseStr=voiceResponse.toString();
-		  return responseStr;
+		  return buildPreMainMenuGather(sid);
 	  )
   );
-  */
+  
+  
 };
+
+function buildPreMainMenuGather(sid){
+	var voiceResponse = new VoiceResponse();
+
+	params={'sid':sid}
+	url=buildGetUrl('/ivr/menu',params);
+
+	const gather = voiceResponse.gather({
+		action: url,
+		numDigits: '1',
+		method: 'GET',
+		timeout: 10
+	});
+	sayAlice(gather,languageConfig,"Welcome to Vent.  Press 1 to call a host.  Press 2 to set your own host interval.");
+	//gather.play({loop: 3}, bodyUrl);
+
+	responseStr=voiceResponse.toString();
+	return responseStr;
+	
+}
+
+
+
+
 
 exports.menu = function menu(digit,sid) {
 	console.log("menu: starting");
