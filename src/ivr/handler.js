@@ -82,6 +82,7 @@ exports.welcome = function welcome(fromNum,sid) {
 	.catch(err=>{
 		console.log('welcome: error '+err.stack);
 	});
+	console.log('welcome: this line comes after promise');
 	return buildPreMainMenuGather(sid);
   
 };

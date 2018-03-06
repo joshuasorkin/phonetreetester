@@ -6,7 +6,7 @@ const {
 	handleHostResponseToOfferedGuest,
 	planets} = require('./handler');
 var bodyParser = require('body-parser');
-
+var db=require('./database');
 
 const router = new Router();
 router.use(bodyParser.urlencoded({ extended: false }));
@@ -20,6 +20,19 @@ router.post('/welcome', (req, res) => {
 	console.log("/welcome: sid "+sid);
 	res.send(welcome(fromNum,sid));
 });
+
+// POST: /ivr/welcome_promise
+router.post('/welcome_promise',(req,res) => {
+	const fromNum=req.body.From;
+	const sid=req.body.CallSid;
+	console.log("/welcome_promise: sid "+sid);
+	db.getUser(fromNum).then(
+		console.log("/welcome_promise: then");
+	).catch(
+		console.log("/welcome_promise: catch");
+	);
+});
+
 
 // GET: /ivr/menu
 router.get('/menu', (req, res) => {
@@ -49,7 +62,9 @@ router.get('/handleHostResponseToOfferedGuest',(req,res)=>{
 });
 
 router.get('/statusChange',(req,res)=> {
+	status=req.query.CallStatus;
 	console.log("statusChange: status has changed to "+req.query.CallStatus);
+	res.send(statusChange(status));
 });
 
 router.post('/guestCallsHost',(req,res) => {

@@ -7,7 +7,7 @@ const pool=new Pool({
 });
 
 module.exports = {
-	getUser:function(phonenumber,callback){
+	getUser: function(phonenumber,callback){
 		queryStr='SELECT * FROM users where phonenumber=\''+phonenumber+'\';';
 		console.log(queryStr);
 		pool.query(queryStr,(err,res)=>{
@@ -21,7 +21,23 @@ module.exports = {
 			}
 		});
 	},
-	addUser:function(phonenumber,callback){
+	getUser_promise: function(phonenumber,callback){
+		return new Promise(function(resolve,reject){
+			queryStr='SELECT * FROM users where phonenumber=\''+phonenumber+'\';';
+			console.log(queryStr);
+			pool.query(queryStr,(err,res)=>{
+				if (res.rows.length==0){
+					console.log("null");
+					reject(res);
+				}
+				else{
+					console.log("non-null");
+					resolve(res.rows[0]);
+				}
+			});
+		});
+	}
+	addUser: function(phonenumber,callback){
 		queryStr='insert into users (phonenumber,status) values (\''+phonenumber+'\',\'in use\')';
 		console.log(queryStr);
 		pool.query(queryStr,(err,res)=>{
@@ -32,7 +48,7 @@ module.exports = {
 		});
 		
 	},
-	getAvailableUsers(callback){
+	getAvailableUsers: function(callback){
 		queryStr='select * from (select * from users where status=\'available\' and now()>=starttime and now()<=endtime) order by random()';
 		console.log(queryStr);
 		pool.query(queryStr,(err,res)=>{
@@ -43,7 +59,7 @@ module.exports = {
 
 		});
 	},
-	getAllUsers(callback){
+	getAllUsers: function(callback){
 		queryStr='select * from users';
 		console.log(queryStr);
 		pool.query(queryStr,(err,res)=>{
@@ -54,7 +70,7 @@ module.exports = {
 
 		});
 	},
-	updateUserStatus(callback){
+	updateUserStatus: function(statusValue,id,callback){
 		queryStr='update users set status=\''+statusValue+'\' where id='+id;
 		console.log(queryStr);
 		pool.query(queryStr,(err,res)=>{
