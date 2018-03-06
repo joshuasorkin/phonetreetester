@@ -26,7 +26,7 @@ router.post('/welcome_promise',(req,res) => {
 	const fromNum=req.body.From;
 	const sid=req.body.CallSid;
 	console.log("/welcome_promise: sid "+sid);
-	db.getUser(fromNum).then(value=>{
+	db.getUser_promise(fromNum).then(value=>{
 		console.log("/welcome_promise: then");
 	}).catch(error=>{
 		console.log("/welcome_promise: catch");
