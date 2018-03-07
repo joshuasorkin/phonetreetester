@@ -30,8 +30,9 @@ router.post('/welcome_promise',(req,res) => {
 		console.log("/welcome_promise: then");
 		preMainMenuGather=buildPreMainMenuGather(sid);
 		res.send(preMainMenuGather);
-	}).catch(error=>{
+	},error=>{
 		console.log("/welcome_promise: catch this");
+		console.log("/welcome_promise: "+error.toString());
 	});
 });
 
