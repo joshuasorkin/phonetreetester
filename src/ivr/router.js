@@ -33,6 +33,8 @@ router.post('/welcome_promise',(req,res) => {
 	},error=>{
 		console.log("/welcome_promise: catch this");
 		console.log("/welcome_promise: "+error.toString());
+	}).catch(x=>{
+		console.log("/welcome_promise: outside catch block");
 	});
 });
 
