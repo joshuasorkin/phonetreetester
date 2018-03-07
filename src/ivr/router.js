@@ -29,7 +29,7 @@ router.post('/welcome_promise',(req,res) => {
 	db.getUser_promise(fromNum).then(value=>{
 		console.log("/welcome_promise: then");
 	}).catch(error=>{
-		console.log("/welcome_promise: catch");
+		console.log("/welcome_promise: catch this");
 	});
 });
 
