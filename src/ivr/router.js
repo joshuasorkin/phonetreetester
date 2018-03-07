@@ -28,6 +28,8 @@ router.post('/welcome_promise',(req,res) => {
 	console.log("/welcome_promise: sid "+sid);
 	db.getUser_promise(fromNum).then(value=>{
 		console.log("/welcome_promise: then");
+		preMainMenuGather=buildPreMainMenuGather(sid);
+		res.send(preMainMenuGather);
 	}).catch(error=>{
 		console.log("/welcome_promise: catch this");
 	});
