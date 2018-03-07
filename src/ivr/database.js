@@ -36,7 +36,7 @@ module.exports = {
 				}
 			});
 		});
-	}
+	},
 	addUser: function(phonenumber,callback){
 		queryStr='insert into users (phonenumber,status) values (\''+phonenumber+'\',\'in use\')';
 		console.log(queryStr);
