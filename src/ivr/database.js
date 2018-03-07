@@ -21,7 +21,7 @@ module.exports = {
 			}
 		});
 	},
-	getUser_promise: function(phonenumber,callback){
+	getUser_promise: function(phonenumber){
 		return new Promise(function(resolve,reject){
 			queryStr='SELECT * FROM users where phonenumber=\''+phonenumber+'\';';
 			console.log(queryStr);
