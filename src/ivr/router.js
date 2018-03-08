@@ -29,12 +29,14 @@ router.post('/welcome_promise',(req,res) => {
 	db.getUser_promise(fromNum).then(value=>{
 		console.log("/welcome_promise: then");
 		preMainMenuGather=buildPreMainMenuGather(sid);
+		console.log("/welcome_promise: preMainMenuGather "+preMainMenuGather);
 		res.send(preMainMenuGather);
 	},error=>{
 		console.log("/welcome_promise: catch this");
 		console.log("/welcome_promise: "+error.toString());
 	}).catch(x=>{
-		console.log("/welcome_promise: outside catch block");
+		console.log("/welcome_promise: outside catch block")
+		console.log("/welcome_promise: x.toString());
 	});
 });
 
