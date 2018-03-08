@@ -4,6 +4,7 @@ const {
 	menu, 
 	callHost, 
 	handleHostResponseToOfferedGuest,
+	buildPreMainMenuGather,
 	planets} = require('./handler');
 var bodyParser = require('body-parser');
 var db=require('./database');
