@@ -87,7 +87,7 @@ exports.welcome = function welcome(fromNum,sid) {
   
 };
 
-function buildPreMainMenuGather(sid){
+exports.buildPreMainMenuGather=function buildPreMainMenuGather(sid){
 	var voiceResponse = new VoiceResponse();
 
 	params={'sid':sid}
