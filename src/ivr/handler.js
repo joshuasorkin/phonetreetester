@@ -172,7 +172,7 @@ exports.statusChange=function statusChange(status){
 
 
 exports.statusChangeConference=function statusChangeConference(status){
-	console.log("statusChange_conference: status "+status);
+	console.log("statusChangeConference: status "+status);
 	voiceResponse=new VoiceResponse();
 	voiceResponse.say("status change conference");
 	return voiceResponse.toString();
@@ -232,7 +232,7 @@ exports.guestCallsHost=function guestCallsHost(sid,hostPhoneNumber){
 	dial.conference(sid,{
 		statusCallbackEvent:'start end join leave',
 		statusCallback:process.env.PHONETREETESTER_URL+'ivr/statusChangeConference',
-		statusCallbackMethod:'POST',
+		statusCallbackMethod:'GET',
 		waitUrl:'http://twimlets.com/holdmusic?Bucket=com.twilio.music.electronica'
 	});
 	responseStr=response.toString();
@@ -279,7 +279,7 @@ exports.handleHostResponseToOfferedGuest=function handleHostResponseToOfferedGue
 		dial.conference(conferenceName,{
 			statusCallbackEvent:'start end join leave',
 			statusCallback:process.env.PHONETREETESTER_URL+'ivr/statusChangeConference',
-			statusCallbackMethod:'POST',
+			statusCallbackMethod:'GET',
 			waitUrl:'http://twimlets.com/holdmusic?Bucket=com.twilio.music.electronica'
 		});
 	}

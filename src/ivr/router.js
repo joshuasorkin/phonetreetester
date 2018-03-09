@@ -107,7 +107,7 @@ router.get('/statusChange',(req,res)=> {
 	}
 });
 
-router.post('/statusChangeConference',(req,res)=>{
+router.get('/statusChangeConference',(req,res)=>{
 	status=req.query.StatusCallbackEvent;
 	console.log("/statusChangeConference: status has changed to "+status);
 	sendValue=statusChangeConference(status);
