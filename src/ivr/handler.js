@@ -219,9 +219,9 @@ exports.guestCallsHost=function guestCallsHost(sid,hostPhoneNumber){
 		to: hostPhoneNumber,
 		from: process.env.TWILIO_PHONE_NUMBER,
 		method: 'GET',
-		StatusCallback:statusCallback,
-		StatusCallbackMethod:'GET',
-		StatusCallbackEvent:['initiated', 'ringing', 'answered', 'completed']
+		statusCallback:statusCallback,
+		statusCallbackMethod:'GET',
+		statusCallbackEvent:['initiated', 'ringing', 'answered', 'completed']
 		
 	}).then(x=>console.log("guestCallsHost: logging return value of client calls create "+x));
 	
