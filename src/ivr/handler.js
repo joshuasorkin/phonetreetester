@@ -261,9 +261,9 @@ exports.handleHostResponseToOfferedGuest=function handleHostResponseToOfferedGue
 		dial=response.dial();
 		dial.conference(conferenceName,{
 			statusCallbackEvent:'start end join leave',
-			statusCallback:'/ivr/statusChange_conference',
+			statusCallback:process.env.PHONETREETESTER_URL+'ivr/statusChange_conference',
 			statusCallbackMethod:'GET',
-			waitURL:'http://twimlets.com/holdmusic?Bucket=com.twilio.music.electronica'
+			waitUrl:'http://twimlets.com/holdmusic?Bucket=com.twilio.music.electronica'
 		});
 	}
 	else{
