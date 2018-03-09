@@ -165,12 +165,17 @@ exports.statusChange=function statusChange(status){
 			console.log("statusChange: unrecognized status "+status);
 			break;
 	}
+	voiceResponse=new VoiceResponse();
+	voiceResponse.say("status change");
+	return voiceResponse.toString();
 }
 
 
 exports.statusChange_conference=function statusChange_conference(status){
 	console.log("statusChange_conference: status "+status);
 	voiceResponse=new VoiceResponse();
+	voiceResponse.say("status change conference");
+	return voiceResponse.toString();
 	/*
 	switch(status){
 		case 'participant-join':

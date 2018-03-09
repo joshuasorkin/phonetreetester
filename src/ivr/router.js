@@ -100,13 +100,19 @@ router.get('/handleHostResponseToOfferedGuest',(req,res)=>{
 router.get('/statusChange',(req,res)=> {
 	status=req.query.CallStatus;
 	console.log("/statusChange: status has changed to "+req.query.CallStatus);
-	res.send(statusChange(status));
+	sendValue=statusChange(status);
+	if (sendValue!=null){
+		res.send(sendValue);
+	}
 });
 
 router.get('/statusChange_conference',(req,res)=>{
 	status=req.query.StatusCallbackEvent;
 	console.log("/statusChange_conference: status has changed to "+status);
-	res.send(statusChange_conference(status));
+	sendValue=statusChange_conference(status);
+	if (sendValue!=null){
+		res.send(sendValue);
+	}
 });
 
 
