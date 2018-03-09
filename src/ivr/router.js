@@ -73,7 +73,7 @@ router.get('/menu', (req, res) => {
   }
   
   
-  res.send(menu(digit,sid));
+  //res.send(menu(digit,sid));
   //return res.send(welcome(sid));
 });
 
