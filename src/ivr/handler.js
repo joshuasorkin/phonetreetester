@@ -260,8 +260,10 @@ exports.handleHostResponseToOfferedGuest=function handleHostResponseToOfferedGue
 		sayAlice(response,languageConfig,"Thank you, now connecting you to guest.");
 		dial=response.dial();
 		dial.conference(conferenceName,{
+			statusCallbackEvent:'start end join leave',
 			statusCallback:'/ivr/statusChange_conference',
-			statusCallbackMethod:'GET'
+			statusCallbackMethod:'GET',
+			waitURL:'http://twimlets.com/holdmusic?Bucket=com.twilio.music.electronica'
 		});
 	}
 	else{
