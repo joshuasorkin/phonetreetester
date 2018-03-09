@@ -7,6 +7,7 @@ const {
 	buildPreMainMenuGather,
 	noHostAvailable,
 	guestCallsHost,
+	statusChange_conference,
 	planets} = require('./handler');
 var bodyParser = require('body-parser');
 var db=require('./database');
@@ -98,12 +99,15 @@ router.get('/handleHostResponseToOfferedGuest',(req,res)=>{
 
 router.get('/statusChange',(req,res)=> {
 	status=req.query.CallStatus;
-	console.log("statusChange: status has changed to "+req.query.CallStatus);
+	console.log("/statusChange: status has changed to "+req.query.CallStatus);
 	res.send(statusChange(status));
 });
 
-router.post('/guestCallsHost',(req,res) => {
-	
+router.get('/statusChange_conference',(req,res)=>{
+	status=req.query.StatusCallbackEvent;
+	console.log("/statusChange_conference: status has changed to "+status);
+	res.send(statusChange_conference(status);
 });
+
 
 module.exports = router;
