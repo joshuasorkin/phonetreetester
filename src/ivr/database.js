@@ -61,6 +61,7 @@ module.exports = {
 				}
 				else{
 					console.log("getAvailableUsers: rows returned");
+					resolve(res);
 				}
 
 			});
