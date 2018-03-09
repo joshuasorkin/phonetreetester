@@ -215,7 +215,11 @@ exports.guestCallsHost=function guestCallsHost(sid,hostPhoneNumber){
 		url:url,
 		to: hostPhoneNumber,
 		from: process.env.TWILIO_PHONE_NUMBER,
-		method: 'GET'
+		method: 'GET',
+		StatusCallback:process.env.PHONETREETESTER_URL+'ivr/statusChange',
+		StatusCallbackMethod:'GET',
+		StatusCallbackEvent:['initiated', 'ringing', 'answered', 'completed']
+		
 	}).then(x=>console.log("guestCallsHost: logging return value of client calls create "+x));
 	
 	
@@ -266,7 +270,7 @@ exports.handleHostResponseToOfferedGuest=function handleHostResponseToOfferedGue
 		dial=response.dial();
 		dial.conference(conferenceName,{
 			statusCallbackEvent:'start end join leave',
-			statusCallback:process.env.PHONETREETESTER_URL+'ivr/statusChange_conference',
+			statusCallback:process.env.PHONETREETESTER_URL+'ivr/statusChangeConference',
 			statusCallbackMethod:'GET',
 			waitUrl:'http://twimlets.com/holdmusic?Bucket=com.twilio.music.electronica'
 		});
