@@ -203,7 +203,7 @@ exports.noHostAvailable=function noHostAvailable(){
 	sayAlice(response,languageConfig,"No host is available at this time.  Please try again later.");
 	addPreMainMenuGather(response);
 	return response.toString();
-});
+};
 
 
 function setHostInterval(){
