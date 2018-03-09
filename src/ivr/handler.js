@@ -170,8 +170,10 @@ exports.statusChange=function statusChange(status){
 
 exports.statusChange_conference=function statusChange_conference(status){
 	console.log("statusChange_conference: status "+status);
+	voiceResponse=new VoiceResponse();
+	/*
 	switch(status){
-		case 'initiated':
+		case 'participant-join':
 			break;
 		case 'ringing':
 			break;
@@ -183,6 +185,7 @@ exports.statusChange_conference=function statusChange_conference(status){
 			console.log("statusChange_conference: unrecognized status "+status);
 			break;
 	}
+	*/
 	
 	
 }
@@ -256,7 +259,10 @@ exports.handleHostResponseToOfferedGuest=function handleHostResponseToOfferedGue
 	if (digits=="1"){
 		sayAlice(response,languageConfig,"Thank you, now connecting you to guest.");
 		dial=response.dial();
-		dial.conference(conferenceName);
+		dial.conference(conferenceName,{
+			statusCallback:'/ivr/statusChange_conference',
+			statusCallbackMethod:'GET'
+		});
 	}
 	else{
 		sayAlice(response,languageConfig,"You didn't press 1.");
