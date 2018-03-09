@@ -171,7 +171,7 @@ exports.statusChange=function statusChange(status){
 }
 
 
-exports.statusChange_conference=function statusChange_conference(status){
+exports.statusChangeConference=function statusChangeConference(status){
 	console.log("statusChange_conference: status "+status);
 	voiceResponse=new VoiceResponse();
 	voiceResponse.say("status change conference");
@@ -211,12 +211,15 @@ exports.guestCallsHost=function guestCallsHost(sid,hostPhoneNumber){
 		hostPhoneNumber=process.env.CELL_PHONE_NUMBER;
 	}
 	
+	statusCallback=process.env.PHONETREETESTER_URL+'ivr/statusChange';
+	console.log('guestCallsHost: statusCallback '+statusCallback);
+	
 	var call=client.calls.create({
 		url:url,
 		to: hostPhoneNumber,
 		from: process.env.TWILIO_PHONE_NUMBER,
 		method: 'GET',
-		StatusCallback:process.env.PHONETREETESTER_URL+'ivr/statusChange',
+		StatusCallback:statusCallback,
 		StatusCallbackMethod:'GET',
 		StatusCallbackEvent:['initiated', 'ringing', 'answered', 'completed']
 		
