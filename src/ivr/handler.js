@@ -229,7 +229,12 @@ exports.guestCallsHost=function guestCallsHost(sid,hostPhoneNumber){
 	const response = new VoiceResponse();
 	sayAlice(response,languageConfig,"Thank you for calling Vent. Please wait while we find a host.");
 	const dial = response.dial();
-	dial.conference(sid);
+	dial.conference(sid,{
+		statusCallbackEvent:'start end join leave',
+		statusCallback:process.env.PHONETREETESTER_URL+'ivr/statusChangeConference',
+		statusCallbackMethod:'POST',
+		waitUrl:'http://twimlets.com/holdmusic?Bucket=com.twilio.music.electronica'
+	});
 	responseStr=response.toString();
 	console.log("guestCallsHost: "+responseStr);
 	return responseStr;
