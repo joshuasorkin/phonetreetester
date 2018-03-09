@@ -198,10 +198,10 @@ exports.guestCallsHost=function guestCallsHost(sid,hostPhoneNumber){
 	return responseStr;
 };
 
-exports.noHostAvailable=function noHostAvailable(){
+exports.noHostAvailable=function noHostAvailable(sid){
 	const response=new voiceResponse();
 	sayAlice(response,languageConfig,"No host is available at this time.  Please try again later.");
-	addPreMainMenuGather(response);
+	addPreMainMenuGather(response,sid);
 	return response.toString();
 };
 
@@ -224,8 +224,8 @@ exports.callHost=function callHost(conferenceName){
 		action:url,
 		method:'GET'
 	});
-	gather.say("You have a call from Vent.  Press 1 to accept, press any other key to refuse.");
-	response.say("We didn't receive input.  Goodbye!");
+	sayAlice(gather,languageConfig,"You have a call from Vent.  Press 1 to accept, press any other key to refuse.");
+	sayAlice(response,languageConfig,"We didn't receive input.  Goodbye!");
 	return response.toString();
 };
 
