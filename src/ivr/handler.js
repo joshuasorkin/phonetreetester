@@ -151,6 +151,7 @@ exports.menu = function menu(digit,sid) {
 };
 
 exports.statusChange=function statusChange(status){
+	console.log("statusChange: status "+status);
 	switch(status){
 		case 'initiated':
 			break;
@@ -165,6 +166,27 @@ exports.statusChange=function statusChange(status){
 			break;
 	}
 }
+
+
+exports.statusChange_conference=function statusChange_conference(status){
+	console.log("statusChange_conference: status "+status);
+	switch(status){
+		case 'initiated':
+			break;
+		case 'ringing':
+			break;
+		case 'answered':
+			break;
+		case 'completed':
+			break;
+		default:
+			console.log("statusChange_conference: unrecognized status "+status);
+			break;
+	}
+	
+	
+}
+
 
 
 exports.guestCallsHost=function guestCallsHost(sid,hostPhoneNumber){
@@ -232,12 +254,12 @@ exports.callHost=function callHost(conferenceName){
 exports.handleHostResponseToOfferedGuest=function handleHostResponseToOfferedGuest(digits,conferenceName){
 	const response=new VoiceResponse();
 	if (digits=="1"){
-		response.say("Thank you, now connecting you to guest.");
+		sayAlice(response,languageConfig,"Thank you, now connecting you to guest.");
 		dial=response.dial();
 		dial.conference(conferenceName);
 	}
 	else{
-		response.say("You didn't press 1.");
+		sayAlice(response,languageConfig,"You didn't press 1.");
 	}
 	responseTwiml=response.toString();
 	return responseTwiml;
