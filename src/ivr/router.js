@@ -5,6 +5,7 @@ const {
 	callHost, 
 	handleHostResponseToOfferedGuest,
 	buildPreMainMenuGather,
+	noHostAvailable,
 	planets} = require('./handler');
 var bodyParser = require('body-parser');
 var db=require('./database');
@@ -48,6 +49,29 @@ router.get('/menu', (req, res) => {
   const sid=req.query.sid;
   console.log("/ivr/menu: digit "+digit);
   console.log("/ivr/menu: sid "+sid);
+  
+  switch(digit){
+	case '1':
+		console.log("menu: chose 1");
+		db.getRandomAvailableUser().then(value=>{
+			hostPhoneNumber=value[phonenumber];
+			responseTwiml=guestCallsHost(sid,hostPhoneNumber);
+			res.send(responseTwiml);
+		},error=>{
+			console.log("/menu: error "+error.toString());
+			responseTwiml=noHostAvailable(sid);
+			res.send(responseTwiml);
+		})
+		//responseTwiml=guestCallsHost(sid);
+		break;
+	case '2':
+		responseTwiml=setHostInterval();
+		break;
+	//default:
+	//	responseTwiml=redirectWelcome();
+	//	break;
+  }
+  
   
   res.send(menu(digit,sid));
   //return res.send(welcome(sid));

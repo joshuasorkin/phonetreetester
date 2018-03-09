@@ -105,7 +105,7 @@ exports.buildPreMainMenuGather=function buildPreMainMenuGather(sid){
 	//gather.play({loop: 3}, bodyUrl);
 	*/
 	
-	addPreMainMenuGather(voiceResponse);
+	addPreMainMenuGather(voiceResponse,sid);
 
 	responseStr=voiceResponse.toString();
 	return responseStr;
@@ -113,7 +113,7 @@ exports.buildPreMainMenuGather=function buildPreMainMenuGather(sid){
 }
 
 
-function addPreMainMenuGather(voiceResponse){
+function addPreMainMenuGather(voiceResponse,sid){
 	params={'sid':sid}
 	url=buildGetUrl('/ivr/menu',params);
 
@@ -201,7 +201,8 @@ exports.guestCallsHost=function guestCallsHost(sid,hostPhoneNumber){
 exports.noHostAvailable=function noHostAvailable(){
 	const response=new voiceResponse();
 	sayAlice(response,languageConfig,"No host is available at this time.  Please try again later.");
-	response.redirect('/ivr/)
+	addPreMainMenuGather(response);
+	return response.toString();
 });
 
 
