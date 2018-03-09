@@ -48,15 +48,22 @@ module.exports = {
 		});
 		
 	},
-	getAvailableUsers: function(callback){
-		queryStr='select * from (select * from users where status=\'available\' and now()>=starttime and now()<=endtime) order by random()';
-		console.log(queryStr);
-		pool.query(queryStr,(err,res)=>{
-			console.log("in getAvailableUsers, before callback");
-			console.log("result length, in getAvailableUsers: "+res.rows.length);
-			callback(res.rows);
-			console.log("in getAvailableUsers, after callback");
+	getRandomAvailableUser: function(){
+		return new Promise(function(resolve,reject){
+			//queryStr='select * from (select * from users where status=\'available\' and now()>=starttime and now()<=endtime) order by random()';
+			queryStr='select * from (select * from users where status=\'available\') x order by random() limit 1;';
+			console.log(queryStr);
+			pool.query(queryStr,(err,res)=>{
+				console.log("result length, in getAvailableUsers: "+res.rows.length);
+				if (res.rows.length==0){
+					console.log("getAvailableUsers: no rows returned");
+					reject(res);
+				}
+				else{
+					console.log("getAvailableUsers: rows returned");
+				}
 
+			});
 		});
 	},
 	getAllUsers: function(callback){

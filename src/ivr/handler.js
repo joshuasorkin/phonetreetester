@@ -89,7 +89,9 @@ exports.welcome = function welcome(fromNum,sid) {
 
 exports.buildPreMainMenuGather=function buildPreMainMenuGather(sid){
 	var voiceResponse = new VoiceResponse();
-
+	
+	
+	/*
 	params={'sid':sid}
 	url=buildGetUrl('/ivr/menu',params);
 
@@ -101,12 +103,30 @@ exports.buildPreMainMenuGather=function buildPreMainMenuGather(sid){
 	});
 	sayAlice(gather,languageConfig,"Welcome to Vent.  Press 1 to call a host.  Press 2 to set your own host interval.");
 	//gather.play({loop: 3}, bodyUrl);
+	*/
+	
+	addPreMainMenuGather(voiceResponse);
 
 	responseStr=voiceResponse.toString();
 	return responseStr;
 	
 }
 
+
+function addPreMainMenuGather(voiceResponse){
+	params={'sid':sid}
+	url=buildGetUrl('/ivr/menu',params);
+
+	const gather = voiceResponse.gather({
+		action: url,
+		numDigits: '1',
+		method: 'GET',
+		timeout: 10
+	});
+	sayAlice(gather,languageConfig,"Welcome to Vent.  Press 1 to call a host.  Press 2 to set your own host interval.");
+	//gather.play({loop: 3}, bodyUrl);
+	
+}
 
 
 
@@ -147,7 +167,7 @@ exports.statusChange=function statusChange(status){
 }
 
 
-function guestCallsHost(sid){
+exports.guestCallsHost=function guestCallsHost(sid,hostPhoneNumber){
 	baseUrl=process.env.PHONETREETESTER_URL+'ivr/callHost';
 	console.log("guestCallsHost: baseUrl "+baseUrl);
 	//todo: find more secure source of unique conference ID (maybe hash of sid)
@@ -157,10 +177,13 @@ function guestCallsHost(sid){
 	url=buildGetUrl(baseUrl,params);
 	console.log("guestCallsHost: url "+url);
 	
+	if (hostPhoneNumber==null){
+		hostPhoneNumber=process.env.CELL_PHONE_NUMBER;
+	}
 	
 	var call=client.calls.create({
 		url:url,
-		to: process.env.CELL_PHONE_NUMBER,
+		to: hostPhoneNumber,
 		from: process.env.TWILIO_PHONE_NUMBER,
 		method: 'GET'
 	}).then(x=>console.log("guestCallsHost: logging return value of client calls create "+x));
@@ -174,6 +197,13 @@ function guestCallsHost(sid){
 	console.log("guestCallsHost: "+responseStr);
 	return responseStr;
 };
+
+exports.noHostAvailable=function noHostAvailable(){
+	const response=new voiceResponse();
+	sayAlice(response,languageConfig,"No host is available at this time.  Please try again later.");
+	response.redirect('/ivr/)
+});
+
 
 function setHostInterval(){
 	const response=new VoiceResponse();
