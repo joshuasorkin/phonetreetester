@@ -54,7 +54,7 @@ router.get('/menu', (req, res) => {
 	case '1':
 		console.log("menu: chose 1");
 		db.getRandomAvailableUser().then(value=>{
-			hostPhoneNumber=value.phonenumber;
+			hostPhoneNumber=value.rows[0].phonenumber;
 			console.log("/menu: hostPhoneNumber "+hostPhoneNumber);
 			//actual value of hostPhoneNumber will be used here in production
 			responseTwiml=guestCallsHost(sid,null);
