@@ -6,6 +6,7 @@ const {
 	handleHostResponseToOfferedGuest,
 	buildPreMainMenuGather,
 	noHostAvailable,
+	guestCallsHost,
 	planets} = require('./handler');
 var bodyParser = require('body-parser');
 var db=require('./database');
