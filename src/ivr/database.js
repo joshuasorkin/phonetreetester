@@ -32,6 +32,7 @@ module.exports = {
 				}
 				else{
 					console.log("non-null");
+					console.log("getUser_promise: result " + JSON.stringify(res.rows[0]));
 					resolve(res.rows[0]);
 				}
 			});
