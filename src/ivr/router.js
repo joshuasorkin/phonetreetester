@@ -112,10 +112,13 @@ router.get('/statusChange',(req,res)=> {
 	status=req.query.CallStatus;
 	console.log("/statusChange: status has changed to "+req.query.CallStatus);
 	console.log("/statusChange: call came from "+req.query.Caller);
-	sendValue=statusChange(status);
-	if (sendValue!=null){
-		res.send(sendValue);
-	}
+	db.updateUserStatusToExitStatusFromPhoneNumber(req.query.Caller).then(value=>{
+		sendValue=statusChange(status);
+		if (sendValue!=null){
+			res.send(sendValue);
+		}
+	});
+	
 });
 
 router.get('/statusChangeConference',(req,res)=>{

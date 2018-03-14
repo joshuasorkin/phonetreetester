@@ -106,6 +106,22 @@ module.exports = {
 				}
 			});
 		});
+	},
+	updateUserStatusToExitStatusFromPhoneNumber: function(phonenumber){
+		queryStr='update users set status=\'statusSet\' where phonenumber=\''+phonenumber+'\'';
+		console.log(queryStr);
+		return new Promise(function(resolve,reject){
+			pool.query(queryStr,(err,res)=>{
+				if (err){
+					console.log("updateUserExitStatus: error "+err.toString());
+					reject(res);
+				}
+				else{
+					console.log("updateUserExitStatus: success");
+					resolve(res);
+				}
+			});
+		});
 	}
 	
 }
