@@ -31,16 +31,22 @@ router.post('/welcome_promise',(req,res) => {
 	const fromNum=req.body.From;
 	const sid=req.body.CallSid;
 	console.log("/welcome_promise: sid "+sid);
+	var user;
+	var exitStatus;
 	db.getUser_promise(fromNum).then(value=>{
 		console.log("/welcome_promise: first then");
+		user=value;
 		id=value.id;
+		console.log("/welcome_promise: id "+id);
 		exitStatus=value.status;
-		return db.update
+		console.log("/welcome_promise: exitStatus "+exitStatus);
+
+		return db.updateUserExitStatus(exitStatus,id);
 	},error=>{
 		console.log("/welcome_promise: error first then");
 		console.log("/welcome_promise: "+error.toString());
 	}).then(value=>{
-		preMainMenuGather=buildPreMainMenuGather(sid);
+		preMainMenuGather=buildPreMainMenuGather(sid,exitStatus);
 		console.log("/welcome_promise: preMainMenuGather "+preMainMenuGather);
 		res.send(preMainMenuGather);		
 	}).catch(x=>{
