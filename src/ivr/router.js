@@ -111,6 +111,7 @@ router.get('/handleHostResponseToOfferedGuest',(req,res)=>{
 router.get('/statusChange',(req,res)=> {
 	status=req.query.CallStatus;
 	console.log("/statusChange: status has changed to "+req.query.CallStatus);
+	console.log("/statusChange: call came from "+req.query.Caller);
 	sendValue=statusChange(status);
 	if (sendValue!=null){
 		res.send(sendValue);
