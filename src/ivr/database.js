@@ -89,8 +89,39 @@ module.exports = {
 				callback(res);
 			}
 		});
+	},
+	updateUserExitStatus: function(exitStatusValue,id){
+		queryStr='update users set exitStatus=\''+exitStatusValue+'\' where id='+id;
+		console.log(queryStr);
+		return new Promise(function(resolve,reject){
+			pool.query(queryStr,(err,res)=>{
+				if (err){
+					console.log("updateUserExitStatus: error "+err.toString());
+					reject(res);
+				}
+				else{
+					console.log("updateUserExitStatus: success");
+					resolve(res);
+				}
+			});
+		});
 	}
 	
+}
+
+function update(sql){
+	return new Promise(function(resolve,reject){
+			pool.query(sql,(err,res)=>{
+				if (err){
+					console.log("error");
+					reject(res);
+				}
+				else{
+					console.log("non-null");
+					resolve(res.rows[0]);
+				}
+			});
+		});
 }
 
 

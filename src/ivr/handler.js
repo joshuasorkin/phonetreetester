@@ -87,7 +87,7 @@ exports.welcome = function welcome(fromNum,sid) {
   
 };
 
-exports.buildPreMainMenuGather=function buildPreMainMenuGather(sid){
+exports.buildPreMainMenuGather=function buildPreMainMenuGather(sid,exitStatus){
 	var voiceResponse = new VoiceResponse();
 	
 	
@@ -105,7 +105,7 @@ exports.buildPreMainMenuGather=function buildPreMainMenuGather(sid){
 	//gather.play({loop: 3}, bodyUrl);
 	*/
 	
-	addPreMainMenuGather(voiceResponse,sid);
+	addPreMainMenuGather(voiceResponse,sid,exitStatus);
 
 	responseStr=voiceResponse.toString();
 	return responseStr;
@@ -113,7 +113,7 @@ exports.buildPreMainMenuGather=function buildPreMainMenuGather(sid){
 }
 
 
-function addPreMainMenuGather(voiceResponse,sid){
+function addPreMainMenuGather(voiceResponse,sid,exitStatus){
 	params={'sid':sid}
 	url=buildGetUrl('/ivr/menu',params);
 
@@ -123,7 +123,7 @@ function addPreMainMenuGather(voiceResponse,sid){
 		method: 'GET',
 		timeout: 10
 	});
-	sayAlice(gather,languageConfig,"Welcome to Vent.  Press 1 to call a host.  Press 2 to set your own host interval.");
+	sayAlice(gather,languageConfig,"Welcome to Vent.  Your current host status is \""+exitStatus+"\".  Press 1 to call a host.  Press 2 to change host status.");
 	//gather.play({loop: 3}, bodyUrl);
 	
 }

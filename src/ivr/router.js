@@ -32,13 +32,17 @@ router.post('/welcome_promise',(req,res) => {
 	const sid=req.body.CallSid;
 	console.log("/welcome_promise: sid "+sid);
 	db.getUser_promise(fromNum).then(value=>{
-		console.log("/welcome_promise: then");
+		console.log("/welcome_promise: first then");
+		id=value.id;
+		exitStatus=value.status;
+		return db.update
+	},error=>{
+		console.log("/welcome_promise: error first then");
+		console.log("/welcome_promise: "+error.toString());
+	}).then(value=>{
 		preMainMenuGather=buildPreMainMenuGather(sid);
 		console.log("/welcome_promise: preMainMenuGather "+preMainMenuGather);
-		res.send(preMainMenuGather);
-	},error=>{
-		console.log("/welcome_promise: catch this");
-		console.log("/welcome_promise: "+error.toString());
+		res.send(preMainMenuGather);		
 	}).catch(x=>{
 		console.log("/welcome_promise: outside catch block")
 		console.log("/welcome_promise: "+x.toString());
