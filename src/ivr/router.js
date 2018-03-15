@@ -71,9 +71,11 @@ router.get('/menu', (req, res) => {
 		console.log("menu: chose 1");
 		db.getRandomAvailableUser().then(value=>{
 			hostPhoneNumber=value.rows[0].phonenumber;
+			hostID=value.rows[0].id;
 			console.log("/menu: hostPhoneNumber "+hostPhoneNumber);
+			console.log("/menu: hostID "+hostID);
 			//actual value of hostPhoneNumber will be used here in production
-			responseTwiml=guestCallsHost(sid,null);
+			responseTwiml=guestCallsHost(sid,null,value.rows[0]);
 			res.send(responseTwiml);
 		},error=>{
 			console.log("/menu: error "+error.toString());
@@ -99,6 +101,9 @@ router.get('/menu', (req, res) => {
 router.get('/callHost', (req, res) => {
 	console.log("reached callHost endpoint");
   const conferenceName=req.query.conferenceName;
+  const hostID=req.query.host.id;
+  console.log("/ivr/callHost: hostID "+hostID);
+  
   console.log("/ivr/callHost: conferenceName "+conferenceName);
   res.send(callHost(conferenceName));
 });
