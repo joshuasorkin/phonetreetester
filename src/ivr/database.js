@@ -82,13 +82,17 @@ module.exports = {
 	updateUserStatus: function(statusValue,id,callback){
 		queryStr='update users set status=\''+statusValue+'\' where id='+id;
 		console.log(queryStr);
-		pool.query(queryStr,(err,res)=>{
-			if (err){
-				console.log("error from updateUserStatus");
-			}
-			else{
-				callback(res);
-			}
+		return new Promise(function(resolve,reject){
+			pool.query(queryStr,(err,res)=>{
+				if (err){
+					console.log("updateUserStatus: error "+err.toString());
+					reject(res);
+				}
+				else{
+					console.log("updateUserStatus: success");
+					resolve(res);
+				}
+			});
 		});
 	},
 	updateUserExitStatus: function(exitStatusValue,id){
@@ -108,7 +112,7 @@ module.exports = {
 		});
 	},
 	updateUserStatusToExitStatusFromPhoneNumber: function(phonenumber){
-		queryStr='update users set status=\'statusSet\' where phonenumber=\''+phonenumber+'\'';
+		queryStr='update users set status=exitStatus where phonenumber=\''+phonenumber+'\'';
 		console.log(queryStr);
 		return new Promise(function(resolve,reject){
 			pool.query(queryStr,(err,res)=>{

@@ -46,6 +46,9 @@ router.post('/welcome_promise',(req,res) => {
 		console.log("/welcome_promise: error first then");
 		console.log("/welcome_promise: "+error.toString());
 	}).then(value=>{
+		console.log("/welcome_promise: updating user status to in use");
+		return db.updateUserStatus("in use",id);
+	}).then(value=>{
 		preMainMenuGather=buildPreMainMenuGather(sid,exitStatus);
 		console.log("/welcome_promise: preMainMenuGather "+preMainMenuGather);
 		res.send(preMainMenuGather);		
