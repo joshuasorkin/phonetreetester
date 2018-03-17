@@ -66,7 +66,7 @@ testAddUser('+'+number);
 //testGetAllUsers();
 
 function testAddUser(phonenumber){
-	db.addUser(phonenumber).then(val=>{console.log(JSON.stringify(val))});
+	db.addUser(phonenumber).then(val=>{console.log(JSON.stringify(val.rows[0]))});
 }
 
 function testGetAvailableUsers(){
