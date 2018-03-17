@@ -133,9 +133,24 @@ module.exports = {
 				}
 			});
 		});
+	},
+	testFromSite:function(){
+		var number=Math.floor(Math.random()*90000) + 10000;
+		const text = 'INSERT INTO users(phonenumber,status) VALUES($1, $2) RETURNING *'
+		const values = [number, 'available'];
+
+		// promise
+		pool.query(text, values)
+		  .then(res => {
+			console.log(res.rows[0])
+		  })
+		  .catch(e => console.error(e.stack))
 	}
 	
 }
+
+
+
 
 function update(sql){
 	return new Promise(function(resolve,reject){
