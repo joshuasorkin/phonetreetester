@@ -131,20 +131,26 @@ function addPreMainMenuGather(voiceResponse,sid,exitStatus,userId){
 }
 
 exports.switchHostStatus=function switchHostStatus(exitStatus,sid,userId){
-	var exitStatusToSet;
-	switch(exitStatus){
-		case 'available':
-			exitStatusToSet="in use";
-			break;
-		case 'in use':
-			exitStatusToSet="available";
-			break;
-	}
-	console.log("switchHostStatus: before calling updateUserExitStatus");
-	db.updateUserExitStatus(exitStatusToSet,userId).then(value=>{
+	return new Promise(function(resolve,reject){
+		var exitStatusToSet;
+		switch(exitStatus){
+			case 'available':
+				exitStatusToSet="in use";
+				break;
+			case 'in use':
+				exitStatusToSet="available";
+				break;
+		}
 		console.log("switchHostStatus: before calling updateUserExitStatus");
-		preMainMenuGather=exports.buildPreMainMenuGather(sid,exitStatusToSet,userId);
-		return preMainMenuGather;
+		db.updateUserExitStatus(exitStatusToSet,userId).then(value=>{
+			console.log("switchHostStatus: .then after calling updateUserExitStatus");
+			preMainMenuGather=exports.buildPreMainMenuGather(sid,exitStatusToSet,userId);
+			console.log("switchHostStatus: about to resolve()");
+			resolve(preMainMenuGather);
+		}).catch(error=>{
+			console.log("switchHostStatus: error "+error.toString());
+			reject(error);
+		});
 	});
 
 }
