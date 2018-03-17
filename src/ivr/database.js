@@ -27,7 +27,7 @@ module.exports = {
 			console.log(queryStr);
 			pool.query(queryStr,(err,res)=>{
 				if (res.rows.length==0){
-					console.log("null");
+					console.log("null, need to add user");
 					reject(res);
 				}
 				else{
@@ -38,14 +38,20 @@ module.exports = {
 			});
 		});
 	},
-	addUser: function(phonenumber,callback){
-		queryStr='insert into users (phonenumber,status) values (\''+phonenumber+'\',\'in use\')';
-		console.log(queryStr);
-		pool.query(queryStr,(err,res)=>{
-			if (err){
-				console.log("error from addUser");
-			}
-			callback(res);
+	addUser: function(phonenumber){
+		return new Promise(function(resolve,reject){
+			queryStr='insert into users (phonenumber,status) values (\''+phonenumber+'\',\'in use\')';
+			console.log(queryStr);
+			pool.query(queryStr,(err,res)=>{
+				if (err){
+					console.log("addUser: error "+err.toString());
+					reject(err);
+				}
+				else{
+					console.log("addUser: success");
+					resolve(res);
+				}
+			});
 		});
 		
 	},

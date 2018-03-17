@@ -46,6 +46,8 @@ router.post('/welcome_promise',(req,res) => {
 	},error=>{
 		console.log("/welcome_promise: error first then");
 		console.log("/welcome_promise: "+error.toString());
+		console.log("/welcome_promise: about to add user");
+		return db.addUser(fromNum);
 	}).then(value=>{
 		console.log("/welcome_promise: updating user status to in use");
 		return db.updateUserStatus("in use",id);
