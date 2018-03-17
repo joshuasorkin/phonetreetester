@@ -49,6 +49,7 @@ router.post('/welcome_promise',(req,res) => {
 		console.log("/welcome_promise: about to add user");
 		return db.addUser(fromNum);
 	}).then(value=>{
+		console.log("/welcome_promise: value from getUser/addUser: "+value.rows[0]);
 		console.log("/welcome_promise: updating user status to in use");
 		return db.updateUserStatus("in use",id);
 	}).then(value=>{
