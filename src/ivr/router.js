@@ -89,6 +89,7 @@ router.get('/menu', (req, res) => {
 		break;
 	case '2':
 		responseTwiml=switchHostStatus(exitStatus,sid,userId);
+		res.send(responseTwiml);
 		break;
 	//default:
 	//	responseTwiml=redirectWelcome();
