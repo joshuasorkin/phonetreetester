@@ -89,6 +89,8 @@ router.get('/menu', (req, res) => {
 		break;
 	case '2':
 		switchHostStatus(exitStatus,sid,userId).then(value=>{
+			console.log('/ivr/menu: .then value for switchHostStatus: );
+			console.log(value);
 			res.send(value);
 		});
 		break;
