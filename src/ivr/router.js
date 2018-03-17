@@ -88,8 +88,9 @@ router.get('/menu', (req, res) => {
 		//responseTwiml=guestCallsHost(sid);
 		break;
 	case '2':
-		responseTwiml=switchHostStatus(exitStatus,sid,userId);
-		res.send(responseTwiml);
+		switchHostStatus(exitStatus,sid,userId).then(value=>{
+			res.send(value);
+		});
 		break;
 	//default:
 	//	responseTwiml=redirectWelcome();
