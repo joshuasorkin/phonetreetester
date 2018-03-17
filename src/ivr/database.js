@@ -49,7 +49,7 @@ module.exports = {
 				}
 				else{
 					console.log("addUser: success");
-					console.log("addUser: res "+JSON.stringify(res.rows[0]));
+					console.log("addUser: res "+res.rows[0]);
 					resolve(res);
 				}
 			});
