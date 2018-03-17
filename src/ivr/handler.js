@@ -144,7 +144,7 @@ exports.switchHostStatus=function switchHostStatus(exitStatus,sid,userId){
 	db.updateUserExitStatus(exitStatusToSet,userId).then(value=>{
 		console.log("switchHostStatus: before calling updateUserExitStatus");
 		preMainMenuGather=exports.buildPreMainMenuGather(sid,exitStatusToSet,userId);
-		res.send(preMainMenuGather);
+		return preMainMenuGather;
 	});
 
 }
