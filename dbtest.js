@@ -60,14 +60,12 @@ db.getUser('+19991112222', function(err, user) {
 //testGetUser('+12348290823');
 //db.destruct();
 
-//testAddUser('+58390688539');
-testGetAvailableUsers();
+testAddUser('+58390688539');
+//testGetAvailableUsers();
 //testGetAllUsers();
 
 function testAddUser(phonenumber){
-	db.addUser(phonenumber,function(result){
-		console.log(result.toString());
-	});
+	db.addUser(phonenumber).then(val=>{console.log(val)});
 }
 
 function testGetAvailableUsers(){
