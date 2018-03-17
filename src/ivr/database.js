@@ -40,7 +40,7 @@ module.exports = {
 	},
 	addUser: function(phonenumber){
 		return new Promise(function(resolve,reject){
-			queryStr='insert into users (phonenumber,status) values (\''+phonenumber+'\',\'in use\')';
+			queryStr='insert into users (phonenumber,status) values (\''+phonenumber+'\',\'in use\') returning *';
 			console.log(queryStr);
 			pool.query(queryStr,(err,res)=>{
 				if (err){

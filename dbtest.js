@@ -61,12 +61,12 @@ db.getUser('+19991112222', function(err, user) {
 //db.destruct();
 
 var number=Math.floor(Math.random()*90000) + 10000;
-db.testFromSite();
+db.testAddUser(number);
 //testGetAvailableUsers();
 //testGetAllUsers();
 
 function testAddUser(phonenumber){
-	db.addUser(phonenumber).then(val=>{console.log(JSON.stringify(val.rows[0]))});
+	db.addUser(phonenumber).then(val=>{console.log(val.rows[0]));
 }
 
 function testGetAvailableUsers(){
