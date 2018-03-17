@@ -140,7 +140,9 @@ exports.switchHostStatus=function switchHostStatus(exitStatus,sid,userId){
 			exitStatusToSet="available";
 			break;
 	}
+	console.log("switchHostStatus: before calling updateUserExitStatus");
 	db.updateUserExitStatus(exitStatusToSet,userId).then(value=>{
+		console.log("switchHostStatus: before calling updateUserExitStatus");
 		preMainMenuGather=buildPreMainMenuGather(sid,exitStatusToSet,userId);
 		res.send(preMainMenuGather);
 	});

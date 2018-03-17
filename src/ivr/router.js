@@ -9,6 +9,7 @@ const {
 	guestCallsHost,
 	statusChange,
 	statusChangeConference,
+	switchHostStatus,
 	planets} = require('./handler');
 var bodyParser = require('body-parser');
 var db=require('./database');
@@ -67,7 +68,7 @@ router.get('/menu', (req, res) => {
   const exitStatus=req.query.exitStatus;
   console.log("/ivr/menu: digit "+digit);
   console.log("/ivr/menu: sid "+sid);
-  
+  var responseTwiml;
   switch(digit){
 	case '1':
 		console.log("menu: chose 1");
