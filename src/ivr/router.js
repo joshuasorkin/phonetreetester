@@ -49,7 +49,7 @@ router.post('/welcome_promise',(req,res) => {
 		console.log("/welcome_promise: updating user status to in use");
 		return db.updateUserStatus("in use",id);
 	}).then(value=>{
-		preMainMenuGather=buildPreMainMenuGather(sid,exitStatus);
+		preMainMenuGather=buildPreMainMenuGather(sid,exitStatus,id);
 		console.log("/welcome_promise: preMainMenuGather "+preMainMenuGather);
 		res.send(preMainMenuGather);		
 	}).catch(x=>{
@@ -63,6 +63,8 @@ router.post('/welcome_promise',(req,res) => {
 router.get('/menu', (req, res) => {
   const digit = req.query.Digits;
   const sid=req.query.sid;
+  const userId=req.query.userId;
+  const exitStatus=req.query.exitStatus;
   console.log("/ivr/menu: digit "+digit);
   console.log("/ivr/menu: sid "+sid);
   
@@ -85,7 +87,7 @@ router.get('/menu', (req, res) => {
 		//responseTwiml=guestCallsHost(sid);
 		break;
 	case '2':
-		responseTwiml=setHostInterval();
+		responseTwiml=switchHostStatus(exitStatus,sid,userId);
 		break;
 	//default:
 	//	responseTwiml=redirectWelcome();

@@ -87,7 +87,7 @@ exports.welcome = function welcome(fromNum,sid) {
   
 };
 
-exports.buildPreMainMenuGather=function buildPreMainMenuGather(sid,exitStatus){
+exports.buildPreMainMenuGather=function buildPreMainMenuGather(sid,exitStatus,userId){
 	var voiceResponse = new VoiceResponse();
 	
 	
@@ -105,7 +105,7 @@ exports.buildPreMainMenuGather=function buildPreMainMenuGather(sid,exitStatus){
 	//gather.play({loop: 3}, bodyUrl);
 	*/
 	
-	addPreMainMenuGather(voiceResponse,sid,exitStatus);
+	addPreMainMenuGather(voiceResponse,sid,exitStatus,userId);
 
 	responseStr=voiceResponse.toString();
 	return responseStr;
@@ -113,8 +113,10 @@ exports.buildPreMainMenuGather=function buildPreMainMenuGather(sid,exitStatus){
 }
 
 
-function addPreMainMenuGather(voiceResponse,sid,exitStatus){
-	params={'sid':sid}
+function addPreMainMenuGather(voiceResponse,sid,exitStatus,userId){
+	params={'sid':sid,
+			'exitStatus':exitStatus,
+			'userId':userId};
 	url=buildGetUrl('/ivr/menu',params);
 
 	const gather = voiceResponse.gather({
@@ -128,10 +130,26 @@ function addPreMainMenuGather(voiceResponse,sid,exitStatus){
 	
 }
 
+function switchHostStatus(exitStatus,sid,userId){
+	var exitStatusToSet;
+	switch(status){
+		case 'available'
+			exitStatusToSet="in use";
+			break;
+		case 'in use':
+			exitStatusToSet="available";
+			break;
+	}
+	db.updateUserExitStatus(exitStatusToSet,userId).then(value=>{
+		preMainMenuGather=buildPreMainMenuGather(sid,exitStatusToSet,userId);
+		res.send(preMainMenuGather);
+	});
+
+}
 
 
 
-exports.menu = function menu(digit,sid) {
+exports.menu = function menu(digit,sid,userId,exitStatus) {
 	console.log("menu: starting");
 	console.log("menu: digit "+digit);
   var responseTwiml;
@@ -141,7 +159,7 @@ exports.menu = function menu(digit,sid) {
 		responseTwiml=guestCallsHost(sid);
 		break;
 	case '2':
-		responseTwiml=setHostInterval();
+		responseTwiml=switchHostStatus(exitStatus,sid,userId);
 		break;
 	//default:
 	//	responseTwiml=redirectWelcome();
@@ -197,13 +215,14 @@ exports.statusChangeConference=function statusChangeConference(status){
 
 
 
-exports.guestCallsHost=function guestCallsHost(sid,hostPhoneNumber){
+exports.guestCallsHost=function guestCallsHost(sid,hostPhoneNumber,host){
 	baseUrl=process.env.PHONETREETESTER_URL+'ivr/callHost';
 	console.log("guestCallsHost: baseUrl "+baseUrl);
 	//todo: find more secure source of unique conference ID (maybe hash of sid)
-		
+	hostID=host.id;
 	conferenceName=sid;
-	params={'conferenceName':conferenceName};
+	params={'conferenceName':conferenceName,
+			'hostID':hostID};
 	url=buildGetUrl(baseUrl,params);
 	console.log("guestCallsHost: url "+url);
 	
