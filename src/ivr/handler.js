@@ -132,7 +132,7 @@ function addPreMainMenuGather(voiceResponse,sid,exitStatus,userId){
 
 function switchHostStatus(exitStatus,sid,userId){
 	var exitStatusToSet;
-	switch(status){
+	switch(exitStatus){
 		case 'available'
 			exitStatusToSet="in use";
 			break;
