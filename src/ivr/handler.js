@@ -130,7 +130,7 @@ function addPreMainMenuGather(voiceResponse,sid,exitStatus,userId){
 	
 }
 
-function switchHostStatus(exitStatus,sid,userId){
+exports.switchHostStatus=function switchHostStatus(exitStatus,sid,userId){
 	var exitStatusToSet;
 	switch(exitStatus){
 		case 'available':
