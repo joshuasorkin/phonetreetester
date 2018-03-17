@@ -223,14 +223,13 @@ exports.statusChangeConference=function statusChangeConference(status){
 
 
 
-exports.guestCallsHost=function guestCallsHost(sid,hostPhoneNumber,host){
+exports.guestCallsHost=function guestCallsHost(sid,hostPhoneNumber,hostId){
 	baseUrl=process.env.PHONETREETESTER_URL+'ivr/callHost';
 	console.log("guestCallsHost: baseUrl "+baseUrl);
 	//todo: find more secure source of unique conference ID (maybe hash of sid)
-	hostID=host.id;
 	conferenceName=sid;
 	params={'conferenceName':conferenceName,
-			'hostID':hostID};
+			'hostId':hostId};
 	url=buildGetUrl(baseUrl,params);
 	console.log("guestCallsHost: url "+url);
 	
