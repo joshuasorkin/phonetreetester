@@ -61,7 +61,7 @@ db.getUser('+19991112222', function(err, user) {
 //db.destruct();
 
 var number=Math.floor(Math.random()*90000) + 10000;
-db.testAddUser(number);
+testAddUser(number);
 //testGetAvailableUsers();
 //testGetAllUsers();
 
