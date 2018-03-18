@@ -26,12 +26,15 @@ module.exports = {
 			queryStr='SELECT * FROM users where phonenumber=\''+phonenumber+'\';';
 			console.log(queryStr);
 			pool.query(queryStr,(err,res)=>{
-				if (res.rows.length==0){
-					console.log("null, need to add user");
-					reject(res);
+				if (err){
+					console.log("getUser_promise error: "+err.toString());
+					reject(err);				}
+				elseif (res.rows.length==0){
+					console.log("getUser_promise: null, need to add user");
+					resolve(res);
 				}
 				else{
-					console.log("non-null");
+					console.log("getUser_promise: non-null");
 					console.log("getUser_promise: result " + JSON.stringify(res.rows[0]));
 					resolve(res.rows[0]);
 				}
@@ -40,7 +43,7 @@ module.exports = {
 	},
 	addUser: function(phonenumber){
 		return new Promise(function(resolve,reject){
-			queryStr='insert into users (phonenumber,status) values (\''+phonenumber+'\',\'in use\') returning *';
+			queryStr='insert into users (phonenumber,status,exitStatus) values (\''+phonenumber+'\',\'in use\',\'in use\') returning *';
 			console.log(queryStr);
 			pool.query(queryStr,(err,res)=>{
 				if (err){
@@ -87,7 +90,7 @@ module.exports = {
 		});
 	},
 	updateUserStatus: function(statusValue,id,callback){
-		queryStr='update users set status=\''+statusValue+'\' where id='+id;
+		queryStr='update users set status=\''+statusValue+'\' where id='+id+' returning *';
 		console.log(queryStr);
 		return new Promise(function(resolve,reject){
 			pool.query(queryStr,(err,res)=>{
@@ -103,7 +106,7 @@ module.exports = {
 		});
 	},
 	updateUserExitStatus: function(exitStatusValue,id){
-		queryStr='update users set exitStatus=\''+exitStatusValue+'\' where id='+id;
+		queryStr='update users set exitStatus=\''+exitStatusValue+'\' where id='+id+' returning *';
 		console.log(queryStr);
 		return new Promise(function(resolve,reject){
 			pool.query(queryStr,(err,res)=>{

@@ -36,18 +36,21 @@ router.post('/welcome_promise',(req,res) => {
 	var exitStatus;
 	db.getUser_promise(fromNum).then(value=>{
 		console.log("/welcome_promise: first then");
-		user=value;
-		id=value.id;
-		console.log("/welcome_promise: id "+id);
-		exitStatus=value.status;
-		console.log("/welcome_promise: exitStatus "+exitStatus);
-
-		return db.updateUserExitStatus(exitStatus,id);
+		if(value!=null){
+			user=value;
+			id=value.id;
+			console.log("/welcome_promise: id "+id);
+			exitStatus=value.status;
+			console.log("/welcome_promise: exitStatus "+exitStatus);
+			return db.updateUserExitStatus(exitStatus,id);
+		}
+		else{
+			console.log("/welcome_promise: about to add user");
+			return db.addUser(fromNum);
+		}
 	},error=>{
 		console.log("/welcome_promise: error first then");
-		console.log("/welcome_promise: "+error.toString());
-		console.log("/welcome_promise: about to add user");
-		return db.addUser(fromNum);
+		console.log("/welcome_promise: "+error.toString());	
 	}).then(value=>{
 		if (id==null){
 			id=value.rows[0].id;
