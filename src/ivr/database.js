@@ -31,7 +31,7 @@ module.exports = {
 					reject(err);				}
 				else if (res.rows.length==0){
 					console.log("getUser_promise: null, need to add user");
-					resolve(res);
+					resolve(null);
 				}
 				else{
 					console.log("getUser_promise: non-null");
