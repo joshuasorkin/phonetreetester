@@ -29,7 +29,7 @@ module.exports = {
 				if (err){
 					console.log("getUser_promise error: "+err.toString());
 					reject(err);				}
-				elseif (res.rows.length==0){
+				else if (res.rows.length==0){
 					console.log("getUser_promise: null, need to add user");
 					resolve(res);
 				}
