@@ -125,7 +125,7 @@ function addPreMainMenuGather(voiceResponse,sid,exitStatus,userId){
 		method: 'GET',
 		timeout: 10
 	});
-	sayAlice(gather,languageConfig,"Welcome to Vent.  Your current host status is.  \""+exitStatus+"\".  Press 1 to call a host.  Press 2 to change host status.");
+	sayAlice(gather,languageConfig,"Welcome to Vent.  Your current host status is.  \""+exitStatus+"\".  Press 1 to call a host.  Press 2 to change host status.  Press 3, or hang up, to exit.");
 	//gather.play({loop: 3}, bodyUrl);
 	
 }
@@ -155,7 +155,12 @@ exports.switchHostStatus=function switchHostStatus(exitStatus,sid,userId){
 
 }
 
-
+function exitTwiml(){
+	response=new VoiceResponse();
+	response.say("Thank you for using Vent.  It was a pleasure interacting with you.  Goodbye!");
+	response.hangup();
+	return response.toString();
+}
 
 exports.menu = function menu(digit,sid,userId,exitStatus) {
 	console.log("menu: starting");
@@ -169,6 +174,8 @@ exports.menu = function menu(digit,sid,userId,exitStatus) {
 	case '2':
 		responseTwiml=switchHostStatus(exitStatus,sid,userId);
 		break;
+	case '3':
+		responseTwiml=exitTwiml();
 	//default:
 	//	responseTwiml=redirectWelcome();
 	//	break;
