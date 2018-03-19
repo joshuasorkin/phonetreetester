@@ -10,6 +10,7 @@ const {
 	statusChange,
 	statusChangeConference,
 	switchHostStatus,
+	exitTwiml,
 	planets} = require('./handler');
 var bodyParser = require('body-parser');
 var db=require('./database');
@@ -108,6 +109,10 @@ router.get('/menu', (req, res) => {
 			res.send(value);
 		});
 		break;
+	case '3':
+		res.send(exitTwiml());
+		break;
+		
 	//default:
 	//	responseTwiml=redirectWelcome();
 	//	break;

@@ -155,13 +155,16 @@ exports.switchHostStatus=function switchHostStatus(exitStatus,sid,userId){
 
 }
 
-function exitTwiml(){
+exports.exitTwiml=function exitTwiml(){
 	response=new VoiceResponse();
 	response.say("Thank you for using Vent.  It was a pleasure interacting with you.  Goodbye!");
 	response.hangup();
-	return response.toString();
+	str=response.toString();
+	console.log("exitTwiml: str "+str);
+	return str;
 }
 
+/*
 exports.menu = function menu(digit,sid,userId,exitStatus) {
 	console.log("menu: starting");
 	console.log("menu: digit "+digit);
@@ -182,6 +185,7 @@ exports.menu = function menu(digit,sid,userId,exitStatus) {
   }
   return responseTwiml;
 };
+*/
 
 exports.statusChange=function statusChange(status){
 	console.log("statusChange: status "+status);
