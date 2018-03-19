@@ -125,7 +125,7 @@ function addPreMainMenuGather(voiceResponse,sid,exitStatus,userId){
 		method: 'GET',
 		timeout: 10
 	});
-	sayAlice(gather,languageConfig,"Welcome to Vent.  Your current host status is...\""+exitStatus+"\".  Press 1 to call a host.  Press 2 to change host status.");
+	sayAlice(gather,languageConfig,"Welcome to Vent.  Your current host status is.  \""+exitStatus+"\".  Press 1 to call a host.  Press 2 to change host status.");
 	//gather.play({loop: 3}, bodyUrl);
 	
 }
