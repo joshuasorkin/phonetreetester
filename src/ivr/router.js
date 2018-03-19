@@ -53,7 +53,7 @@ router.post('/welcome_promise',(req,res) => {
 		console.log("/welcome_promise: "+error.toString());	
 	}).then(value=>{
 		console.log("/welcome_promise: second then");
-		console.log("/welcome_promise: value "+value.rows[0]);
+		console.log("/welcome_promise: value ",value.rows[0]);
 		if (id==null){
 			id=value.rows[0].id;
 		}
