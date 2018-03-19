@@ -55,7 +55,7 @@ router.post('/welcome_promise',(req,res) => {
 		console.log("/welcome_promise: second then");
 		console.log("/welcome_promise: value ",value.rows[0]);
 		if (id==null){
-			id=value.rows[0].id;
+			id=value.rows[0]['id'];
 		}
 		console.log("/welcome_promise: id from getUser/addUser: "+id);
 		console.log("/welcome_promise: updating user status to in use");
