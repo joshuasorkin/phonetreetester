@@ -34,6 +34,7 @@ router.post('/welcome_promise',(req,res) => {
 	console.log("/welcome_promise: sid "+sid);
 	var user;
 	var exitStatus;
+	var id=null;
 	db.getUser_promise(fromNum).then(value=>{
 		console.log("/welcome_promise: first then");
 		if(value!=null){
