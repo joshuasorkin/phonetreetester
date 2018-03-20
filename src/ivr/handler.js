@@ -262,10 +262,20 @@ exports.guestCallsHost=function guestCallsHost(sid,hostPhoneNumber,hostId){
 		
 	}).then(x=>console.log("guestCallsHost: logging return value of client calls create "+x));
 	
-	
+	//this whole area could get refactored out and replaced with addConferenceToResponse()
+	baseUrl=process.env.PHONETREETESTER_URL+'ivr/conferenceControl';
+	console.log("addConferenceToResponse: baseUrl "+baseUrl);
+	//todo: find more secure source of unique conference ID (maybe hash of sid)
+	params={'conferenceName':conferenceName};
+	url=buildGetUrl(baseUrl,params);
+		
 	const response = new VoiceResponse();
 	sayAlice(response,languageConfig,"Thank you for calling Vent. Please wait while we find a host.");
-	const dial = response.dial();
+	const dial = response.dial({
+		action: url,
+		method: 'GET',
+		hangupOnStar: true
+	});
 	dial.conference(sid,{
 		statusCallbackEvent:'start end join leave',
 		statusCallback:process.env.PHONETREETESTER_URL+'ivr/statusChangeConference',
@@ -288,6 +298,34 @@ exports.noHostAvailable=function noHostAvailable(sid){
 function setHostInterval(){
 	const response=new VoiceResponse();
 	response.say("Setting host interval.");
+	return response.toString();
+}
+
+function addConferenceToResponse(response,conferenceName){
+	baseUrl=process.env.PHONETREETESTER_URL+'ivr/conferenceControl';
+	console.log("addConferenceToResponse: baseUrl "+baseUrl);
+	//todo: find more secure source of unique conference ID (maybe hash of sid)
+	params={'conferenceName':conferenceName};
+	url=buildGetUrl(baseUrl,params);
+	
+	const dial = response.dial({
+		action: url,
+		method: 'GET',
+		hangupOnStar: true
+	});
+	dial.conference(conferenceName,{
+		statusCallbackEvent:'start end join leave',
+		statusCallback:process.env.PHONETREETESTER_URL+'ivr/statusChangeConference',
+		statusCallbackMethod:'GET',
+		waitUrl:'http://twimlets.com/holdmusic?Bucket=com.twilio.music.electronica'
+	});
+}
+
+
+function conferenceControl(conferenceName){
+	const response=new VoiceResponse();
+	response.say("This is conference control.");
+	addConferenceToResponse(response,conferenceName);
 	return response.toString();
 }
 

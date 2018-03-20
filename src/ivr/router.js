@@ -11,6 +11,7 @@ const {
 	statusChangeConference,
 	switchHostStatus,
 	exitTwiml,
+	conferenceControl,
 	planets} = require('./handler');
 var bodyParser = require('body-parser');
 var db=require('./database');
@@ -164,5 +165,9 @@ router.get('/statusChangeConference',(req,res)=>{
 	}
 });
 
+router.get('/conferenceControl',(req,res)=>{
+	conferenceName=req.query.conferenceName;
+	res.send(conferenceControl(conferenceName));
+});
 
 module.exports = router;
