@@ -322,7 +322,7 @@ function addConferenceToResponse(response,conferenceName){
 }
 
 
-function conferenceControl(conferenceName){
+exports.conferenceControl=function conferenceControl(conferenceName){
 	const response=new VoiceResponse();
 	response.say("This is conference control.");
 	addConferenceToResponse(response,conferenceName);
