@@ -271,6 +271,10 @@ exports.guestCallsHost=function guestCallsHost(sid,hostPhoneNumber,hostId){
 		
 	const response = new VoiceResponse();
 	sayAlice(response,languageConfig,"Thank you for calling Vent. Please wait while we find a host.");
+	
+	addConferenceToResponse(response,conferenceName);
+	
+	/*
 	const dial = response.dial({
 		action: url,
 		method: 'GET',
@@ -282,6 +286,8 @@ exports.guestCallsHost=function guestCallsHost(sid,hostPhoneNumber,hostId){
 		statusCallbackMethod:'GET',
 		waitUrl:'http://twimlets.com/holdmusic?Bucket=com.twilio.music.electronica'
 	});
+	*/
+	
 	responseStr=response.toString();
 	console.log("guestCallsHost: "+responseStr);
 	return responseStr;
