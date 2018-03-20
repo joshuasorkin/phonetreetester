@@ -261,33 +261,10 @@ exports.guestCallsHost=function guestCallsHost(sid,hostPhoneNumber,hostId){
 		statusCallbackEvent:['initiated', 'ringing', 'answered', 'completed']
 		
 	}).then(x=>console.log("guestCallsHost: logging return value of client calls create "+x));
-	
-	//this whole area could get refactored out and replaced with addConferenceToResponse()
-	baseUrl=process.env.PHONETREETESTER_URL+'ivr/conferenceControl';
-	console.log("addConferenceToResponse: baseUrl "+baseUrl);
-	//todo: find more secure source of unique conference ID (maybe hash of sid)
-	params={'conferenceName':conferenceName};
-	url=buildGetUrl(baseUrl,params);
-		
+			
 	const response = new VoiceResponse();
 	sayAlice(response,languageConfig,"Thank you for calling Vent. Please wait while we find a host.");
-	
 	addConferenceToResponse(response,conferenceName);
-	
-	/*
-	const dial = response.dial({
-		action: url,
-		method: 'GET',
-		hangupOnStar: true
-	});
-	dial.conference(sid,{
-		statusCallbackEvent:'start end join leave',
-		statusCallback:process.env.PHONETREETESTER_URL+'ivr/statusChangeConference',
-		statusCallbackMethod:'GET',
-		waitUrl:'http://twimlets.com/holdmusic?Bucket=com.twilio.music.electronica'
-	});
-	*/
-	
 	responseStr=response.toString();
 	console.log("guestCallsHost: "+responseStr);
 	return responseStr;
