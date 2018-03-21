@@ -301,7 +301,8 @@ function addConferenceToResponse(response,conferenceName){
 		statusCallbackEvent:'start end join leave',
 		statusCallback:process.env.PHONETREETESTER_URL+'ivr/statusChangeConference',
 		statusCallbackMethod:'GET',
-		waitUrl:waitUrl
+		waitUrl:waitUrl,
+		waitMethod:'GET'
 	});
 }
 
@@ -339,7 +340,8 @@ exports.handleHostResponseToOfferedGuest=function handleHostResponseToOfferedGue
 			statusCallbackEvent:'start end join leave',
 			statusCallback:process.env.PHONETREETESTER_URL+'ivr/statusChangeConference',
 			statusCallbackMethod:'GET',
-			waitUrl:waitUrl
+			waitUrl:waitUrl,
+			waitMethod:'GET'
 		});
 	}
 	else{
