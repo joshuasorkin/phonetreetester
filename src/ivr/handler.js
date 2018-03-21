@@ -22,7 +22,8 @@ const pool=new Pool({
 	connectionString:process.env.HEROKU_POSTGRESQL_OLIVE_URL,
 	ssl:true
 });
-
+//const waitUrl='http://twimlets.com/holdmusic?Bucket=com.twilio.music.electronica';
+const waitUrl='http://hyperspacecraft.net/twilioTest/Midnight%20Star%20-%20Operator%20%28fade%20in%29.mp3';
 
 exports.welcome = function welcome(fromNum,sid) {
 
@@ -300,7 +301,7 @@ function addConferenceToResponse(response,conferenceName){
 		statusCallbackEvent:'start end join leave',
 		statusCallback:process.env.PHONETREETESTER_URL+'ivr/statusChangeConference',
 		statusCallbackMethod:'GET',
-		waitUrl:'http://twimlets.com/holdmusic?Bucket=com.twilio.music.electronica'
+		waitUrl:waitUrl
 	});
 }
 
@@ -338,7 +339,7 @@ exports.handleHostResponseToOfferedGuest=function handleHostResponseToOfferedGue
 			statusCallbackEvent:'start end join leave',
 			statusCallback:process.env.PHONETREETESTER_URL+'ivr/statusChangeConference',
 			statusCallbackMethod:'GET',
-			waitUrl:'http://twimlets.com/holdmusic?Bucket=com.twilio.music.electronica'
+			waitUrl:waitUrl
 		});
 	}
 	else{
