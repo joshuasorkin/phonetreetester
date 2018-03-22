@@ -79,15 +79,15 @@ router.post('/welcome_promise',(req,res) => {
 // GET: /ivr/menu
 router.get('/menu', (req, res) => {
   const digit = req.query.Digits;
-  const sid=req.query.sid;
-  const userId=req.query.userId;
-  const exitStatus=req.query.exitStatus;
-  var testArray=JSON.parse(req.query['testArray']);
+  //const sid=req.query.sid;
+  //const userId=req.query.userId;
+  //const exitStatus=req.query.exitStatus;
+  var params=JSON.parse(req.query['params']);
   
-  console.log(JSON.stringify(testArray));
+  console.log("/ivr/menu: params "+JSON.stringify(params));
   
   console.log("/ivr/menu: digit "+digit);
-  console.log("/ivr/menu: sid "+sid);
+  console.log("/ivr/menu: sid "+params.sid);
   var responseTwiml;
   switch(digit){
 	case '1':
@@ -98,7 +98,7 @@ router.get('/menu', (req, res) => {
 			console.log("/menu: hostPhoneNumber "+hostPhoneNumber);
 			console.log("/menu: hostID "+hostID);
 			//actual value of hostPhoneNumber will be used here in production
-			responseTwiml=guestCallsHost(sid,null,value.rows[0].id);
+			responseTwiml=guestCallsHost(params.sid,null,value.rows[0].id);
 			res.send(responseTwiml);
 		},error=>{
 			console.log("/menu: error "+error.toString());
@@ -108,7 +108,7 @@ router.get('/menu', (req, res) => {
 		//responseTwiml=guestCallsHost(sid);
 		break;
 	case '2':
-		switchHostStatus(exitStatus,sid,userId).then(value=>{
+		switchHostStatus(exitStatus,params.sid,params.userId).then(value=>{
 			console.log('/ivr/menu: .then value for switchHostStatus: ');
 			console.log(value);
 			res.send(value);
