@@ -120,14 +120,8 @@ function addPreMainMenuGather(voiceResponse,sid,exitStatus,userId){
 	params={'sid':sid,
 			'exitStatus':exitStatus,
 			'userId':userId};
-			
-	testArray={
-		'a':'alpha',
-		'b':'beta',
-		'g':'gamma'
-	};
-	url=buildGetUrl('/ivr/menu',params);
-	url+="&"+querystring.stringify({'testArray':JSON.stringify(testArray)});
+	//url=buildGetUrl('/ivr/menu',params);
+	url+="/ivr/menu?"+querystring.stringify({'params':JSON.stringify(params)});
 	console.log("addPreMainMenuGather: url "+url);
 
 	const gather = voiceResponse.gather({
