@@ -24,6 +24,8 @@ const pool=new Pool({
 });
 //const waitUrl='http://twimlets.com/holdmusic?Bucket=com.twilio.music.electronica';
 const waitUrl='http://hyperspacecraft.net/twilioTest/Midnight%20Star%20-%20Operator%20%28fade%20in%29.mp3';
+const querystring=require('querystring');
+
 
 exports.welcome = function welcome(fromNum,sid) {
 
@@ -91,7 +93,7 @@ exports.welcome = function welcome(fromNum,sid) {
 exports.buildPreMainMenuGather=function buildPreMainMenuGather(sid,exitStatus,userId){
 	var voiceResponse = new VoiceResponse();
 	
-	
+
 	/*
 	params={'sid':sid}
 	url=buildGetUrl('/ivr/menu',params);
@@ -118,6 +120,12 @@ function addPreMainMenuGather(voiceResponse,sid,exitStatus,userId){
 	params={'sid':sid,
 			'exitStatus':exitStatus,
 			'userId':userId};
+			
+	testArray={
+		'a':'alpha',
+		'b':'beta',
+		'g':'gamma'
+	};
 	url=buildGetUrl('/ivr/menu',params);
 
 	const gather = voiceResponse.gather({
@@ -309,8 +317,13 @@ function addConferenceToResponse(response,conferenceName){
 
 exports.conferenceControl=function conferenceControl(conferenceName){
 	const response=new VoiceResponse();
-	sayAlice(response,languageConfig,"This is conference control.");
-	addConferenceToResponse(response,conferenceName);
+	sayAlice(response,languageConfig,"This is conference control.  Press 1 to return to conference.  Press 2 to exit the conference and return to the main menu.");
+	baseUrl='/ivr/handleResponseToConferenceControl';
+	params={'conferenceName':conferenceName};
+	gather=response.gather({
+		action:url,
+		method:'GET'
+	});
 	return response.toString();
 }
 

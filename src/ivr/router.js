@@ -82,6 +82,10 @@ router.get('/menu', (req, res) => {
   const sid=req.query.sid;
   const userId=req.query.userId;
   const exitStatus=req.query.exitStatus;
+  var testArray=JSON.parse(req.query['testArray']);
+  
+  console.log(JSON.stringify(testArray));
+  
   console.log("/ivr/menu: digit "+digit);
   console.log("/ivr/menu: sid "+sid);
   var responseTwiml;
@@ -169,5 +173,24 @@ router.get('/conferenceControl',(req,res)=>{
 	conferenceName=req.query.conferenceName;
 	res.send(conferenceControl(conferenceName));
 });
+
+router.get('/handleResponseToConferenceControl',(req,res)=>{
+	digit=req.query.Digits;
+	conferenceName=req.query.conferenceName;
+	response=new VoiceResponse();
+	var responseStr;
+	switch (digit){
+		case '1':
+			addConferenceToResponse(response,conferenceName);
+			responseStr=response.toString();
+			break;
+		case '2':
+			responseStr=buildPreMainMenuGather(sid,exitStatus,id);
+			redirectParticipantsToMainMenu(conferenceName);
+			break;
+	}
+	res.send(responseStr);
+});
+
 
 module.exports = router;
