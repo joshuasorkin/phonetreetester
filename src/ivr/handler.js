@@ -290,7 +290,7 @@ function setHostInterval(){
 	return response.toString();
 }
 
-function addConferenceToResponse(response,conferenceName){
+exports.addConferenceToResponse=function addConferenceToResponse(response,conferenceName){
 	baseUrl=process.env.PHONETREETESTER_URL+'ivr/conferenceControl';
 	console.log("addConferenceToResponse: baseUrl "+baseUrl);
 	//todo: find more secure source of unique conference ID (maybe hash of sid)
