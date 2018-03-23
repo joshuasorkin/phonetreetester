@@ -301,6 +301,7 @@ exports.addConferenceToResponse=function addConferenceToResponse(response,confer
 	params={'conferenceName':conferenceName};
 	url=buildGetUrl(baseUrl,params);
 	
+	sayAlice(response,languageConfig,"Please wait while conference loads.");
 	const dial = response.dial({
 		action: url,
 		method: 'GET',
