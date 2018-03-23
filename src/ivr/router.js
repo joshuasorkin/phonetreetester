@@ -183,12 +183,11 @@ router.get('/handleResponseToConferenceControl',(req,res)=>{
 	var responseStr;
 	switch (digit){
 		case '1':
-			addConferenceToResponse(response,conferenceName);
-			responseStr=response.toString();
+			responseStr=addConferenceToResponse(response,conferenceName);
 			break;
 		case '2':
-			responseStr=buildPreMainMenuGather(sid,exitStatus,id);
 			//redirectParticipantsToMainMenu(conferenceName);
+			responseStr=buildPreMainMenuGather(sid,exitStatus,id);
 			break;
 	}
 	res.send(responseStr);
