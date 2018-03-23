@@ -319,6 +319,7 @@ exports.conferenceControl=function conferenceControl(conferenceName){
 	sayAlice(response,languageConfig,"This is conference control.  Press 1 to return to conference.  Press 2 to exit the conference and return to the main menu.");
 	baseUrl='/ivr/handleResponseToConferenceControl';
 	params={'conferenceName':conferenceName};
+	url=buildGetUrl(baseUrl,params);
 	gather=response.gather({
 		action:url,
 		method:'GET'
