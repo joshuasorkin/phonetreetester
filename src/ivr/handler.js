@@ -291,6 +291,10 @@ function setHostInterval(){
 }
 
 exports.addConferenceToResponse=function addConferenceToResponse(response,conferenceName){
+	//initialize response if this is its first set of verbs, e.g. when called in /ivr/handleResponseToConferenceControl
+	if (response==null){
+		response=new VoiceResponse();
+	}
 	baseUrl=process.env.PHONETREETESTER_URL+'ivr/conferenceControl';
 	console.log("addConferenceToResponse: baseUrl "+baseUrl);
 	//todo: find more secure source of unique conference ID (maybe hash of sid)
