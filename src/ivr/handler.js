@@ -270,7 +270,7 @@ exports.guestCallsHost=function guestCallsHost(sid,hostPhoneNumber,hostId){
 			
 	const response = new VoiceResponse();
 	sayAlice(response,languageConfig,"Thank you for calling Vent. Please wait while we find a host.");
-	addConferenceToResponse(response,conferenceName);
+	exports.addConferenceToResponse(response,conferenceName);
 	responseStr=response.toString();
 	console.log("guestCallsHost: "+responseStr);
 	return responseStr;

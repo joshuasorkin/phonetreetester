@@ -12,6 +12,7 @@ const {
 	switchHostStatus,
 	exitTwiml,
 	conferenceControl,
+	redirectParticipantsToMainMenu,
 	planets} = require('./handler');
 var bodyParser = require('body-parser');
 var db=require('./database');
