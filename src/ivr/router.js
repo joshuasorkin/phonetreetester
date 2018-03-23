@@ -178,7 +178,7 @@ router.get('/conferenceControl',(req,res)=>{
 router.get('/handleResponseToConferenceControl',(req,res)=>{
 	digit=req.query.Digits;
 	conferenceName=req.query.conferenceName;
-	response=new VoiceResponse();
+	var response=null;
 	var responseStr;
 	switch (digit){
 		case '1':
