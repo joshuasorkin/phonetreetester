@@ -190,6 +190,7 @@ router.get('/handleResponseToConferenceControl',(req,res)=>{
 			responseStr=buildPreMainMenuGather(sid,exitStatus,id);
 			break;
 	}
+	console.log("/handleResponseToConferenceControl: responseStr "+responseStr);
 	res.send(responseStr);
 });
 
