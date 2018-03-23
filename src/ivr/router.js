@@ -13,6 +13,7 @@ const {
 	exitTwiml,
 	conferenceControl,
 	redirectParticipantsToMainMenu,
+	addConferenceToResponse,
 	planets} = require('./handler');
 var bodyParser = require('body-parser');
 var db=require('./database');
@@ -187,7 +188,7 @@ router.get('/handleResponseToConferenceControl',(req,res)=>{
 			break;
 		case '2':
 			responseStr=buildPreMainMenuGather(sid,exitStatus,id);
-			redirectParticipantsToMainMenu(conferenceName);
+			//redirectParticipantsToMainMenu(conferenceName);
 			break;
 	}
 	res.send(responseStr);
