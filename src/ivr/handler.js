@@ -315,6 +315,7 @@ exports.addConferenceToResponse=function addConferenceToResponse(response,confer
 	});
 	
 	console.log("addConferenceToResponse: response twiml "+response.toString());
+	return response.toString();
 }
 
 
