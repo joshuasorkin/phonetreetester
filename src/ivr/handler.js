@@ -309,6 +309,8 @@ exports.addConferenceToResponse=function addConferenceToResponse(response,confer
 		waitUrl:waitUrl,
 		waitMethod:'GET'
 	});
+	
+	console.log("addConferenceToResponse: response twiml "+response.toString());
 }
 
 
