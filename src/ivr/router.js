@@ -1,24 +1,4 @@
-const Router = require('express').Router;
-const {
-	welcome, 
-	menu, 
-	callHost, 
-	handleHostResponseToOfferedGuest,
-	buildPreMainMenuGather,
-	noHostAvailable,
-	guestCallsHost,
-	statusChange,
-	statusChangeConference,
-	switchHostStatus,
-	exitTwiml,
-	conferenceControl,
-	redirectParticipantsToMainMenu,
-	addConferenceToResponse,
-	planets} = require('./handler');
-
-//ok, so it seems that all of the separate {functionNames}=require('./handler') can be replaced with one handler object
-//that performs all the exported functions.  good, but now need to start thinking about what level of abstraction
-//handler should be performing.  Is its purpose to render twiml for the router?  but then what to do with the client.calls.create()?	
+const Router = require('express').Router;	
 const handler=require('./handler');
 var bodyParser = require('body-parser');
 var db=require('./database');
