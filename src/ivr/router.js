@@ -77,6 +77,9 @@ router.get('/menu', (req, res) => {
   console.log("/ivr/menu: digit "+digit);
   console.log("/ivr/menu: sid "+params.sid);
   var responseTwiml;
+  
+  //maybe best to move this whole switch block into handler,
+  //since it's focused on rendering the correct responseTwiml
   switch(digit){
 	case '1':
 		console.log("menu: chose 1");
@@ -106,9 +109,10 @@ router.get('/menu', (req, res) => {
 		res.send(handler.exitTwiml());
 		break;
 		
-	//default:
-	//	responseTwiml=redirectWelcome();
-	//	break;
+	default:
+		responseTwiml=handler.preMainMenuGatherWithError(params);
+		res.send(responseTwiml);
+		break;
   }
   
   

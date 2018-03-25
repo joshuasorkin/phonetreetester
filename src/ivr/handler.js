@@ -6,7 +6,7 @@
 //so how should we handle the client.calls.create() request?  seems like this breaks the
 //router/handler abstraction
 
-//todo: refactor methods like buildGetUrl() and sayAliceAustralia() into SRO-observant files/classes
+//todo: refactor methods like buildGetUrl() and sayAlice() into SRO-observant files/classes
 
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const client=require('twilio')(
@@ -115,7 +115,16 @@ exports.buildPreMainMenuGather=function buildPreMainMenuGather(sid,exitStatus,us
 	
 }
 
+exports.preMainMenuGatherWithError=function preMainMenuGatherWithError(params){
+	var response=new VoiceResponse();
+	sayAlice(response,languageConfig,"Sorry,I didn't recognize that input.");
+	addPreMainMenuGather(response,params.sid,params.exitStatus,params.userId);
+	return response.toString();
+}
 
+//should change this so that we're passing in a 'user' parameter that is the array of parameters.
+//maybe this indicates that a standardized user params data structure would be helpful.
+//need to decide on schema: what are all the properties that would be useful for a 'user' array?
 function addPreMainMenuGather(voiceResponse,sid,exitStatus,userId){
 	params={'sid':sid,
 			'exitStatus':exitStatus,
