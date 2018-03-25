@@ -117,7 +117,7 @@ exports.buildPreMainMenuGather=function buildPreMainMenuGather(sid,exitStatus,us
 
 exports.preMainMenuGatherWithError=function preMainMenuGatherWithError(params){
 	var response=new VoiceResponse();
-	sayAlice(response,languageConfig,"Sorry,I didn't recognize that input.");
+	sayAlice(response,languageConfig,"Sorry, that's not a valid option.");
 	addPreMainMenuGather(response,params.sid,params.exitStatus,params.userId);
 	return response.toString();
 }
@@ -328,8 +328,12 @@ exports.addConferenceToResponse=function addConferenceToResponse(response,confer
 }
 
 
-exports.conferenceControl=function conferenceControl(conferenceName){
+exports.conferenceControl=function conferenceControl(conferenceName,isUserError){
 	const response=new VoiceResponse();
+	if (isUserError){
+		//todo: refactor the user input error into a function similar to addConferenceToResponse
+		sayAlice(response,languageConfig,"Sorry, that was an invalid input.");
+	}
 	sayAlice(response,languageConfig,"This is conference control.  Press 1 to return to conference.  Press 2 to exit the conference and return to the main menu.");
 	baseUrl='/ivr/handleResponseToConferenceControl';
 	params={'conferenceName':conferenceName};

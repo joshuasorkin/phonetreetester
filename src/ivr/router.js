@@ -163,7 +163,7 @@ router.get('/statusChangeConference',(req,res)=>{
 
 router.get('/conferenceControl',(req,res)=>{
 	conferenceName=req.query.conferenceName;
-	res.send(handler.conferenceControl(conferenceName));
+	res.send(handler.conferenceControl(conferenceName,false));
 });
 
 router.get('/handleResponseToConferenceControl',(req,res)=>{
@@ -179,6 +179,8 @@ router.get('/handleResponseToConferenceControl',(req,res)=>{
 			//redirectParticipantsToMainMenu(conferenceName);
 			responseStr=handler.buildPreMainMenuGather(sid,exitStatus,id);
 			break;
+		default:
+			res.send(handler.conferenceControl(conferenceName,true));
 	}
 	console.log("/handleResponseToConferenceControl: responseStr "+responseStr);
 	res.send(responseStr);
