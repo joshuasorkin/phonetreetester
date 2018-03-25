@@ -15,6 +15,8 @@ const {
 	redirectParticipantsToMainMenu,
 	addConferenceToResponse,
 	planets} = require('./handler');
+	
+const handler=require('./handler');
 var bodyParser = require('body-parser');
 var db=require('./database');
 
@@ -68,7 +70,8 @@ router.post('/welcome_promise',(req,res) => {
 		console.log("/welcome_promise: updating user status to in use");
 		return db.updateUserStatus("in use",id);
 	}).then(value=>{
-		preMainMenuGather=buildPreMainMenuGather(sid,exitStatus,id);
+		//testing handler master object
+		preMainMenuGather=handler.buildPreMainMenuGather(sid,exitStatus,id);
 		console.log("/welcome_promise: preMainMenuGather "+preMainMenuGather);
 		res.send(preMainMenuGather);		
 	}).catch(x=>{

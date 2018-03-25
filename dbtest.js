@@ -69,6 +69,8 @@ function testAddUser(phonenumber){
 	db.addUser(phonenumber).then(val=>{console.log(val.rows[0])});
 }
 
+
+
 function testGetAvailableUsers(){
 	db.getAvailableUsers(function(result){
 		console.log("running callback function that was passed to getAvailableUsers");

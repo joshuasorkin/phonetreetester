@@ -300,8 +300,7 @@ exports.addConferenceToResponse=function addConferenceToResponse(response,confer
 	//todo: find more secure source of unique conference ID (maybe hash of sid)
 	params={'conferenceName':conferenceName};
 	url=buildGetUrl(baseUrl,params);
-	
-	sayAlice(response,languageConfig,"Please wait while conference loads.");
+
 	const dial = response.dial({
 		action: url,
 		method: 'GET',
