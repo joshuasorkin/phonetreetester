@@ -15,7 +15,10 @@ const {
 	redirectParticipantsToMainMenu,
 	addConferenceToResponse,
 	planets} = require('./handler');
-	
+
+//ok, so it seems that all of the separate {functionNames}=require('./handler') can be replaced with one handler object
+//that performs all the exported functions.  good, but now need to start thinking about what level of abstraction
+//handler should be performing.  Is its purpose to render twiml for the router?  but then what to do with the client.calls.create()?	
 const handler=require('./handler');
 var bodyParser = require('body-parser');
 var db=require('./database');
@@ -30,7 +33,7 @@ router.post('/welcome', (req, res) => {
 	const fromNum=req.body.From;
 	const sid=req.body.CallSid;
 	console.log("/welcome: sid "+sid);
-	res.send(welcome(fromNum,sid));
+	res.send(handler.welcome(fromNum,sid));
 });
 
 // POST: /ivr/welcome_promise
@@ -103,24 +106,24 @@ router.get('/menu', (req, res) => {
 			console.log("/menu: hostPhoneNumber "+hostPhoneNumber);
 			console.log("/menu: hostID "+hostID);
 			//actual value of hostPhoneNumber will be used here in production
-			responseTwiml=guestCallsHost(params.sid,null,value.rows[0].id);
+			responseTwiml=handler.guestCallsHost(params.sid,null,value.rows[0].id);
 			res.send(responseTwiml);
 		},error=>{
 			console.log("/menu: error "+error.toString());
-			responseTwiml=noHostAvailable(params.sid);
+			responseTwiml=handler.noHostAvailable(params.sid);
 			res.send(responseTwiml);
 		})
 		//responseTwiml=guestCallsHost(sid);
 		break;
 	case '2':
-		switchHostStatus(params.exitStatus,params.sid,params.userId).then(value=>{
+		handler.switchHostStatus(params.exitStatus,params.sid,params.userId).then(value=>{
 			console.log('/ivr/menu: .then value for switchHostStatus: ');
 			console.log(value);
 			res.send(value);
 		});
 		break;
 	case '3':
-		res.send(exitTwiml());
+		res.send(handler.exitTwiml());
 		break;
 		
 	//default:
@@ -136,12 +139,12 @@ router.get('/menu', (req, res) => {
 // GET: /ivr/callHost
 router.get('/callHost', (req, res) => {
 	console.log("reached callHost endpoint");
-  const conferenceName=req.query.conferenceName;
-  const hostID=req.query.hostId;
-  console.log("/ivr/callHost: hostID "+hostID);
-  
-  console.log("/ivr/callHost: conferenceName "+conferenceName);
-  res.send(callHost(conferenceName));
+	const conferenceName=req.query.conferenceName;
+	const hostID=req.query.hostId;
+	console.log("/ivr/callHost: hostID "+hostID);
+
+	console.log("/ivr/callHost: conferenceName "+conferenceName);
+	res.send(handler.callHost(conferenceName));
 });
 
 // GET: /ivr/handleHostResponseToOfferedGuest
@@ -149,7 +152,7 @@ router.get('/handleHostResponseToOfferedGuest',(req,res)=>{
 	var digits=req.query.Digits;
 	var conferenceName=req.query.conferenceName;
 	
-	res.send(handleHostResponseToOfferedGuest(digits,conferenceName));
+	res.send(handler.handleHostResponseToOfferedGuest(digits,conferenceName));
 });
 
 router.get('/statusChange',(req,res)=> {
@@ -157,7 +160,7 @@ router.get('/statusChange',(req,res)=> {
 	console.log("/statusChange: status has changed to "+req.query.CallStatus);
 	console.log("/statusChange: call came from "+req.query.Caller);
 	db.updateUserStatusToExitStatusFromPhoneNumber(req.query.Caller).then(value=>{
-		sendValue=statusChange(status);
+		sendValue=handler.statusChange(status);
 		if (sendValue!=null){
 			res.send(sendValue);
 		}
@@ -168,7 +171,7 @@ router.get('/statusChange',(req,res)=> {
 router.get('/statusChangeConference',(req,res)=>{
 	status=req.query.StatusCallbackEvent;
 	console.log("/statusChangeConference: status has changed to "+status);
-	sendValue=statusChangeConference(status);
+	sendValue=handler.statusChangeConference(status);
 	if (sendValue!=null){
 		res.send(sendValue);
 	}
@@ -176,7 +179,7 @@ router.get('/statusChangeConference',(req,res)=>{
 
 router.get('/conferenceControl',(req,res)=>{
 	conferenceName=req.query.conferenceName;
-	res.send(conferenceControl(conferenceName));
+	res.send(handler.conferenceControl(conferenceName));
 });
 
 router.get('/handleResponseToConferenceControl',(req,res)=>{
@@ -186,11 +189,11 @@ router.get('/handleResponseToConferenceControl',(req,res)=>{
 	var responseStr;
 	switch (digit){
 		case '1':
-			responseStr=addConferenceToResponse(response,conferenceName);
+			responseStr=handler.addConferenceToResponse(response,conferenceName);
 			break;
 		case '2':
 			//redirectParticipantsToMainMenu(conferenceName);
-			responseStr=buildPreMainMenuGather(sid,exitStatus,id);
+			responseStr=handler.buildPreMainMenuGather(sid,exitStatus,id);
 			break;
 	}
 	console.log("/handleResponseToConferenceControl: responseStr "+responseStr);
