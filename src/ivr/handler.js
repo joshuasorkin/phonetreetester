@@ -395,6 +395,7 @@ exports.wait=function wait(){
 	response.play({
 		loop:0
 	},url);
+	console.log("wait: response twiml "+response.toString());
 	return response.toString();
 }
 
