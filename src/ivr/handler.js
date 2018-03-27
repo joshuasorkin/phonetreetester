@@ -393,6 +393,7 @@ exports.wait(){
 		loop:0
 		digits:'1234567890'
 	});
+	return response.toString();
 }
 
 exports.planets = function planets(digit) {
