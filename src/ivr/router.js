@@ -180,7 +180,7 @@ router.get('/handleResponseToConferenceControl',(req,res)=>{
 			responseStr=handler.buildPreMainMenuGather(sid,exitStatus,id);
 			break;
 		default:
-			responseStr=handler.conferenceControl(conferenceName,true));
+			responseStr=handler.conferenceControl(conferenceName,true);
 	}
 	console.log("/handleResponseToConferenceControl: responseStr "+responseStr);
 	res.send(responseStr);
