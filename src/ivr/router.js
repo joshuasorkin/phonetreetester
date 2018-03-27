@@ -1,3 +1,6 @@
+//todo: many of the exported functions from handler are used inside the digit-processing switch blocks,
+//so if those blocks get moved to handler.js then we no longer need to export those functions
+
 const Router = require('express').Router;	
 const handler=require('./handler');
 var bodyParser = require('body-parser');
@@ -80,6 +83,9 @@ router.get('/menu', (req, res) => {
   
   //maybe best to move this whole switch block into handler,
   //since it's focused on rendering the correct responseTwiml
+  //and then that way it can be called directly to build twiml that "returns to main menu",
+  //as opposed to needing to make a GET request whenever we want to get the twiml resulting from processing a digit choice
+  //although I guess we have to do that anyways if it results from a <gather>
   switch(digit){
 	case '1':
 		console.log("menu: chose 1");
@@ -171,6 +177,7 @@ router.get('/handleResponseToConferenceControl',(req,res)=>{
 	conferenceName=req.query.conferenceName;
 	var response=null;
 	var responseStr;
+	//todo: move this switch block into handler.js
 	switch (digit){
 		case '1':
 			responseStr=handler.addConferenceToResponse(response,conferenceName);
@@ -185,6 +192,10 @@ router.get('/handleResponseToConferenceControl',(req,res)=>{
 	console.log("/handleResponseToConferenceControl: responseStr "+responseStr);
 	res.send(responseStr);
 });
+
+router.get('/wait'){
+	res.send(handler.wait());
+}
 
 
 module.exports = router;

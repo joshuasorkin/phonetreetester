@@ -7,6 +7,7 @@
 //router/handler abstraction
 
 //todo: refactor methods like buildGetUrl() and sayAlice() into SRO-observant files/classes
+//todo: remove versions from source control containing hyperspacecraft.net references and phone numbers (use '[+]\d{10}' regex)
 
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const client=require('twilio')(
