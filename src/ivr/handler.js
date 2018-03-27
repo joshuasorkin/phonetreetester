@@ -23,7 +23,8 @@ const pool=new Pool({
 	ssl:true
 });
 //const waitUrl='http://twimlets.com/holdmusic?Bucket=com.twilio.music.electronica';
-const waitUrl='http://hyperspacecraft.net/twilioTest/Sheena%20Easton%20-%20Telephone%20HQHD.mp3';
+//const waitUrl='http://hyperspacecraft.net/twilioTest/Sheena%20Easton%20-%20Telephone%20HQHD.mp3';
+const waitUrl='https://freesound.org/data/previews/86/86684_1390811-lq.mp3';
 const querystring=require('querystring');
 
 
