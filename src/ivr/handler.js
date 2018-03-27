@@ -383,10 +383,17 @@ exports.handleHostResponseToOfferedGuest=function handleHostResponseToOfferedGue
 			},url);
 			break;
 	}
-	responseTwiml=response.toString();
+	responseTwiml=response.toString()
 	return responseTwiml;
 }
 
+exports.wait(){
+	const response=new VoiceResponse();
+	response.play({
+		loop:0
+		digits:'1234567890'
+	});
+}
 
 exports.planets = function planets(digit) {
   const optionActions = {
