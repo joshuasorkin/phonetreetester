@@ -333,7 +333,7 @@ exports.conferenceControl=function conferenceControl(conferenceName,isUserError)
 	const response=new VoiceResponse();
 	if (isUserError){
 		//todo: refactor the user input error into a function similar to addConferenceToResponse
-		sayAlice(response,languageConfig,"Sorry, that was an invalid input.");
+		sayAlice(response,languageConfig,"Sorry, that's not a valid option.");
 	}
 	sayAlice(response,languageConfig,"This is conference control.  Press 1 to return to conference.  Press 2 to exit the conference and return to the main menu.");
 	baseUrl='/ivr/handleResponseToConferenceControl';
@@ -368,13 +368,13 @@ exports.handleHostResponseToOfferedGuest=function handleHostResponseToOfferedGue
 	switch (digits){
 		case '1':
 			sayAlice(response,languageConfig,"Thank you, now connecting you to guest.");
-			addConferenceToResponse(response,conferenceName);
+			exports.addConferenceToResponse(response,conferenceName);
 			break;
 		case '2':
 			sayAlice(response,languageConfig,"I'm sorry that we contacted you at an inconvenient time.  Goodbye.");
 			response.hangup();
 		default:
-			sayAlice(response,languageConfig,"You didn't press 1.");
+			sayAlice(response,languageConfig,"Sorry, that's not a valid option.");
 			params={'conferenceName':conferenceName};
 			baseUrl='/ivr/callHost';
 			url=buildGetUrl(baseUrl,params);
