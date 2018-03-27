@@ -357,26 +357,30 @@ exports.callHost=function callHost(conferenceName){
 		action:url,
 		method:'GET'
 	});
-	sayAlice(gather,languageConfig,"You have a call from Vent.  Press 1 to accept, press any other key to refuse.");
+	sayAlice(gather,languageConfig,"You have a call from Vent.  Press 1 to accept.  Press 2 to refuse.");
 	sayAlice(response,languageConfig,"We didn't receive input.  Goodbye!");
 	return response.toString();
 };
 
 exports.handleHostResponseToOfferedGuest=function handleHostResponseToOfferedGuest(digits,conferenceName){
 	const response=new VoiceResponse();
-	if (digits=="1"){
-		sayAlice(response,languageConfig,"Thank you, now connecting you to guest.");
-		dial=response.dial();
-		dial.conference(conferenceName,{
-			statusCallbackEvent:'start end join leave',
-			statusCallback:process.env.PHONETREETESTER_URL+'ivr/statusChangeConference',
-			statusCallbackMethod:'GET',
-			waitUrl:waitUrl,
-			waitMethod:'GET'
-		});
-	}
-	else{
-		sayAlice(response,languageConfig,"You didn't press 1.");
+	switch (digits){
+		case '1':
+			sayAlice(response,languageConfig,"Thank you, now connecting you to guest.");
+			addConferenceToResponse(response,conferenceName);
+			break;
+		case '2':
+			sayAlice(response,languageConfig,"I'm sorry that we contacted you at an inconvenient time.  Goodbye.");
+			response.hangup();
+		default:
+			sayAlice(response,languageConfig,"You didn't press 1.");
+			params={'conferenceName':conferenceName};
+			baseUrl='/ivr/callHost';
+			url=buildGetUrl(baseUrl,params);
+			response.redirect({
+				method: 'GET'
+			},url);
+			break;
 	}
 	responseTwiml=response.toString();
 	return responseTwiml;
