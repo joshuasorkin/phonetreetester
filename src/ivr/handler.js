@@ -25,7 +25,7 @@ const pool=new Pool({
 });
 //const waitSoundUrl='http://twimlets.com/holdmusic?Bucket=com.twilio.music.electronica';
 //const waitSoundUrl='http://hyperspacecraft.net/twilioTest/Sheena%20Easton%20-%20Telephone%20HQHD.mp3';
-//const waitSoundUrl='https://freesound.org/data/previews/86/86684_1390811-lq.mp3';
+const waitSoundUrl='https://freesound.org/data/previews/86/86684_1390811-lq.mp3';
 const waitUrl=process.env.PHONETREETESTER_URL+'ivr/wait';
 const querystring=require('querystring');
 
