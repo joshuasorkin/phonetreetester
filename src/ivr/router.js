@@ -193,9 +193,9 @@ router.get('/handleResponseToConferenceControl',(req,res)=>{
 	res.send(responseStr);
 });
 
-router.get('/wait'){
+router.get('/wait',(req,res)=>{
 	res.send(handler.wait());
-}
+});
 
 
 module.exports = router;
