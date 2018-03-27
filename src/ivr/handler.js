@@ -391,10 +391,9 @@ exports.handleHostResponseToOfferedGuest=function handleHostResponseToOfferedGue
 
 exports.wait=function wait(){
 	const response=new VoiceResponse();
-	url=process.env.PHONETREETESTER_URL+'ivr/wait';
 	response.play({
 		loop:0
-	},url);
+	},waitSoundUrl);
 	console.log("wait: response twiml "+response.toString());
 	return response.toString();
 }
