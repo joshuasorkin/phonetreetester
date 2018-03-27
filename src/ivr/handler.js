@@ -23,9 +23,9 @@ const pool=new Pool({
 	connectionString:process.env.HEROKU_POSTGRESQL_OLIVE_URL,
 	ssl:true
 });
-//const waitUrl='http://twimlets.com/holdmusic?Bucket=com.twilio.music.electronica';
-//const waitUrl='http://hyperspacecraft.net/twilioTest/Sheena%20Easton%20-%20Telephone%20HQHD.mp3';
-//const waitUrl='https://freesound.org/data/previews/86/86684_1390811-lq.mp3';
+//const waitSoundUrl='http://twimlets.com/holdmusic?Bucket=com.twilio.music.electronica';
+//const waitSoundUrl='http://hyperspacecraft.net/twilioTest/Sheena%20Easton%20-%20Telephone%20HQHD.mp3';
+//const waitSoundUrl='https://freesound.org/data/previews/86/86684_1390811-lq.mp3';
 const waitUrl=process.env.PHONETREETESTER_URL+'ivr/wait';
 const querystring=require('querystring');
 
@@ -391,10 +391,10 @@ exports.handleHostResponseToOfferedGuest=function handleHostResponseToOfferedGue
 
 exports.wait=function wait(){
 	const response=new VoiceResponse();
+	url=process.env.PHONETREETESTER_URL+'ivr/wait';
 	response.play({
-		loop:0,
-		digits:'1234567890'
-	});
+		loop:0
+	},url);
 	return response.toString();
 }
 
