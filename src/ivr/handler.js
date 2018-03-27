@@ -390,7 +390,7 @@ exports.handleHostResponseToOfferedGuest=function handleHostResponseToOfferedGue
 exports.wait=function wait(){
 	const response=new VoiceResponse();
 	response.play({
-		loop:0
+		loop:0,
 		digits:'1234567890'
 	});
 	return response.toString();
