@@ -387,7 +387,7 @@ exports.handleHostResponseToOfferedGuest=function handleHostResponseToOfferedGue
 	return responseTwiml;
 }
 
-exports.wait(){
+exports.wait=function wait(){
 	const response=new VoiceResponse();
 	response.play({
 		loop:0
