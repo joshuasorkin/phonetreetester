@@ -127,7 +127,7 @@ exports.preMainMenuGatherWithError=function preMainMenuGatherWithError(params){
 
 
 function addArrayToGetRequest(url,paramArray,paramArrayName){
-	return url+"?"+querystring.stringify({paramArrayName:JSON.stringify(paramArray)});
+	return url+"?"+querystring.stringify({[paramArrayName]:JSON.stringify(paramArray)});
 }
 
 exports.getArrayFromGetRequest=function(req,paramArrayName){
