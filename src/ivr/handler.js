@@ -125,6 +125,15 @@ exports.preMainMenuGatherWithError=function preMainMenuGatherWithError(params){
 	return response.toString();
 }
 
+
+function addArrayToGetRequest(url,paramArray,paramArrayName){
+	return url+"?"+querystring.stringify({paramArrayName:JSON.stringify(paramArray)});
+}
+
+exports.getArrayFromGetRequest=function(req,paramArrayName){
+	return JSON.parse(req.query[paramArrayName]);
+}
+
 //should change this so that we're passing in a 'user' parameter that is the array of parameters.
 //maybe this indicates that a standardized user params data structure would be helpful.
 //need to decide on schema: what are all the properties that would be useful for a 'user' array?
@@ -133,7 +142,7 @@ function addPreMainMenuGather(voiceResponse,sid,exitStatus,userId){
 			'exitStatus':exitStatus,
 			'userId':userId};
 	//url=buildGetUrl('/ivr/menu',params);
-	url="/ivr/menu?"+querystring.stringify({'params':JSON.stringify(params)});
+	url=addArrayToGetRequest(url,params);
 	
 	console.log("addPreMainMenuGather: url "+url);
 
@@ -330,7 +339,7 @@ exports.addConferenceToResponse=function addConferenceToResponse(response,confer
 	return response.toString();
 }
 
-
+//todo:this function needs the userParameter array to pass to handleResponseToConferenceControl
 exports.conferenceControl=function conferenceControl(conferenceName,isUserError){
 	const response=new VoiceResponse();
 	if (isUserError){

@@ -1,0 +1,9 @@
+exports.userParams=function(){
+	userParams={
+		phonenumber:"",
+		conferenceName:"",
+		status:"",
+		exitStatus:"",
+		sid:""
+	}
+}

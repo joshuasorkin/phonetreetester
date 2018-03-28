@@ -73,8 +73,8 @@ router.get('/menu', (req, res) => {
   //const sid=req.query.sid;
   //const userId=req.query.userId;
   //const exitStatus=req.query.exitStatus;
-  var params=JSON.parse(req.query['params']);
-  
+  //var params=JSON.parse(req.query['params']);
+  var params=handler.getArrayFromGetRequest(req,'params');
   console.log("/ivr/menu: params "+JSON.stringify(params));
   
   console.log("/ivr/menu: digit "+digit);
@@ -122,8 +122,6 @@ router.get('/menu', (req, res) => {
   }
   
   
-  //res.send(menu(digit,sid));
-  //return res.send(welcome(sid));
 });
 
 // GET: /ivr/callHost
@@ -175,6 +173,7 @@ router.get('/conferenceControl',(req,res)=>{
 router.get('/handleResponseToConferenceControl',(req,res)=>{
 	digit=req.query.Digits;
 	conferenceName=req.query.conferenceName;
+	sid=req.query.sid;
 	var response=null;
 	var responseStr;
 	//todo: move this switch block into handler.js
