@@ -93,7 +93,7 @@ exports.welcome = function welcome(fromNum,sid) {
   
 };
 
-exports.buildPreMainMenuGather=function buildPreMainMenuGather(sid,exitStatus,userId){
+exports.buildPreMainMenuGather=function buildPreMainMenuGather(sid,exitStatus,userId,params){
 	var voiceResponse = new VoiceResponse();
 	
 
@@ -111,7 +111,7 @@ exports.buildPreMainMenuGather=function buildPreMainMenuGather(sid,exitStatus,us
 	//gather.play({loop: 3}, bodyUrl);
 	*/
 	
-	addPreMainMenuGather(voiceResponse,sid,exitStatus,userId);
+	addPreMainMenuGather(voiceResponse,sid,exitStatus,userId,params);
 
 	responseStr=voiceResponse.toString();
 	return responseStr;
@@ -121,7 +121,7 @@ exports.buildPreMainMenuGather=function buildPreMainMenuGather(sid,exitStatus,us
 exports.preMainMenuGatherWithError=function preMainMenuGatherWithError(params){
 	var response=new VoiceResponse();
 	sayAlice(response,languageConfig,"Sorry, that's not a valid option.");
-	addPreMainMenuGather(response,params.sid,params.exitStatus,params.userId);
+	addPreMainMenuGather(response,params.sid,params.exitStatus,params.userId,params);
 	return response.toString();
 }
 
@@ -137,10 +137,10 @@ exports.getArrayFromGetRequest=function(req,paramArrayName){
 //should change this so that we're passing in a 'user' parameter that is the array of parameters.
 //maybe this indicates that a standardized user params data structure would be helpful.
 //need to decide on schema: what are all the properties that would be useful for a 'user' array?
-function addPreMainMenuGather(voiceResponse,sid,exitStatus,userId){
-	params={'sid':sid,
-			'exitStatus':exitStatus,
-			'userId':userId};
+function addPreMainMenuGather(voiceResponse,sid,exitStatus,userId,params){
+	//params={'sid':sid,
+	//		'exitStatus':exitStatus,
+	//		'userId':userId};
 	//url=buildGetUrl('/ivr/menu',params);
 	url=addArrayToGetRequest('/ivr/menu',params,'params');
 	
@@ -157,10 +157,10 @@ function addPreMainMenuGather(voiceResponse,sid,exitStatus,userId){
 	
 }
 
-exports.switchHostStatus=function switchHostStatus(exitStatus,sid,userId){
+exports.switchHostStatus=function switchHostStatus(exitStatus,sid,userId,params){
 	return new Promise(function(resolve,reject){
 		var exitStatusToSet;
-		switch(exitStatus){
+		switch(params.exitStatus){
 			case 'available':
 				exitStatusToSet="in use";
 				break;
@@ -169,9 +169,9 @@ exports.switchHostStatus=function switchHostStatus(exitStatus,sid,userId){
 				break;
 		}
 		console.log("switchHostStatus: before calling updateUserExitStatus");
-		db.updateUserExitStatus(exitStatusToSet,userId).then(value=>{
+		db.updateUserExitStatus(exitStatusToSet,params.userId).then(value=>{
 			console.log("switchHostStatus: .then after calling updateUserExitStatus");
-			preMainMenuGather=exports.buildPreMainMenuGather(sid,exitStatusToSet,userId);
+			preMainMenuGather=exports.buildPreMainMenuGather(sid,exitStatusToSet,userId,params);
 			console.log("switchHostStatus: about to resolve()");
 			resolve(preMainMenuGather);
 		}).catch(error=>{
