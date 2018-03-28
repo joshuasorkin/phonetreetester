@@ -96,6 +96,7 @@ exports.welcome = function welcome(fromNum,sid) {
 exports.buildPreMainMenuGather=function buildPreMainMenuGather(sid,exitStatus,userId,params){
 	var voiceResponse = new VoiceResponse();
 	
+	console.log("buildPreMainMenuGather: params "+JSON.stringify(params));
 
 	/*
 	params={'sid':sid}
