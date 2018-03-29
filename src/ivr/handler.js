@@ -155,7 +155,7 @@ function addPreMainMenuGather(voiceResponse,params){
 	
 }
 
-exports.switchHostStatus=function switchHostStatus(exitStatus,sid,userId,params){
+exports.switchHostStatus=function switchHostStatus(params){
 	return new Promise(function(resolve,reject){
 		var exitStatusToSet;
 		switch(params.exitStatus){
@@ -167,7 +167,7 @@ exports.switchHostStatus=function switchHostStatus(exitStatus,sid,userId,params)
 				break;
 		}
 		console.log("switchHostStatus: before calling updateUserExitStatus");
-		db.updateUserExitStatus(exitStatusToSet,params.userId).then(value=>{
+		db.updateUserExitStatus(exitStatusToSet,params.id).then(value=>{
 			console.log("switchHostStatus: .then after calling updateUserExitStatus");
 			preMainMenuGather=exports.buildPreMainMenuGather(params);
 			console.log("switchHostStatus: about to resolve()");
@@ -295,10 +295,10 @@ exports.guestCallsHost=function guestCallsHost(sid,hostPhoneNumber,hostId){
 	return responseStr;
 };
 
-exports.noHostAvailable=function noHostAvailable(sid){
+exports.noHostAvailable=function noHostAvailable(params){
 	const response=new voiceResponse();
 	sayAlice(response,languageConfig,"No host is available at this time.  Please try again later.");
-	addPreMainMenuGather(response,sid);
+	addPreMainMenuGather(response,params);
 	return response.toString();
 };
 

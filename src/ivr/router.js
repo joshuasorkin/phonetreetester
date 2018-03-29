@@ -100,13 +100,13 @@ router.get('/menu', (req, res) => {
 			res.send(responseTwiml);
 		},error=>{
 			console.log("/menu: error "+error.toString());
-			responseTwiml=handler.noHostAvailable(params.sid);
+			responseTwiml=handler.noHostAvailable(params);
 			res.send(responseTwiml);
 		})
 		//responseTwiml=guestCallsHost(sid);
 		break;
 	case '2':
-		handler.switchHostStatus(params.exitStatus,params.sid,params.userId,params).then(value=>{
+		handler.switchHostStatus(params).then(value=>{
 			console.log('/ivr/menu: .then value for switchHostStatus: ');
 			console.log(value);
 			res.send(value);
