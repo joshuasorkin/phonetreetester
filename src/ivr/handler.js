@@ -139,9 +139,6 @@ exports.getArrayFromGetRequest=function(req,paramArrayName){
 //maybe this indicates that a standardized user params data structure would be helpful.
 //need to decide on schema: what are all the properties that would be useful for a 'user' array?
 function addPreMainMenuGather(voiceResponse,sid,exitStatus,userId,params){
-	//params={'sid':sid,
-	//		'exitStatus':exitStatus,
-	//		'userId':userId};
 	//url=buildGetUrl('/ivr/menu',params);
 	url=addArrayToGetRequest('/ivr/menu',params,'params');
 	

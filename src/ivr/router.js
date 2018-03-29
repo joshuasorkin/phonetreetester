@@ -27,13 +27,17 @@ router.post('/welcome_promise',(req,res) => {
 	var user;
 	var exitStatus;
 	var id=null;
+	var params={};
+	params.sid=sid;
 	db.getUser_promise(fromNum).then(value=>{
 		console.log("/welcome_promise: first then");
 		if(value!=null){
 			user=value;
 			id=value.id;
+			params.id=id;
 			console.log("/welcome_promise: id "+id);
 			exitStatus=value.status;
+			params.exitStatus=exitStatus;
 			console.log("/welcome_promise: exitStatus "+exitStatus);
 			return db.updateUserExitStatus(exitStatus,id);
 		}
@@ -50,6 +54,8 @@ router.post('/welcome_promise',(req,res) => {
 		if (id==null){
 			id=value.rows[0]['id'];
 			exitStatus=value.rows[0]['exitstatus'];
+			params.id=id;
+			params.exitStatus=exitStatus;
 			console.log("/welcome_promise: setting id from null to "+id);
 		}
 		console.log("/welcome_promise: id from getUser/addUser: "+id);
@@ -57,7 +63,7 @@ router.post('/welcome_promise',(req,res) => {
 		return db.updateUserStatus("in use",id);
 	}).then(value=>{
 		//testing handler master object
-		preMainMenuGather=handler.buildPreMainMenuGather(sid,exitStatus,id);
+		preMainMenuGather=handler.buildPreMainMenuGather(sid,exitStatus,id,params);
 		console.log("/welcome_promise: preMainMenuGather "+preMainMenuGather);
 		res.send(preMainMenuGather);		
 	}).catch(x=>{
@@ -105,7 +111,7 @@ router.get('/menu', (req, res) => {
 		//responseTwiml=guestCallsHost(sid);
 		break;
 	case '2':
-		handler.switchHostStatus(params.exitStatus,params.sid,params.userId).then(value=>{
+		handler.switchHostStatus(params.exitStatus,params.sid,params.userId,params).then(value=>{
 			console.log('/ivr/menu: .then value for switchHostStatus: ');
 			console.log(value);
 			res.send(value);
