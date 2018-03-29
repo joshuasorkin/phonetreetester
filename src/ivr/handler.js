@@ -169,6 +169,7 @@ exports.switchHostStatus=function switchHostStatus(params){
 		console.log("switchHostStatus: before calling updateUserExitStatus");
 		db.updateUserExitStatus(exitStatusToSet,params.id).then(value=>{
 			console.log("switchHostStatus: .then after calling updateUserExitStatus");
+			params.exitStatus=exitStatusToSet;
 			preMainMenuGather=exports.buildPreMainMenuGather(params);
 			console.log("switchHostStatus: about to resolve()");
 			resolve(preMainMenuGather);
