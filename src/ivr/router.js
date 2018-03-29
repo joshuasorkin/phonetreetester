@@ -51,11 +51,11 @@ router.post('/welcome_promise',(req,res) => {
 		if (params.id==null){
 			params.id=value.rows[0]['id'];
 			params.exitStatus=value.rows[0]['exitstatus'];
-			console.log("/welcome_promise: setting id from null to "+id);
+			console.log("/welcome_promise: setting id from null to "+params.id);
 		}
-		console.log("/welcome_promise: id from getUser/addUser: "+id);
+		console.log("/welcome_promise: id from getUser/addUser: "+params.id);
 		console.log("/welcome_promise: updating user status to in use");
-		return db.updateUserStatus("in use",id);
+		return db.updateUserStatus("in use",params.id);
 	}).then(value=>{
 		//testing handler master object
 		preMainMenuGather=handler.buildPreMainMenuGather(params);
