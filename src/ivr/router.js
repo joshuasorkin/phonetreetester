@@ -33,7 +33,7 @@ router.post('/welcome_promise',(req,res) => {
 		if(value!=null){
 			user=value;
 			params.id=value.id;
-			console.log("/welcome_promise: id "+id);
+			console.log("/welcome_promise: id "+params.id);
 			params.exitStatus=value.status;
 			console.log("/welcome_promise: exitStatus "+exitStatus);
 			return db.updateUserExitStatus(exitStatus,params.id);
