@@ -25,21 +25,18 @@ router.post('/welcome_promise',(req,res) => {
 	const sid=req.body.CallSid;
 	console.log("/welcome_promise: sid "+sid);
 	var user;
-	var exitStatus;
-	var id=null;
 	var params={};
+	params.id=null;
 	params.sid=sid;
 	db.getUser_promise(fromNum).then(value=>{
 		console.log("/welcome_promise: first then");
 		if(value!=null){
 			user=value;
-			id=value.id;
-			params.id=id;
+			params.id=value.id;
 			console.log("/welcome_promise: id "+id);
-			exitStatus=value.status;
-			params.exitStatus=exitStatus;
+			params.exitStatus=value.status;
 			console.log("/welcome_promise: exitStatus "+exitStatus);
-			return db.updateUserExitStatus(exitStatus,id);
+			return db.updateUserExitStatus(exitStatus,params.id);
 		}
 		else{
 			console.log("/welcome_promise: about to add user");
@@ -51,11 +48,9 @@ router.post('/welcome_promise',(req,res) => {
 	}).then(value=>{
 		console.log("/welcome_promise: second then");
 		console.log("/welcome_promise: value ",value.rows[0]);
-		if (id==null){
-			id=value.rows[0]['id'];
-			exitStatus=value.rows[0]['exitstatus'];
-			params.id=id;
-			params.exitStatus=exitStatus;
+		if (params.id==null){
+			params.id=value.rows[0]['id'];
+			params.exitStatus=value.rows[0]['exitstatus'];
 			console.log("/welcome_promise: setting id from null to "+id);
 		}
 		console.log("/welcome_promise: id from getUser/addUser: "+id);
@@ -63,7 +58,7 @@ router.post('/welcome_promise',(req,res) => {
 		return db.updateUserStatus("in use",id);
 	}).then(value=>{
 		//testing handler master object
-		preMainMenuGather=handler.buildPreMainMenuGather(sid,exitStatus,id,params);
+		preMainMenuGather=handler.buildPreMainMenuGather(params);
 		console.log("/welcome_promise: preMainMenuGather "+preMainMenuGather);
 		res.send(preMainMenuGather);		
 	}).catch(x=>{

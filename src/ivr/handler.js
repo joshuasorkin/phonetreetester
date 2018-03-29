@@ -93,7 +93,7 @@ exports.welcome = function welcome(fromNum,sid) {
   
 };
 
-exports.buildPreMainMenuGather=function buildPreMainMenuGather(sid,exitStatus,userId,params){
+exports.buildPreMainMenuGather=function buildPreMainMenuGather(params){
 	var voiceResponse = new VoiceResponse();
 	
 	console.log("buildPreMainMenuGather: params "+JSON.stringify(params));
@@ -112,7 +112,7 @@ exports.buildPreMainMenuGather=function buildPreMainMenuGather(sid,exitStatus,us
 	//gather.play({loop: 3}, bodyUrl);
 	*/
 	
-	addPreMainMenuGather(voiceResponse,sid,exitStatus,userId,params);
+	addPreMainMenuGather(voiceResponse,params);
 
 	responseStr=voiceResponse.toString();
 	return responseStr;
@@ -122,7 +122,7 @@ exports.buildPreMainMenuGather=function buildPreMainMenuGather(sid,exitStatus,us
 exports.preMainMenuGatherWithError=function preMainMenuGatherWithError(params){
 	var response=new VoiceResponse();
 	sayAlice(response,languageConfig,"Sorry, that's not a valid option.");
-	addPreMainMenuGather(response,params.sid,params.exitStatus,params.userId,params);
+	addPreMainMenuGather(response,params);
 	return response.toString();
 }
 
@@ -138,7 +138,7 @@ exports.getArrayFromGetRequest=function(req,paramArrayName){
 //should change this so that we're passing in a 'user' parameter that is the array of parameters.
 //maybe this indicates that a standardized user params data structure would be helpful.
 //need to decide on schema: what are all the properties that would be useful for a 'user' array?
-function addPreMainMenuGather(voiceResponse,sid,exitStatus,userId,params){
+function addPreMainMenuGather(voiceResponse,params){
 	//url=buildGetUrl('/ivr/menu',params);
 	url=addArrayToGetRequest('/ivr/menu',params,'params');
 	
@@ -169,7 +169,7 @@ exports.switchHostStatus=function switchHostStatus(exitStatus,sid,userId,params)
 		console.log("switchHostStatus: before calling updateUserExitStatus");
 		db.updateUserExitStatus(exitStatusToSet,params.userId).then(value=>{
 			console.log("switchHostStatus: .then after calling updateUserExitStatus");
-			preMainMenuGather=exports.buildPreMainMenuGather(sid,exitStatusToSet,userId,params);
+			preMainMenuGather=exports.buildPreMainMenuGather(params);
 			console.log("switchHostStatus: about to resolve()");
 			resolve(preMainMenuGather);
 		}).catch(error=>{
@@ -403,87 +403,6 @@ exports.wait=function wait(){
 	},waitSoundUrl);
 	console.log("wait: response twiml "+response.toString());
 	return response.toString();
-}
-
-exports.planets = function planets(digit) {
-  const optionActions = {
-    '2': '+12024173378',
-    '3': '+12027336386',
-    '4': '+12027336637',
-  };
-
-  if (optionActions[digit]) {
-    const twiml = new VoiceResponse();
-    twiml.dial(optionActions[digit]);
-    return twiml.toString();
-  }
-
-  return redirectWelcome();
-};
-
-/**
- * Returns Twiml
- * @return {String}
- */
-function giveExtractionPointInstructions() {
-  const twiml = new VoiceResponse();
-
-  twiml.say(
-    'To get to your extraction point, get on your bike and go down ' +
-    'the street. Then Left down an alley. Avoid the police cars. Turn left ' +
-    'into an unfinished housing development. Fly over the roadblock. Go ' +
-    'passed the moon. Soon after you will see your mother ship.',
-    {voice: 'alice', language: 'en-GB'}
-  );
-
-  twiml.say(
-    'Thank you for calling the ET Phone Home Service - the ' +
-    'adventurous alien\'s first choice in intergalactic travel'
-  );
-
-  twiml.hangup();
-
-  return twiml.toString();
-}
-
-/**
- * Returns a TwiML to interact with the client
- * @return {String}
- */
-function listPlanets() {
-  const twiml = new VoiceResponse();
-
-  const gather = twiml.gather({
-    action: '/ivr/planets',
-    numDigits: '1',
-    method: 'POST',
-  });
-
-  gather.say(
-    'To call the planet Broh doe As O G, press 2. To call the planet DuhGo ' +
-    'bah, press 3. To call an oober asteroid to your location, press 4. To ' +
-    'go back to the main menu, press the star key ',
-    {voice: 'alice', language: 'en-GB', loop: 3}
-  );
-
-  return twiml.toString();
-}
-
-/**
- * Returns an xml with the redirect
- * @return {String}
- */
-function redirectWelcome() {
-  const twiml = new VoiceResponse();
-
-  twiml.say('Returning to the main menu', {
-    voice: 'alice',
-    language: 'en-GB',
-  });
-
-  twiml.redirect('/ivr/welcome');
-
-  return twiml.toString();
 }
 
 //creates a url from an array of key-value pairs
