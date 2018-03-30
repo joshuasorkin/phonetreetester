@@ -408,17 +408,19 @@ exports.messageOtherUserAboutConferenceControl=function(params){
 
 exports.redirectParticipantsToMainMenu=function(params){
 
-postConferenceUrl='/ivr/postConference';
-url=addArrayToGetRequest(postConferenceUrl,params,"params");
-conf=client.conferences(params.conferenceName);
-conf.participants.each(participant=>{
-	CallSid=participant.CallSid;
-	client.calls(CallSid).update({
-		Url: url,
-		Method:'GET',
+	postConferenceUrl='/ivr/postConference';
+	url=addArrayToGetRequest(postConferenceUrl,params,"params");
+	conf=client.conferences(params.conferenceName);
+	conf.participants.each(participant=>{
+		CallSid=participant.CallSid;
+		client.calls(CallSid).update({
+			Url: url,
+			Method:'GET',
+		});
+	  // assigning postconferenceUrl: if participant is guest (we may need a global object or database to track this) then it is defined as rateHostUrl...should host rate guest? 
 	});
-  // assigning postconferenceUrl: if participant is guest (we may need a global object or database to track this) then it is defined as rateHostUrl...should host rate guest? 
-});
+
+}
 
 exports.postConference=function(params){
 	response=new VoiceResponse();
