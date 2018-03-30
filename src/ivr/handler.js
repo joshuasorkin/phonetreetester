@@ -340,7 +340,7 @@ exports.addConferenceToResponse=function addConferenceToResponse(response,params
 
 //todo:this function needs the userParameter array to pass to handleResponseToConferenceControl
 exports.conferenceControl=function conferenceControl(params,isUserError){
-	const response=new VoiceResponse();
+	const response=new VoiceResponse();	
 	if (isUserError){
 		//todo: refactor the user input error into a function similar to addConferenceToResponse
 		sayAlice(response,languageConfig,"Sorry, that's not a valid option.");
@@ -399,6 +399,31 @@ exports.wait=function wait(){
 		loop:0
 	},waitSoundUrl);
 	console.log("wait: response twiml "+response.toString());
+	return response.toString();
+}
+
+exports.messageOtherUserAboutConferenceControl=function(params){
+	
+}
+
+exports.redirectParticipantsToMainMenu=function(params){
+
+postConferenceUrl='/ivr/postConference';
+url=addArrayToGetRequest(postConferenceUrl,params,"params");
+conf=client.conferences(params.conferenceName);
+conf.participants.each(participant=>{
+	CallSid=participant.CallSid;
+	client.calls(CallSid).update({
+		Url: url,
+		Method:'GET',
+	});
+  // assigning postconferenceUrl: if participant is guest (we may need a global object or database to track this) then it is defined as rateHostUrl...should host rate guest? 
+});
+
+exports.postConference=function(params){
+	response=new VoiceResponse();
+	response.say("this is the post conference response.");
+	addPreMainMenuGather(response,params);
 	return response.toString();
 }
 

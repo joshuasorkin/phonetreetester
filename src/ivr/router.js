@@ -177,6 +177,7 @@ router.get('/conferenceControl',(req,res)=>{
 	var params=handler.getArrayFromGetRequest(req,'params');
 	console.log("/ivr/conferenceControl: params "+JSON.stringify(params));
 	res.send(handler.conferenceControl(params,false));
+	messageOtherUserAboutConferenceControl(params);
 });
 
 router.get('/handleResponseToConferenceControl',(req,res)=>{
@@ -195,6 +196,7 @@ router.get('/handleResponseToConferenceControl',(req,res)=>{
 		case '2':
 			//redirectParticipantsToMainMenu(conferenceName);
 			responseStr=handler.buildPreMainMenuGather(params);
+			redirectParticipantsToMainMenu(params);
 			break;
 		default:
 			responseStr=handler.conferenceControl(params,true);
@@ -207,5 +209,10 @@ router.get('/wait',(req,res)=>{
 	res.send(handler.wait());
 });
 
+router.get('/postConference',(req,res)=>{
+	var params=handler.getArrayFromGetRequest(req,'params');
+	console.log("/ivr/postConference: params "+JSON.stringify(params));
+	res.send(postConference(params));
+}
 
 module.exports = router;
