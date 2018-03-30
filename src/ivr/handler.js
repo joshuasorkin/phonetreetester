@@ -412,6 +412,7 @@ exports.redirectParticipantsToMainMenu=function(params){
 	url=addArrayToGetRequest(postConferenceUrl,params,"params");
 	console.log('redirectParticipantsToMainMenu: url '+url);
 	conf=client.conferences(params.conferenceName);
+	console.log('redirectParticipantsToMainMenu: conf FriendlyName '+conf.FriendlyName);
 	conf.participants.each(participant=>{
 		CallSid=participant.CallSid;
 		console.log('redirectParticipantsToMainMenu: participant CallSid '+CallSid);
