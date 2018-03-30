@@ -408,6 +408,8 @@ exports.messageOtherUserAboutConferenceControl=function(params){
 
 exports.redirectParticipantsToMainMenu=function(params){
 
+	//todo: specify params for each participant, as each one has a separate sid and exitStatus
+	
 	postConferenceUrl='/ivr/postConference';
 	url=addArrayToGetRequest(postConferenceUrl,params,"params");
 	console.log('redirectParticipantsToMainMenu: url '+url);
