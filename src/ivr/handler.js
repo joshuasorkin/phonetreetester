@@ -7,7 +7,9 @@
 //router/handler abstraction
 
 //todo: refactor methods like buildGetUrl() and sayAlice() into SRO-observant files/classes
-//todo: remove versions from source control containing hyperspacecraft.net references and phone numbers (use '[+]\d{10}' regex)
+//todo: remove versions from source control containing hyperspacecraft.net references, freesound.org, and phone numbers (use '[+]\d{10}' regex)
+
+//todo: add authorization checking, so only requests from twilio will be processed--can I do that systemwide?
 
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const client=require('twilio')(
@@ -23,9 +25,9 @@ const pool=new Pool({
 	connectionString:process.env.HEROKU_POSTGRESQL_OLIVE_URL,
 	ssl:true
 });
-//const waitSoundUrl='http://twimlets.com/holdmusic?Bucket=com.twilio.music.electronica';
+const waitSoundUrl='http://twimlets.com/holdmusic?Bucket=com.twilio.music.electronica';
 //const waitSoundUrl='http://hyperspacecraft.net/twilioTest/Sheena%20Easton%20-%20Telephone%20HQHD.mp3';
-const waitSoundUrl='https://freesound.org/data/previews/86/86684_1390811-lq.mp3';
+//const waitSoundUrl='https://freesound.org/data/previews/86/86684_1390811-lq.mp3';
 const waitUrl=process.env.PHONETREETESTER_URL+'ivr/wait';
 const querystring=require('querystring');
 
@@ -337,7 +339,7 @@ exports.addConferenceToResponse=function addConferenceToResponse(response,params
 }
 
 //todo:this function needs the userParameter array to pass to handleResponseToConferenceControl
-exports.conferenceControl=function conferenceControl(conferenceName,isUserError){
+exports.conferenceControl=function conferenceControl(params,isUserError){
 	const response=new VoiceResponse();
 	if (isUserError){
 		//todo: refactor the user input error into a function similar to addConferenceToResponse
@@ -345,8 +347,7 @@ exports.conferenceControl=function conferenceControl(conferenceName,isUserError)
 	}
 	sayAlice(response,languageConfig,"This is conference control.  Press 1 to return to conference.  Press 2 to exit the conference and return to the main menu.");
 	baseUrl='/ivr/handleResponseToConferenceControl';
-	params={'conferenceName':conferenceName};
-	url=buildGetUrl(baseUrl,params);
+	url=addArrayToGetRequest(baseUrl,params,"params");
 	gather=response.gather({
 		action:url,
 		method:'GET'

@@ -174,27 +174,30 @@ router.get('/statusChangeConference',(req,res)=>{
 });
 
 router.get('/conferenceControl',(req,res)=>{
-	conferenceName=req.query.conferenceName;
-	res.send(handler.conferenceControl(conferenceName,false));
+	var params=handler.getArrayFromGetRequest(req,'params');
+	console.log("/ivr/conferenceControl: params "+JSON.stringify(params));
+	res.send(handler.conferenceControl(params,false));
 });
 
 router.get('/handleResponseToConferenceControl',(req,res)=>{
+	var params=handler.getArrayFromGetRequest(req,'params');
+	console.log("/ivr/handleResponseToConferenceControl: params "+JSON.stringify(params));
 	digit=req.query.Digits;
-	conferenceName=req.query.conferenceName;
-	sid=req.query.sid;
+	conferenceName=params.conferenceName;
+	sid=params.sid;
 	var response=null;
 	var responseStr;
 	//todo: move this switch block into handler.js
 	switch (digit){
 		case '1':
-			responseStr=handler.addConferenceToResponse(response,conferenceName);
+			responseStr=handler.addConferenceToResponse(response,params);
 			break;
 		case '2':
 			//redirectParticipantsToMainMenu(conferenceName);
-			responseStr=handler.buildPreMainMenuGather(sid,exitStatus,id);
+			responseStr=handler.buildPreMainMenuGather(params);
 			break;
 		default:
-			responseStr=handler.conferenceControl(conferenceName,true);
+			responseStr=handler.conferenceControl(params,true);
 	}
 	console.log("/handleResponseToConferenceControl: responseStr "+responseStr);
 	res.send(responseStr);
