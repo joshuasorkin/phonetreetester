@@ -177,7 +177,7 @@ router.get('/conferenceControl',(req,res)=>{
 	var params=handler.getArrayFromGetRequest(req,'params');
 	console.log("/ivr/conferenceControl: params "+JSON.stringify(params));
 	res.send(handler.conferenceControl(params,false));
-	messageOtherUserAboutConferenceControl(params);
+	handler.messageOtherUserAboutConferenceControl(params);
 });
 
 router.get('/handleResponseToConferenceControl',(req,res)=>{
