@@ -260,26 +260,26 @@ exports.statusChangeConference=function statusChangeConference(status){
 
 
 
-exports.guestCallsHost=function guestCallsHost(sid,hostPhoneNumber,hostId){
+exports.guestCallsHost=function guestCallsHost(params){
 	baseUrl=process.env.PHONETREETESTER_URL+'ivr/callHost';
 	console.log("guestCallsHost: baseUrl "+baseUrl);
-	//todo: find more secure source of unique conference ID (maybe hash of sid)
-	conferenceName=sid;
-	params={'conferenceName':conferenceName,
-			'hostId':hostId};
-	url=buildGetUrl(baseUrl,params);
-	console.log("guestCallsHost: url "+url);
 	
-	if (hostPhoneNumber==null){
-		hostPhoneNumber=process.env.CELL_PHONE_NUMBER;
-	}
+	//todo: find more secure source of unique conference ID (maybe hash of sid)
+	params.conferenceName=params.sid;
+	
+	//actual value of hostPhoneNumber will be used here in production
+	//but during early testing we send to process.env.CELL_PHONE_NUMBER;
+	params.hostPhoneNumber=process.env.CELL_PHONE_NUMBER;
+	
+	url=addArrayToGetRequest(baseUrl,params,"params");
+	console.log("guestCallsHost: url "+url);
 	
 	statusCallback=process.env.PHONETREETESTER_URL+'ivr/statusChange';
 	console.log('guestCallsHost: statusCallback '+statusCallback);
 	
 	var call=client.calls.create({
 		url:url,
-		to: hostPhoneNumber,
+		to: params.hostPhoneNumber,
 		from: process.env.TWILIO_PHONE_NUMBER,
 		method: 'GET',
 		statusCallback:statusCallback,
@@ -290,7 +290,7 @@ exports.guestCallsHost=function guestCallsHost(sid,hostPhoneNumber,hostId){
 			
 	const response = new VoiceResponse();
 	sayAlice(response,languageConfig,"Thank you for calling Vent. Please wait while we find a host.");
-	exports.addConferenceToResponse(response,conferenceName);
+	exports.addConferenceToResponse(response,params);
 	responseStr=response.toString();
 	console.log("guestCallsHost: "+responseStr);
 	return responseStr;
@@ -310,23 +310,21 @@ function setHostInterval(){
 	return response.toString();
 }
 
-exports.addConferenceToResponse=function addConferenceToResponse(response,conferenceName){
+exports.addConferenceToResponse=function addConferenceToResponse(response,params){
 	//initialize response if this is its first set of verbs, e.g. when called in /ivr/handleResponseToConferenceControl
 	if (response==null){
 		response=new VoiceResponse();
 	}
 	baseUrl=process.env.PHONETREETESTER_URL+'ivr/conferenceControl';
 	console.log("addConferenceToResponse: baseUrl "+baseUrl);
-	//todo: find more secure source of unique conference ID (maybe hash of sid)
-	params={'conferenceName':conferenceName};
-	url=buildGetUrl(baseUrl,params);
+	url=addArrayToGetRequest(baseUrl,params,"params");
 
 	const dial = response.dial({
 		action: url,
 		method: 'GET',
 		hangupOnStar: true
 	});
-	dial.conference(conferenceName,{
+	dial.conference(params.conferenceName,{
 		statusCallbackEvent:'start end join leave',
 		statusCallback:process.env.PHONETREETESTER_URL+'ivr/statusChangeConference',
 		statusCallbackMethod:'GET',
@@ -356,13 +354,11 @@ exports.conferenceControl=function conferenceControl(conferenceName,isUserError)
 	return response.toString();
 }
 
-exports.callHost=function callHost(conferenceName){
+exports.callHost=function callHost(params){
 	const response=new VoiceResponse();
 	
-	params={'conferenceName':conferenceName};
-	
 	baseUrl='/ivr/handleHostResponseToOfferedGuest';
-	url=buildGetUrl(baseUrl,params);
+	url=addArrayToGetRequest(baseUrl,params,"params");
 	
 	gather=response.gather({
 		action:url,
@@ -373,21 +369,20 @@ exports.callHost=function callHost(conferenceName){
 	return response.toString();
 };
 
-exports.handleHostResponseToOfferedGuest=function handleHostResponseToOfferedGuest(digits,conferenceName){
+exports.handleHostResponseToOfferedGuest=function handleHostResponseToOfferedGuest(digits,params){
 	const response=new VoiceResponse();
 	switch (digits){
 		case '1':
 			sayAlice(response,languageConfig,"Thank you, now connecting you to guest.");
-			exports.addConferenceToResponse(response,conferenceName);
+			exports.addConferenceToResponse(response,params);
 			break;
 		case '2':
 			sayAlice(response,languageConfig,"I'm sorry that we contacted you at an inconvenient time.  Goodbye.");
 			response.hangup();
 		default:
 			sayAlice(response,languageConfig,"Sorry, that's not a valid option.");
-			params={'conferenceName':conferenceName};
 			baseUrl='/ivr/callHost';
-			url=buildGetUrl(baseUrl,params);
+			url=addArrayToGetRequest(baseUrl,params,"params");
 			response.redirect({
 				method: 'GET'
 			},url);
