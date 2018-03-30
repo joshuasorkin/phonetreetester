@@ -194,7 +194,6 @@ router.get('/handleResponseToConferenceControl',(req,res)=>{
 			responseStr=handler.addConferenceToResponse(response,params);
 			break;
 		case '2':
-			//redirectParticipantsToMainMenu(conferenceName);
 			responseStr=handler.buildPreMainMenuGather(params);
 			handler.redirectParticipantsToMainMenu(params);
 			break;

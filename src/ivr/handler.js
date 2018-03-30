@@ -410,9 +410,11 @@ exports.redirectParticipantsToMainMenu=function(params){
 
 	postConferenceUrl='/ivr/postConference';
 	url=addArrayToGetRequest(postConferenceUrl,params,"params");
+	console.log('redirectParticipantsToMainMenu: url '+url);
 	conf=client.conferences(params.conferenceName);
 	conf.participants.each(participant=>{
 		CallSid=participant.CallSid;
+		console.log('redirectParticipantsToMainMenu: participant CallSid '+CallSid);
 		client.calls(CallSid).update({
 			Url: url,
 			Method:'GET',
