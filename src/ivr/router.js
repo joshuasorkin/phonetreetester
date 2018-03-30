@@ -213,6 +213,6 @@ router.get('/postConference',(req,res)=>{
 	var params=handler.getArrayFromGetRequest(req,'params');
 	console.log("/ivr/postConference: params "+JSON.stringify(params));
 	res.send(postConference(params));
-}
+});
 
 module.exports = router;
