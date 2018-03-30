@@ -212,7 +212,7 @@ router.get('/wait',(req,res)=>{
 router.get('/postConference',(req,res)=>{
 	var params=handler.getArrayFromGetRequest(req,'params');
 	console.log("/ivr/postConference: params "+JSON.stringify(params));
-	res.send(postConference(params));
+	res.send(handler.postConference(params));
 });
 
 module.exports = router;
