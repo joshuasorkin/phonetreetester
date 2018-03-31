@@ -413,6 +413,12 @@ exports.redirectParticipantsToMainMenu=function(params){
 	postConferenceUrl='/ivr/postConference';
 	url=addArrayToGetRequest(postConferenceUrl,params,"params");
 	console.log('redirectParticipantsToMainMenu: url '+url);
+	
+	client.conferences.each(conference=>{
+		console.log("redirectParticipantsToMainMenu: conference sid "+conference.Sid);
+		console.log("redirectParticipantsToMainMenu: conference friendlyname "+conference.FriendlyName);
+	});
+	/*
 	conf=client.conferences(params.conferenceName);
 	console.log('redirectParticipantsToMainMenu: conf FriendlyName '+conf.FriendlyName);
 	conf.participants.each(participant=>{
@@ -424,6 +430,7 @@ exports.redirectParticipantsToMainMenu=function(params){
 		});
 	  // assigning postconferenceUrl: if participant is guest (we may need a global object or database to track this) then it is defined as rateHostUrl...should host rate guest? 
 	});
+	*/
 
 }
 
