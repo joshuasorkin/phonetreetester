@@ -166,6 +166,7 @@ router.get('/statusChange',(req,res)=> {
 
 router.get('/statusChangeConference',(req,res)=>{
 	status=req.query.StatusCallbackEvent;
+	handler.listConferences();
 	console.log("/statusChangeConference: status has changed to "+status);
 	sendValue=handler.statusChangeConference(status);
 	if (sendValue!=null){

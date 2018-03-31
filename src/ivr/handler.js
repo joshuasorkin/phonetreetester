@@ -26,7 +26,7 @@ const pool=new Pool({
 	ssl:true
 });
 //const waitSoundUrl='http://twimlets.com/holdmusic?Bucket=com.twilio.music.electronica';
-const waitSoundUrl='http://hyperspacecraft.net/twilioTest/Sheena%20Easton%20-%20Telephone%20HQHD.mp3';
+const waitSoundUrl='http://hyperspacecraft.net//Sheena%20Easton%20-%20Telephone%20HQHD.mp3';
 //const waitSoundUrl='https://freesound.org/data/previews/86/86684_1390811-lq.mp3';
 const waitUrl=process.env.PHONETREETESTER_URL+'ivr/wait';
 const querystring=require('querystring');
@@ -358,6 +358,9 @@ exports.conferenceControl=function conferenceControl(params,isUserError){
 exports.callHost=function callHost(params){
 	const response=new VoiceResponse();
 	
+	listConferences();
+	
+	
 	baseUrl='/ivr/handleHostResponseToOfferedGuest';
 	url=addArrayToGetRequest(baseUrl,params,"params");
 	
@@ -405,6 +408,14 @@ exports.wait=function wait(){
 exports.messageOtherUserAboutConferenceControl=function(params){
 	
 }
+
+function listConferences(){
+	client.conferences.each(conference=>{
+		console.log("redirectParticipantsToMainMenu: conference sid "+conference.Sid);
+		console.log("redirectParticipantsToMainMenu: conference friendlyname "+conference.FriendlyName);
+	});
+}
+
 
 exports.redirectParticipantsToMainMenu=function(params){
 
