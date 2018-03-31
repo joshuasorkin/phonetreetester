@@ -408,9 +408,9 @@ exports.messageOtherUserAboutConferenceControl=function(params){
 }
 
 exports.listConferences=function listConferences(){
-	client.conferences.each(conference=>{
-		console.log("listConferences: conference sid "+conference.Sid);
-		console.log("listConferences: conference friendlyname "+conference.FriendlyName);
+	client.conferences.each((conference) => {
+		console.log("list conferences: " + conference.status);
+		console.log("list conferences: " + conference.friendly_name);
 	});
 }
 
