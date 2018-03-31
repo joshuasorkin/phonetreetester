@@ -358,8 +358,6 @@ exports.conferenceControl=function conferenceControl(params,isUserError){
 exports.callHost=function callHost(params){
 	const response=new VoiceResponse();
 	
-	listConferences();
-	
 	
 	baseUrl='/ivr/handleHostResponseToOfferedGuest';
 	url=addArrayToGetRequest(baseUrl,params,"params");
@@ -409,10 +407,10 @@ exports.messageOtherUserAboutConferenceControl=function(params){
 	
 }
 
-function listConferences(){
+exports.listConferences=function listConferences(){
 	client.conferences.each(conference=>{
-		console.log("redirectParticipantsToMainMenu: conference sid "+conference.Sid);
-		console.log("redirectParticipantsToMainMenu: conference friendlyname "+conference.FriendlyName);
+		console.log("listConferences: conference sid "+conference.Sid);
+		console.log("listConferences: conference friendlyname "+conference.FriendlyName);
 	});
 }
 
