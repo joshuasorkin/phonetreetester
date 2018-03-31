@@ -166,7 +166,7 @@ router.get('/statusChange',(req,res)=> {
 
 router.get('/statusChangeConference',(req,res)=>{
 	status=req.query.StatusCallbackEvent;
-	if (status=="in-progress"){
+	if (status=="participant-join"){
 		handler.listConferences();
 	}
 	console.log("/statusChangeConference: status has changed to "+status);
