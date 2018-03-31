@@ -422,11 +422,9 @@ exports.redirectParticipantsToMainMenu=function(params){
 	postConferenceUrl='/ivr/postConference';
 	url=addArrayToGetRequest(postConferenceUrl,params,"params");
 	console.log('redirectParticipantsToMainMenu: url '+url);
-	
-	client.conferences.each(conference=>{
-		console.log("redirectParticipantsToMainMenu: conference sid "+conference.Sid);
-		console.log("redirectParticipantsToMainMenu: conference friendlyname "+conference.FriendlyName);
-	});
+	response=new VoiceResponse();
+	response.say("redirect participants to main menu");
+	return response.toString();
 	/*
 	conf=client.conferences(params.conferenceName);
 	console.log('redirectParticipantsToMainMenu: conf FriendlyName '+conf.FriendlyName);
