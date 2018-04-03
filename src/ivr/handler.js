@@ -412,8 +412,10 @@ exports.listConferences=function listConferences(){
 	const opts = {status: 'in-progress'};
 	
 	client.conferences.each(opts,(conference) => {
-		console.log("list conferences status: " + conference.status);
-		console.log("list conferences friendlyname: " + conference.friendly_name);
+		console.log("listing conference properties: ");
+		Object.entries(conference).forEach(
+			([key, value]) => console.log(key, value)
+		);
 	});
 }
 
