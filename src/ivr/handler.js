@@ -407,9 +407,10 @@ exports.messageOtherUserAboutConferenceControl=function(params){
 	
 }
 
-exports.listConferences=function listConferences(){
+exports.listConferences=function listConferences(friendlyName){
 	
-	const opts = {status: 'in-progress'};
+	const opts = {status: 'in-progress',
+					friendlyName:friendlyName};
 	
 	client.conferences.each(opts,(conference) => {
 		console.log("listing conference properties: ");
