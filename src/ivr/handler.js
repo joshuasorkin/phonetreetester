@@ -26,7 +26,7 @@ const pool=new Pool({
 	ssl:true
 });
 //const waitSoundUrl='http://twimlets.com/holdmusic?Bucket=com.twilio.music.electronica';
-const waitSoundUrl='http://hyperspacecraft.net//Sheena%20Easton%20-%20Telephone%20HQHD.mp3';
+const waitSoundUrl='http://tentacle.net/home/meme/hyper_html/music/Loya---Rozi-Temno-Alie-Klubnaya-Volna-Project-Remix-Bez-nazvaniya(freemuzichka.com).mp3';
 //const waitSoundUrl='https://freesound.org/data/previews/86/86684_1390811-lq.mp3';
 const waitUrl=process.env.PHONETREETESTER_URL+'ivr/wait';
 const querystring=require('querystring');
