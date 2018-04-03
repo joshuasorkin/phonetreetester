@@ -7,7 +7,7 @@
 //router/handler abstraction
 
 //todo: refactor methods like buildGetUrl() and sayAlice() into SRO-observant files/classes
-//todo: remove versions from source control containing hyperspacecraft.net references, freesound.org, and phone numbers (use '[+]\d{10}' regex)
+//todo: remove versions from source control containing hyperspacecraft.net references, freesound.org, tentacle.net, and phone numbers (use '[+]\d{10}' regex)
 
 //todo: add authorization checking, so only requests from twilio will be processed--can I do that systemwide?
 
@@ -26,7 +26,7 @@ const pool=new Pool({
 	ssl:true
 });
 //const waitSoundUrl='http://twimlets.com/holdmusic?Bucket=com.twilio.music.electronica';
-const waitSoundUrl='http://tentacle.net/home/meme/hyper_html/music/Loya---Rozi-Temno-Alie-Klubnaya-Volna-Project-Remix-Bez-nazvaniya(freemuzichka.com).mp3';
+const waitSoundUrl='http://hyperspacecraft.net/music/Loya---Rozi-Temno-Alie-Klubnaya-Volna-Project-Remix-Bez-nazvaniya(freemuzichka.com).mp3';
 //const waitSoundUrl='https://freesound.org/data/previews/86/86684_1390811-lq.mp3';
 const waitUrl=process.env.PHONETREETESTER_URL+'ivr/wait';
 const querystring=require('querystring');
