@@ -408,9 +408,12 @@ exports.messageOtherUserAboutConferenceControl=function(params){
 }
 
 exports.listConferences=function listConferences(){
-	client.conferences.each((conference) => {
-		console.log("list conferences: " + conference.status);
-		console.log("list conferences: " + conference.friendly_name);
+	
+	const opts = {status: 'in-progress'};
+	
+	client.conferences.each(opts,(conference) => {
+		console.log("list conferences status: " + conference.status);
+		console.log("list conferences friendlyname: " + conference.friendly_name);
 	});
 }
 
