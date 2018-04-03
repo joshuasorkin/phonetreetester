@@ -166,9 +166,16 @@ router.get('/statusChange',(req,res)=> {
 
 router.get('/statusChangeConference',(req,res)=>{
 	status=req.query.StatusCallbackEvent;
+	//note that FriendlyName is capitalized as this incoming parameter
+	//but friendlyName as a property of conference when retrieved via client.conferences()
+	friendlyName=req.query.FriendlyName;
+	
+	/*
 	if (status=="participant-join"){
-		handler.listConferences();
+		handler.listConferences(friendlyName);
 	}
+	*/
+	
 	console.log("/statusChangeConference: status has changed to "+status);
 	sendValue=handler.statusChangeConference(status);
 	if (sendValue!=null){
