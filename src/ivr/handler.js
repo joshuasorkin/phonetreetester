@@ -266,8 +266,11 @@ exports.guestCallsHost=function guestCallsHost(params){
 	baseUrl=process.env.PHONETREETESTER_URL+'ivr/callHost';
 	console.log("guestCallsHost: baseUrl "+baseUrl);
 	
-	//todo: find more secure source of unique conference ID (maybe hash of sid)
-	params.conferenceName=params.sid;
+	//todo: find more secure source of unique conference ID (maybe hash of sid plus timestamp)
+	//we append timestamp because if we just use sid hash then we'll get the same conference ID if the guest
+	//contacts multiple hosts on the same call, and we want to have a unique conference ID for each guest/host interaction
+	timestamp=Date.now();
+	params.conferenceName=params.sid+timestamp;
 	
 	//actual value of hostPhoneNumber will be used here in production
 	//but during early testing we send to process.env.CELL_PHONE_NUMBER;
@@ -423,6 +426,8 @@ exports.listConferences=function listConferences(friendlyName){
 
 
 
+//todo: maybe store conference participants in a table
+//ConferenceParticipant(userId,conferenceName)
 exports.redirectParticipantsToMainMenu=function(params){
 
 	//todo: specify params for each participant, as each one has a separate sid and exitStatus
