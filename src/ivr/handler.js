@@ -435,28 +435,21 @@ exports.redirectParticipantsToMainMenu=function(params){
 	postConferenceUrl='/ivr/postConference';
 	url=addArrayToGetRequest(postConferenceUrl,params,"params");
 	console.log('redirectParticipantsToMainMenu: url '+url);
-	response=new VoiceResponse();
-	response.say("redirect participants to main menu");
 	
 	console.log('redirectParticipantsToMainMenu: about to fetch conferences');
 	client.conferences.each({friendlyName:params.conferenceName,
-								status:'in-progress'},(conf)=>{
+							status:'in-progress'},(conf)=>{
 								console.log('redirectParticipantsToMainMenu: conf FriendlyName '+conf.friendlyName);		
+								conf.participants.each(participant=>{
+									CallSid=participant.CallSid;
+									console.log('redirectParticipantsToMainMenu: participant CallSid '+CallSid);
+									client.calls(CallSid).update({
+										Url: url,
+										Method:'GET',
+									});
+									// assigning postconferenceUrl: if participant is guest (we may need a global object or database to track this) then it is defined as rateHostUrl...should host rate guest? 
+								});
 	});
-
-	return response.toString();
-	/*
-	conf.participants.each(participant=>{
-		CallSid=participant.CallSid;
-		console.log('redirectParticipantsToMainMenu: participant CallSid '+CallSid);
-		client.calls(CallSid).update({
-			Url: url,
-			Method:'GET',
-		});
-	  // assigning postconferenceUrl: if participant is guest (we may need a global object or database to track this) then it is defined as rateHostUrl...should host rate guest? 
-	});
-	*/
-
 }
 
 exports.postConference=function(params){
