@@ -438,7 +438,8 @@ exports.redirectParticipantsToMainMenu=function(params){
 								status:'in-progress'}).fetch()
 	.then(conf=>{
 		console.log('redirectParticipantsToMainMenu: conf FriendlyName '+conf.friendlyName);
-	});
+	})
+	.catch(err=>console.log('redirectParticipantsToMainMenu: error '+err.toString()););
 
 	return response.toString();
 	/*
