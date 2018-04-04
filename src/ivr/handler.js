@@ -420,6 +420,24 @@ exports.listConferences=function listConferences(friendlyName){
 	});
 }
 
+function getConference(friendlyName){
+	const opts = {status: 'in-progress',
+					friendlyName:friendlyName};
+	return new Promise(function(resolve,reject){
+			client.conferences((err,res)=>{
+				if (err){
+					console.log("error");
+					reject(res);
+				}
+				else{
+					console.log("non-null");
+					resolve(res.rows[0]);
+				}
+			});
+		});
+}
+}
+
 
 exports.redirectParticipantsToMainMenu=function(params){
 
@@ -430,10 +448,16 @@ exports.redirectParticipantsToMainMenu=function(params){
 	console.log('redirectParticipantsToMainMenu: url '+url);
 	response=new VoiceResponse();
 	response.say("redirect participants to main menu");
+	
+
+	client.conferences.fetch({friendlyName:params.conferenceName,
+								status:'in-progress')
+	.then(conf=>{
+		console.log('redirectParticipantsToMainMenu: conf FriendlyName '+conf.friendlyName);
+	});
+
 	return response.toString();
 	/*
-	conf=client.conferences(params.conferenceName);
-	console.log('redirectParticipantsToMainMenu: conf FriendlyName '+conf.FriendlyName);
 	conf.participants.each(participant=>{
 		CallSid=participant.CallSid;
 		console.log('redirectParticipantsToMainMenu: participant CallSid '+CallSid);
