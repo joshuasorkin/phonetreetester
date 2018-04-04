@@ -439,12 +439,10 @@ exports.redirectParticipantsToMainMenu=function(params){
 	response.say("redirect participants to main menu");
 	
 	console.log('redirectParticipantsToMainMenu: about to fetch conferences');
-	client.conferences({friendlyName:params.conferenceName,
-								status:'in-progress'}).fetch()
-	.then(conf=>{
-		console.log('redirectParticipantsToMainMenu: conf FriendlyName '+conf.friendlyName);
-	})
-	.catch(err=>console.log('redirectParticipantsToMainMenu: error '+err.toString()));
+	client.conferences.each({friendlyName:params.conferenceName,
+								status:'in-progress'},(conf)=>{
+								console.log('redirectParticipantsToMainMenu: conf FriendlyName '+conf.friendlyName);		
+	});
 
 	return response.toString();
 	/*
