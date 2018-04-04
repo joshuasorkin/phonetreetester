@@ -438,7 +438,7 @@ exports.redirectParticipantsToMainMenu=function(params){
 	response=new VoiceResponse();
 	response.say("redirect participants to main menu");
 	
-
+	console.log('redirectParticipantsToMainMenu: about to fetch conferences');
 	client.conferences({friendlyName:params.conferenceName,
 								status:'in-progress'}).fetch()
 	.then(conf=>{

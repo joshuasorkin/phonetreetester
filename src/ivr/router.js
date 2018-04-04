@@ -205,6 +205,7 @@ router.get('/handleResponseToConferenceControl',(req,res)=>{
 			break;
 		case '2':
 			responseStr=handler.buildPreMainMenuGather(params);
+			console.log("/handleResponseToConferenceControl: about to redirectParticipantsToMainMenu");
 			handler.redirectParticipantsToMainMenu(params);
 			break;
 		default:
