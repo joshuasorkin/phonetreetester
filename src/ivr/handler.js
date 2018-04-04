@@ -434,8 +434,8 @@ exports.redirectParticipantsToMainMenu=function(params){
 	response.say("redirect participants to main menu");
 	
 
-	client.conferences.fetch({friendlyName:params.conferenceName,
-								status:'in-progress'})
+	client.conferences({friendlyName:params.conferenceName,
+								status:'in-progress'}).fetch()
 	.then(conf=>{
 		console.log('redirectParticipantsToMainMenu: conf FriendlyName '+conf.friendlyName);
 	});
