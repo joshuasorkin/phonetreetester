@@ -427,6 +427,18 @@ exports.listParticipants=function(ConferenceSid){
 	client.conferences(ConferenceSid).participants.each(participant => console.log(participant.muted));
 }
 
+redirectParticipantsToMainMenu_byConferenceSid=function(ConferenceSid,params){
+	postConferenceUrl='/ivr/postConference';
+	url=addArrayToGetRequest(postConferenceUrl,params,"params");
+	console.log('redirectParticipantsToMainMenu_byConferenceSid: url '+url);
+	client.conferences(ConferenceSid).participants.each(participant => {
+		console.log("redirectParticipantsToMainMenu_byConferenceSid: redirecting participant "+participant.CallSid);
+		client.calls(participant.CallSid).update({
+										Url: url,
+										Method:'GET',
+									});
+	});
+}
 
 
 //todo: maybe store conference participants in a table
@@ -443,9 +455,11 @@ exports.redirectParticipantsToMainMenu=function(params){
 	client.conferences.each({friendlyName:params.conferenceName,
 							status:'in-progress'},(conf)=>{
 								console.log('redirectParticipantsToMainMenu: conf FriendlyName '+conf.friendlyName);
+								console.log('redirectParticipantsToMainMenu: conf Sid '+conf.sid);
+
 								confSid=conf.sid;
 								exports.listParticipants(confSid);
-								
+								redirectParticipantsToMainMenu_byConferenceSid(confSid);
 								/*
 								conf.participants.each(participant=>{
 									CallSid=participant.CallSid;
