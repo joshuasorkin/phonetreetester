@@ -432,8 +432,12 @@ redirectParticipantsToMainMenu_byConferenceSid=function(ConferenceSid,params){
 	url=addArrayToGetRequest(postConferenceUrl,params,"params");
 	console.log('redirectParticipantsToMainMenu_byConferenceSid: url '+url);
 	client.conferences(ConferenceSid).participants.each(participant => {
-		console.log("redirectParticipantsToMainMenu_byConferenceSid: redirecting participant "+participant.CallSid);
-		client.calls(participant.CallSid).update({
+		console.log("redirectParticipantsToMainMenu_byConferenceSid: listing participant properties: ");
+		Object.entries(participant).forEach(
+			([key, value]) => console.log(key, value)
+		);
+		console.log("redirectParticipantsToMainMenu_byConferenceSid: redirecting participant "+participant.callSid);
+		client.calls(participant.callSid).update({
 										Url: url,
 										Method:'GET',
 									});
@@ -459,7 +463,7 @@ exports.redirectParticipantsToMainMenu=function(params){
 
 								confSid=conf.sid;
 								exports.listParticipants(confSid);
-								redirectParticipantsToMainMenu_byConferenceSid(confSid);
+								redirectParticipantsToMainMenu_byConferenceSid(confSid,params);
 								/*
 								conf.participants.each(participant=>{
 									CallSid=participant.CallSid;
