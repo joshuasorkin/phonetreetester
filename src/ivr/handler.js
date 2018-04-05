@@ -423,6 +423,9 @@ exports.listConferences=function listConferences(friendlyName){
 	});
 }
 
+exports.listParticipants=function(ConferenceSid){
+	client.conferences(ConferenceSid).participants.each(participant => console.log(participant.muted));
+}
 
 
 
@@ -439,7 +442,11 @@ exports.redirectParticipantsToMainMenu=function(params){
 	console.log('redirectParticipantsToMainMenu: about to fetch conferences');
 	client.conferences.each({friendlyName:params.conferenceName,
 							status:'in-progress'},(conf)=>{
-								console.log('redirectParticipantsToMainMenu: conf FriendlyName '+conf.friendlyName);		
+								console.log('redirectParticipantsToMainMenu: conf FriendlyName '+conf.friendlyName);
+								confSid=conf.sid;
+								exports.listParticipants(confSid);
+								
+								/*
 								conf.participants.each(participant=>{
 									CallSid=participant.CallSid;
 									console.log('redirectParticipantsToMainMenu: participant CallSid '+CallSid);
@@ -449,6 +456,7 @@ exports.redirectParticipantsToMainMenu=function(params){
 									});
 									// assigning postconferenceUrl: if participant is guest (we may need a global object or database to track this) then it is defined as rateHostUrl...should host rate guest? 
 								});
+								*/
 	});
 }
 
