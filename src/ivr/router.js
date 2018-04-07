@@ -28,6 +28,8 @@ router.post('/welcome_promise',(req,res) => {
 	var params={};
 	params.id=null;
 	params.sid=sid;
+	params.phonenumber=fromNum;
+	console.log("/welcome_promise: phonenumber "+params.phonenumber);
 	db.getUser_promise(fromNum).then(value=>{
 		console.log("/welcome_promise: first then");
 		if(value!=null){

@@ -40,7 +40,7 @@ const pool=new Pool({
 	ssl:true
 });
 //const waitSoundUrl='http://twimlets.com/holdmusic?Bucket=com.twilio.music.electronica';
-const waitSoundUrl='http://hyperspacecraft.net/music/Loya---Rozi-Temno-Alie-Klubnaya-Volna-Project-Remix-Bez-nazvaniya(freemuzichka.com).mp3';
+const waitSoundUrl='http://hyperspacecraft.net/music/tetraphone.mp3';
 //const waitSoundUrl='https://freesound.org/data/previews/86/86684_1390811-lq.mp3';
 const waitUrl=process.env.PHONETREETESTER_URL+'ivr/wait';
 const querystring=require('querystring');
@@ -246,8 +246,13 @@ exports.guestCallsHost=function guestCallsHost(params){
 	params.conferenceName=params.sid+timestamp;
 	
 	//actual value of hostPhoneNumber will be used here in production
-	//but during early testing we send to process.env.CELL_PHONE_NUMBER;
-	params.hostPhoneNumber=process.env.CELL_PHONE_NUMBER;
+	//but during early testing we send to process.env.CELL_PHONE_NUMBER
+	//whenever there is a call from the google voice number
+	if (params.phonenumber==process.env.GVOICE_PHONE_NUMBER)
+	{
+		console.log("guestCallsHost: setting cell phone number");
+		params.hostPhoneNumber=process.env.CELL_PHONE_NUMBER;
+	}
 	
 	url=addArrayToGetRequest(baseUrl,params,"params");
 	console.log("guestCallsHost: url "+url);
