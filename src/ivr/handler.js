@@ -428,7 +428,7 @@ exports.listParticipants=function(ConferenceSid){
 }
 
 redirectParticipantsToMainMenu_byConferenceSid=function(ConferenceSid,params){
-	postConferenceUrl=process.env.PHONETREETESTER_URL+'/ivr/postConference';
+	postConferenceUrl=process.env.PHONETREETESTER_URL+'ivr/postConference';
 	url=addArrayToGetRequest(postConferenceUrl,params,"params");
 	console.log('redirectParticipantsToMainMenu_byConferenceSid: url '+url);
 	client.conferences(ConferenceSid).participants.each(participant => {
@@ -451,7 +451,8 @@ exports.redirectParticipantsToMainMenu=function(params){
 
 	//todo: specify params for each participant, as each one has a separate sid and exitStatus
 	
-	postConferenceUrl=process.env.PHONETREETESTER_URL+'/ivr/postConference';
+	//important: has to be absolute url, not relative
+	postConferenceUrl=process.env.PHONETREETESTER_URL+'ivr/postConference';
 	url=addArrayToGetRequest(postConferenceUrl,params,"params");
 	console.log('redirectParticipantsToMainMenu: url '+url);
 	
