@@ -438,9 +438,12 @@ redirectParticipantsToMainMenu_byConferenceSid=function(ConferenceSid,params){
 		);
 		console.log("redirectParticipantsToMainMenu_byConferenceSid: redirecting participant "+participant.callSid);
 		client.calls(participant.callSid).update({
-										Url: url,
-										Method:'GET',
-									});
+										url: url,
+										method:'GET',
+									})
+		.catch(error=>{
+			console.log("redirectParticipantsToMainMenu_byConferenceSid: error "+error.toString());
+		});
 	});
 }
 
