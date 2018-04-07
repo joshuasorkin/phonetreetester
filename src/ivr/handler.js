@@ -7,9 +7,23 @@
 //router/handler abstraction
 
 //todo: refactor methods like buildGetUrl() and sayAlice() into SRO-observant files/classes
+
 //todo: remove versions from source control containing hyperspacecraft.net references, freesound.org, tentacle.net, and phone numbers (use '[+]\d{10}' regex)
 
 //todo: add authorization checking, so only requests from twilio will be processed--can I do that systemwide?
+
+//todo: define user parameter set more rigorously.  but how can we impose control on that,
+//given that ultimately we're not actually passing an object around, we're just passing a set of parameters?
+//maybe have a User object that we instantiate each time we deserialize the parameters.
+//and we exclusively CRUD this object's parameters with built-in methods:
+//- user = new User(url);  //deserializes the parameter array from the url and constructs the object
+//- sid=user.read('sid');
+//- user.update('sid','ablk0293r0209320');
+//- url=user.serialize(baseUrl); //returns the url with the serialized parameter array 
+
+//todo: once User class has been defined, regex search all instances of "params.\w+\s*[=]" and "[=]\s*params" 
+//and replace with user.update() and user.read() respectively
+
 
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const client=require('twilio')(
@@ -99,20 +113,6 @@ exports.buildPreMainMenuGather=function buildPreMainMenuGather(params){
 	var voiceResponse = new VoiceResponse();
 	
 	console.log("buildPreMainMenuGather: params "+JSON.stringify(params));
-
-	/*
-	params={'sid':sid}
-	url=buildGetUrl('/ivr/menu',params);
-
-	const gather = voiceResponse.gather({
-		action: url,
-		numDigits: '1',
-		method: 'GET',
-		timeout: 10
-	});
-	sayAlice(gather,languageConfig,"Welcome to Vent.  Press 1 to call a host.  Press 2 to set your own host interval.");
-	//gather.play({loop: 3}, bodyUrl);
-	*/
 	
 	addPreMainMenuGather(voiceResponse,params);
 
@@ -137,11 +137,7 @@ exports.getArrayFromGetRequest=function(req,paramArrayName){
 	return JSON.parse(req.query[paramArrayName]);
 }
 
-//should change this so that we're passing in a 'user' parameter that is the array of parameters.
-//maybe this indicates that a standardized user params data structure would be helpful.
-//need to decide on schema: what are all the properties that would be useful for a 'user' array?
 function addPreMainMenuGather(voiceResponse,params){
-	//url=buildGetUrl('/ivr/menu',params);
 	url=addArrayToGetRequest('/ivr/menu',params,'params');
 	
 	console.log("addPreMainMenuGather: url "+url);
@@ -191,29 +187,6 @@ exports.exitTwiml=function exitTwiml(){
 	console.log("exitTwiml: str "+str);
 	return str;
 }
-
-/*
-exports.menu = function menu(digit,sid,userId,exitStatus) {
-	console.log("menu: starting");
-	console.log("menu: digit "+digit);
-  var responseTwiml;
-  switch(digit){
-	case '1':
-		console.log("menu: chose 1");
-		responseTwiml=guestCallsHost(sid);
-		break;
-	case '2':
-		responseTwiml=switchHostStatus(exitStatus,sid,userId);
-		break;
-	case '3':
-		responseTwiml=exitTwiml();
-	//default:
-	//	responseTwiml=redirectWelcome();
-	//	break;
-  }
-  return responseTwiml;
-};
-*/
 
 exports.statusChange=function statusChange(status){
 	console.log("statusChange: status "+status);
@@ -341,7 +314,11 @@ exports.addConferenceToResponse=function addConferenceToResponse(response,params
 	return response.toString();
 }
 
-//todo:this function needs the userParameter array to pass to handleResponseToConferenceControl
+//todo: add options for:
+//-random hint
+//--guest: "what do you wish you could tell everyone?"
+//--host: "repeat what the guest just said, and ask them if you understood them correctly"
+//-guest: transfer to another host
 exports.conferenceControl=function conferenceControl(params,isUserError){
 	const response=new VoiceResponse();	
 	if (isUserError){
@@ -428,6 +405,7 @@ exports.listParticipants=function(ConferenceSid){
 }
 
 redirectParticipantsToMainMenu_byConferenceSid=function(ConferenceSid,params){
+	// assigning postconferenceUrl: if participant is guest (we may need a global object or database to track this) then it is defined as rateHostUrl...should host rate guest?
 	postConferenceUrl=process.env.PHONETREETESTER_URL+'ivr/postConference';
 	url=addArrayToGetRequest(postConferenceUrl,params,"params");
 	console.log('redirectParticipantsToMainMenu_byConferenceSid: url '+url);
@@ -468,17 +446,6 @@ exports.redirectParticipantsToMainMenu=function(params){
 								confSid=conf.sid;
 								exports.listParticipants(confSid);
 								redirectParticipantsToMainMenu_byConferenceSid(confSid,params);
-								/*
-								conf.participants.each(participant=>{
-									CallSid=participant.CallSid;
-									console.log('redirectParticipantsToMainMenu: participant CallSid '+CallSid);
-									client.calls(CallSid).update({
-										Url: url,
-										Method:'GET',
-									});
-									// assigning postconferenceUrl: if participant is guest (we may need a global object or database to track this) then it is defined as rateHostUrl...should host rate guest? 
-								});
-								*/
 	});
 }
 
