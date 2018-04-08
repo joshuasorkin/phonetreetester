@@ -19,7 +19,7 @@
 //- user = new User(url);  //deserializes the parameter array from the url and constructs the object
 //- sid=user.read('sid');
 //- user.update('sid','ablk0293r0209320');
-//- url=user.serialize(baseUrl); //returns the url with the serialized parameter array 
+//- url=user.serialize(baseUrl); //returns the url with the serialized parameter array, using addArrayToGetRequest()
 
 //todo: once User class has been defined, regex search all instances of "params.\w+\s*[=]" and "[=]\s*params" 
 //and replace with user.update() and user.read() respectively
@@ -389,7 +389,10 @@ exports.wait=function wait(){
 }
 
 exports.messageOtherUserAboutConferenceControl=function(params){
-	
+	response=new VoiceResponse();
+	sayAlice(response,languageConfig,"The other user is accessing conference control.  Please wait for them to return.");
+	exports.addConferenceToResponse(response,params);
+	return response.toString();
 }
 
 exports.listConferences=function listConferences(friendlyName){
@@ -453,6 +456,40 @@ exports.redirectParticipantsToMainMenu=function(params){
 								redirectParticipantsToMainMenu_byConferenceSid(confSid,params);
 	});
 }
+
+exports.modifyOtherConferenceParticipants=function(params,baseUrl){
+	
+	//todo: specify params for each participant, as each one has a separate sid and exitStatus
+		
+	console.log('modifyOtherConferenceParticipants: about to fetch conferences');
+	client.conferences.each({friendlyName:params.conferenceName,
+							status:'in-progress'},(conf)=>{
+								console.log('modifyOtherConferenceParticipants: conf FriendlyName '+conf.friendlyName);
+								console.log('modifyOtherConferenceParticipants: conf Sid '+conf.sid);
+
+								confSid=conf.sid;
+								exports.listParticipants(confSid);
+								url=addArrayToGetRequest(postConferenceUrl,params,"params");
+								console.log('modifyOtherConferenceParticipants: url '+url);
+								client.conferences(ConferenceSid).participants.each(participant => {
+									console.log("modifyOtherConferenceParticipants: listing participant properties: ");
+									Object.entries(participant).forEach(
+										([key, value]) => console.log(key, value)
+									);
+									console.log("modifyOtherConferenceParticipants: redirecting participant "+participant.callSid);
+									client.calls(participant.callSid).update({
+																	url: url,
+																	method:'GET',
+																})
+									.catch(error=>{
+										console.log("modifyOtherConferenceParticipants: error "+error.toString());
+									});
+								});
+	});
+}
+
+
+
 
 exports.postConference=function(params){
 	response=new VoiceResponse();

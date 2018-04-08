@@ -153,6 +153,10 @@ router.get('/handleHostResponseToOfferedGuest',(req,res)=>{
 	res.send(handler.handleHostResponseToOfferedGuest(digits,params));
 });
 
+
+
+
+
 router.get('/statusChange',(req,res)=> {
 	status=req.query.CallStatus;
 	console.log("/statusChange: status has changed to "+req.query.CallStatus);
@@ -189,7 +193,13 @@ router.get('/conferenceControl',(req,res)=>{
 	var params=handler.getArrayFromGetRequest(req,'params');
 	console.log("/ivr/conferenceControl: params "+JSON.stringify(params));
 	res.send(handler.conferenceControl(params,false));
-	//handler.messageOtherUserAboutConferenceControl(params);
+	handler.modifyOtherConferenceParticipants(params,process.env.PHONETREETESTER_URL+'ivr/waitForConferenceControlReturn');
+});
+
+router.get('/waitForConferenceControlReturn',(req,res)=>{
+	var params=handler.getArrayFromGetRequest(req,'params');
+	console.log("/ivr/waitForConferenceControlReturn: params "+JSON.stringify(params));
+	res.send(handler.messageOtherUserAboutConferenceControl(params));
 });
 
 router.get('/handleResponseToConferenceControl',(req,res)=>{
@@ -208,7 +218,7 @@ router.get('/handleResponseToConferenceControl',(req,res)=>{
 		case '2':
 			responseStr=handler.buildPreMainMenuGather(params);
 			console.log("/handleResponseToConferenceControl: about to redirectParticipantsToMainMenu");
-			handler.redirectParticipantsToMainMenu(params);
+			handler.modifyOtherConferenceParticipants(params,process.env.PHONETREETESTER_URL+'ivr/postConference');
 			break;
 		default:
 			responseStr=handler.conferenceControl(params,true);
