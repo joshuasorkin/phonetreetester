@@ -392,6 +392,7 @@ exports.messageOtherUserAboutConferenceControl=function(params){
 	response=new VoiceResponse();
 	sayAlice(response,languageConfig,"The other user is accessing conference control.  Please wait for them to return.");
 	exports.addConferenceToResponse(response,params);
+	console.log('messageOtherUserAboutConferenceControl: response '+response.toString());
 	return response.toString();
 }
 
