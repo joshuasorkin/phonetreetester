@@ -483,8 +483,11 @@ exports.modifyOtherConferenceParticipants=function(params,baseUrl){
 																	method:'GET',
 																})
 									.catch(error=>{
-										console.log("modifyOtherConferenceParticipants: error "+error.toString());
+										console.log("modifyOtherConferenceParticipants: error from calls.update "+error.toString());
 									});
+								})
+								.catch(error=>{
+									console.log("modifyOtherConferenceParticipants: error from participants.each "+error.toString());
 								});
 	});
 }
