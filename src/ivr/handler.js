@@ -472,7 +472,7 @@ exports.modifyOtherConferenceParticipants=function(params,baseUrl){
 								exports.listParticipants(confSid);
 								url=addArrayToGetRequest(baseUrl,params,"params");
 								console.log('modifyOtherConferenceParticipants: url '+url);
-								client.conferences(ConferenceSid).participants.each(participant => {
+								client.conferences(confSid).participants.each(participant => {
 									console.log("modifyOtherConferenceParticipants: listing participant properties: ");
 									Object.entries(participant).forEach(
 										([key, value]) => console.log(key, value)
