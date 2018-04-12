@@ -193,8 +193,8 @@ router.get('/conferenceControl',(req,res)=>{
 	var params=handler.getArrayFromGetRequest(req,'params');
 	console.log("/ivr/conferenceControl: params "+JSON.stringify(params));
 	res.send(handler.conferenceControl(params,false));
-	//console.log("/ivr/conferenceControl: about to modify other participants");
-	//handler.modifyOtherConferenceParticipants(params,process.env.PHONETREETESTER_URL+'ivr/waitForConferenceControlReturn');
+	console.log("/ivr/conferenceControl: about to modify other participants");
+	handler.modifyOtherConferenceParticipants(params,process.env.PHONETREETESTER_URL+'ivr/waitForConferenceControlReturn');
 });
 
 router.get('/waitForConferenceControlReturn',(req,res)=>{
