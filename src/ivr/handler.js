@@ -293,7 +293,7 @@ function setHostInterval(){
 	return response.toString();
 }
 
-exports.addConferenceToResponse=function addConferenceToResponse(response,params){
+exports.addConferenceToResponse=function addConferenceToResponse(response,params,useHoldMusic){
 	//initialize response if this is its first set of verbs, e.g. when called in /ivr/handleResponseToConferenceControl
 	if (response==null){
 		response=new VoiceResponse();
@@ -307,11 +307,19 @@ exports.addConferenceToResponse=function addConferenceToResponse(response,params
 		method: 'GET',
 		hangupOnStar: true
 	});
+	
+	if(useHoldMusic){
+		holdUrl=waitUrl;
+	}
+	else{
+		holdUrl='';
+	}
+	
 	dial.conference(params.conferenceName,{
 		statusCallbackEvent:'start end join leave',
 		statusCallback:process.env.PHONETREETESTER_URL+'ivr/statusChangeConference',
 		statusCallbackMethod:'GET',
-		waitUrl:waitUrl,
+		waitUrl:holdUrl,
 		waitMethod:'GET'
 	});
 	
@@ -335,7 +343,8 @@ exports.conferenceControl=function conferenceControl(params,isUserError){
 	url=addArrayToGetRequest(baseUrl,params,"params");
 	gather=response.gather({
 		action:url,
-		method:'GET'
+		method:'GET',
+		timeout:20
 	});
 	return response.toString();
 }

@@ -214,7 +214,7 @@ router.get('/handleResponseToConferenceControl',(req,res)=>{
 	//todo: move this switch block into handler.js
 	switch (digit){
 		case '1':
-			responseStr=handler.addConferenceToResponse(response,params);
+			responseStr=handler.addConferenceToResponse(response,params,false);
 			break;
 		case '2':
 			responseStr=handler.buildPreMainMenuGather(params);
