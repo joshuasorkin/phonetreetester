@@ -60,13 +60,22 @@ db.getUser('+19991112222', function(err, user) {
 //testGetUser('+12348290823');
 //db.destruct();
 
-var number=Math.floor(Math.random()*90000) + 10000;
-testAddUser(number);
+//var number=Math.floor(Math.random()*90000) + 10000;
+//testAddUser(number);
 //testGetAvailableUsers();
 //testGetAllUsers();
+testAddConnection();
+
 
 function testAddUser(phonenumber){
 	db.addUser(phonenumber).then(val=>{console.log(val.rows[0])});
+}
+
+function.testAddConnection(){
+	db.addConnection(1,33,'guestCallSid',
+							'hostCallSid','conferenceName')
+	.then(val=>{console.log(val.rows[0]});
+								
 }
 
 

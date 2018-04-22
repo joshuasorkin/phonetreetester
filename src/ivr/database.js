@@ -1,4 +1,6 @@
 
+
+
 const {Pool,Client}=require('pg');
 
 const pool=new Pool({
@@ -59,6 +61,29 @@ module.exports = {
 		});
 		
 	},
+	addConnection: function(guestUserId,hostUserId,guestCallSid,
+							hostCallSid,conferenceName){
+		return new Promise(function(resolve,reject){
+			queryStr='insert into connection (guestUserId,hostUserId,guestCallSid,hostCallSid,conferenceName,hostResult) values ($1,$2,$3,$4,$5,$6) returning *';
+			console.log(queryStr);
+			pool.query(queryStr,
+			[guestUserId,hostUserId,guestCallSid,hostCallSid,conferenceName,'requested'],
+			(err,res)=>{
+				if (err){
+					console.log("addConnection: error "+err.toString());
+					reject(err);
+				}
+				else{
+					console.log("addConnection: success");
+					console.log("addConnection: res "+res.rows[0]);
+					resolve(res);
+				}
+			});
+		});
+		
+	},
+	
+	
 	getRandomAvailableUser: function(){
 		return new Promise(function(resolve,reject){
 			//queryStr='select * from (select * from users where status=\'available\' and now()>=starttime and now()<=endtime) order by random()';

@@ -89,6 +89,8 @@ router.get('/menu', (req, res) => {
   //and then that way it can be called directly to build twiml that "returns to main menu",
   //as opposed to needing to make a GET request whenever we want to get the twiml resulting from processing a digit choice
   //although I guess we have to do that anyways if it results from a <gather>
+  //the call to db.getRandomAvailableUser() should be moved to handler
+  //because we need to be able to call it again when a potential host rejects call
   switch(digit){
 	case '1':
 		console.log("menu: chose 1");
@@ -161,6 +163,16 @@ router.get('/statusChange',(req,res)=> {
 	status=req.query.CallStatus;
 	console.log("/statusChange: status has changed to "+req.query.CallStatus);
 	console.log("/statusChange: call came from "+req.query.Caller);
+	
+	//should this only happen if incoming status is 'completed'?  when else
+	//would we update the user status?
+
+	//todo: how do we detect that a potential host has rejected their offer?
+	//action will be performed in handleHostResponseToOfferedGuest
+	//but now I'm thinking it should be handled here, with a db select from connectionLog
+	//(see comments in handleHostResponseToOfferedGuest)
+
+
 	db.updateUserStatusToExitStatusFromPhoneNumber(req.query.Caller).then(value=>{
 		sendValue=handler.statusChange(status);
 		if (sendValue!=null){

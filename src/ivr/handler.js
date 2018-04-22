@@ -24,6 +24,14 @@
 //todo: once User class has been defined, regex search all instances of "params.\w+\s*[=]" and "[=]\s*params" 
 //and replace with user.update() and user.read() respectively
 
+//so i need to figure out how to loop through calling a list of potential hosts.
+//we need to refresh the list in realtime so no point in compiling an array and then iterating through it,
+//a user might have switched to unavailable in the meantime.
+//instead, how about after a potential host rejects call, we redirect to query a new potential host?
+//or what if we just redirected the guest to ivr/menu?Digits=1 ?
+//maybe we could have a variable passed in that determines whether the
+//"please wait" message is the first-time one or a "please continue to wait"
+
 
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 const client=require('twilio')(
@@ -273,11 +281,24 @@ exports.guestCallsHost=function guestCallsHost(params){
 			
 	const response = new VoiceResponse();
 	sayAlice(response,languageConfig,"Thank you for calling Vent. Please wait while we find a host.");
-	exports.addConferenceToResponse(response,params);
+	exports.addConferenceToResponse(response,params,true);
 	responseStr=response.toString();
 	console.log("guestCallsHost: "+responseStr);
 	return responseStr;
 };
+
+function createCallToHost(url,params){
+		var call=client.calls.create({
+			url:url,
+			to: params.hostPhoneNumber,
+			from: process.env.TWILIO_PHONE_NUMBER,
+			method: 'GET',
+			statusCallback:statusCallback,
+			statusCallbackMethod:'GET',
+			statusCallbackEvent:['initiated', 'ringing', 'answered', 'completed']
+			
+		}).then(x=>console.log("guestCallsHost: logging return value of client calls create "+x));
+}
 
 exports.noHostAvailable=function noHostAvailable(params){
 	const response=new voiceResponse();
@@ -362,6 +383,23 @@ exports.callHost=function callHost(params){
 	});
 	sayAlice(gather,languageConfig,"You have a call from Vent.  Press 1 to accept.  Press 2 to refuse.");
 	sayAlice(response,languageConfig,"We didn't receive input.  Goodbye!");
+	//how do we make sure that an absence of response from potential host will
+	//cause another host to be called?
+	//maybe instead of the second sayAlice(),
+	//we could do:
+	//response.redirect('/ivr/handleHostResponseToOfferedGuest')
+	//where we add a Digits=2 parameter
+	//but then we have the problem of what happens if the potential host hangs up
+	//so maybe instead the "call next potential host" function
+	//should be called by statusChange: 'completed'
+	//how could we detect that the 'completed' resulted from a potential host who rejected the offer?
+	//see Evernote("Vent","finding a host"):
+	//we use the connectionLog table:
+	//when we reach 'completed' we can check ('select * from connectionLog where sid=='+sid)
+	//and if this entry in connectionLog has hostResult=='awaiting response'
+	//then we know that the host didn't get as far as accepting the call
+	//so we update hostResult='rejected'
+	//and query a new potential host and create a new call
 	return response.toString();
 };
 
@@ -370,11 +408,15 @@ exports.handleHostResponseToOfferedGuest=function handleHostResponseToOfferedGue
 	switch (digits){
 		case '1':
 			sayAlice(response,languageConfig,"Thank you, now connecting you to guest.");
-			exports.addConferenceToResponse(response,params);
+			exports.addConferenceToResponse(response,params,false);
 			break;
 		case '2':
 			sayAlice(response,languageConfig,"I'm sorry that we contacted you at an inconvenient time.  Goodbye.");
 			response.hangup();
+			//here is where we redirect the guest identified by params.sid
+			//so that another host will be called
+			//using
+			//client.calls(params.sid).update
 		default:
 			sayAlice(response,languageConfig,"Sorry, that's not a valid option.");
 			baseUrl='/ivr/callHost';
@@ -400,7 +442,7 @@ exports.wait=function wait(){
 exports.messageOtherUserAboutConferenceControl=function(params){
 	response=new VoiceResponse();
 	sayAlice(response,languageConfig,"The other user is accessing conference control.  Please wait for them to return.");
-	exports.addConferenceToResponse(response,params);
+	exports.addConferenceToResponse(response,params,false);
 	console.log('messageOtherUserAboutConferenceControl: response '+response.toString());
 	return response.toString();
 }
@@ -493,7 +535,8 @@ exports.modifyOtherConferenceParticipants=function(params,baseUrl){
 																})
 									.catch(error=>{
 										console.log("modifyOtherConferenceParticipants: error from calls.update "+error.toString());
-									});
+
+										});
 								})
 								.catch(error=>{
 									console.log("modifyOtherConferenceParticipants: error from participants.each "+error.toString());
