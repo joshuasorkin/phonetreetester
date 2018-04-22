@@ -74,7 +74,7 @@ function testAddUser(phonenumber){
 function testAddConnection(){
 	db.addConnection(1,33,'guestCallSid',
 							'hostCallSid','conferenceName')
-	.then(val=>{console.log(val.rows[0]});
+	.then(val=>{console.log(val.rows[0])});
 								
 }
 
