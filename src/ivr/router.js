@@ -139,7 +139,16 @@ router.get('/callHost', (req, res) => {
 	
 	
 	const conferenceName=params.conferenceName;
+	const guestId=params.id;
 	const hostId=params.hostId;
+	const guestCallSid=params.sid;
+	const hostCallSid=req.query.CallSid;
+	db.addConnection(guestId,hostId,guestCallSid,hostCallSid,conferenceName)
+	.then(val=>{
+		id=val.rows[0]['id'];
+		console.log("/ivr/callHost: id of new connection "+id);
+	});
+	
 	console.log("/ivr/callHost: hostId "+hostId);
 
 	console.log("/ivr/callHost: conferenceName "+conferenceName);

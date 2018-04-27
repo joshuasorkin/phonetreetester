@@ -372,8 +372,7 @@ exports.conferenceControl=function conferenceControl(params,isUserError){
 
 exports.callHost=function callHost(params){
 	const response=new VoiceResponse();
-	
-	
+		
 	baseUrl='/ivr/handleHostResponseToOfferedGuest';
 	url=addArrayToGetRequest(baseUrl,params,"params");
 	
