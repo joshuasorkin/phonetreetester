@@ -133,6 +133,7 @@ router.get('/menu', (req, res) => {
 // GET: /ivr/callHost
 router.get('/callHost', (req, res) => {
 	console.log("reached callHost endpoint");
+	console.log("/callHost: req.query properties: "+JSON.stringify(req.query));
 	var params=handler.getArrayFromGetRequest(req,'params');
 	console.log("/ivr/callHost: params "+JSON.stringify(params));
 	
@@ -171,6 +172,8 @@ router.get('/statusChange',(req,res)=> {
 	//action will be performed in handleHostResponseToOfferedGuest
 	//but now I'm thinking it should be handled here, with a db select from connectionLog
 	//(see comments in handleHostResponseToOfferedGuest)
+	
+	
 
 
 	db.updateUserStatusToExitStatusFromPhoneNumber(req.query.Caller).then(value=>{
