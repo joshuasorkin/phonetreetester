@@ -438,6 +438,11 @@ exports.wait=function wait(){
 	return response.toString();
 }
 
+//todo: this function gets called when the other user hangs up,
+//so maybe whatever endpoint calls it should check the other user's status first
+//or maybe the statusCallback that gets called when the user hangs up should check the Connection table
+//and if there's an active conference with that user, the user who's still in conference should be transferred
+//to postConference
 exports.messageOtherUserAboutConferenceControl=function(params){
 	response=new VoiceResponse();
 	sayAlice(response,languageConfig,"The other user is accessing conference control.  Please wait for them to return.");

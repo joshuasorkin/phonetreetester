@@ -145,14 +145,14 @@ router.get('/callHost', (req, res) => {
 	const hostCallSid=req.query.CallSid;
 	db.addConnection(guestId,hostId,guestCallSid,hostCallSid,conferenceName)
 	.then(val=>{
-		id=val.rows[0]['id'];
-		console.log("/ivr/callHost: id of new connection "+id);
+		connectionId=val.rows[0]['id'];
+		console.log("/ivr/callHost: id of new connection "+connectionId);
+		params.connectionId=connectionId;
+		console.log("/ivr/callHost: hostId "+hostId);
+		console.log("/ivr/callHost: conferenceName "+conferenceName);
+		res.send(handler.callHost(params));
 	});
 	
-	console.log("/ivr/callHost: hostId "+hostId);
-
-	console.log("/ivr/callHost: conferenceName "+conferenceName);
-	res.send(handler.callHost(params));
 });
 
 // GET: /ivr/handleHostResponseToOfferedGuest
@@ -195,6 +195,9 @@ router.get('/statusChange',(req,res)=> {
 });
 
 router.get('/statusChangeConference',(req,res)=>{
+	
+	console.log("/statusChangeConference: req.query properties: "+JSON.stringify(req.query));
+	
 	status=req.query.StatusCallbackEvent;
 	//note that FriendlyName is capitalized as this incoming parameter
 	//but friendlyName as a property of conference when retrieved via client.conferences()
