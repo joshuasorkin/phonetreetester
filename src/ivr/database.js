@@ -65,7 +65,7 @@ module.exports = {
 							hostCallSid,conferenceName){
 		return new Promise(function(resolve,reject){
 			queryStr='insert into connection (guestUserId,hostUserId,guestCallSid,hostCallSid,conferenceName,hostResult) values ($1,$2,$3,$4,$5,$6) returning *';
-			console.log(queryStr);
+			console.log("addConnection: queryStr "+queryStr);
 			pool.query(queryStr,
 			[guestUserId,hostUserId,guestCallSid,hostCallSid,conferenceName,'requested'],
 			(err,res)=>{
@@ -82,6 +82,24 @@ module.exports = {
 		});
 		
 	},
+	updateConnectionIfHostJoined: function(callSid){
+		return new Promise(function(resolve,reject){
+			queryStr='update connection set hostresult=\'accepted\' where hostCallSid=\''+callSid+'\' returning *';
+			console.log("updateConnectionIfHostJoined: queryStr "+queryStr);
+			pool.query(queryStr,
+			(err,res)=>{
+				if (err){
+					console.log("updateConnectionIfHostJoined: error "+err.toString());
+				}
+				else{
+					console.log("updateConnectionIfHostJoined: success");
+					console.log("updateConnectionIfHostJoined: res "+res.rows[0]);
+					resolve(res);
+				}
+			});
+		});
+	},
+	
 	
 	
 	getRandomAvailableUser: function(){
