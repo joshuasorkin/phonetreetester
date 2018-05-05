@@ -82,9 +82,31 @@ module.exports = {
 		});
 		
 	},
-	updateConnectionIfHostJoined: function(callSid){
+	getConnectionByHostCallSid: function(hostCallSid){
+		
 		return new Promise(function(resolve,reject){
-			queryStr='update connection set hostresult=\'accepted\' where hostCallSid=\''+callSid+'\' returning *';
+			queryStr='select * from connection where hostCallSid=\''+hostCallSid+'\'';
+			console.log("getConnectionByHostCallSid: queryStr "+queryStr);
+			pool.query(queryStr,
+			(err,res)=>{
+				if (err){
+					console.log("getConnectionByHostCallSid: error "+err.toString());
+					reject(err);
+				}
+				else{
+					console.log("getConnectionByHostCallSid: success");
+					console.log("getConnectionByHostCallSid: res "+res.rows[0]);
+					resolve(res);
+				}
+			});
+		});
+		
+	},
+	
+	
+	updateConnection: function(callSid,connectionStatus){
+		return new Promise(function(resolve,reject){
+			queryStr='update connection set hostresult=\''+connectionStatus+'\' where hostCallSid=\''+callSid+'\' returning *';
 			console.log("updateConnectionIfHostJoined: queryStr "+queryStr);
 			pool.query(queryStr,
 			(err,res)=>{
