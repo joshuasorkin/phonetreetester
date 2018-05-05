@@ -168,6 +168,10 @@ router.get('/handleHostResponseToOfferedGuest',(req,res)=>{
 
 
 
+//different possible host statuses
+//requested
+//accepted
+//completed
 
 router.get('/statusChange',(req,res)=> {
 	status=req.query.CallStatus;
@@ -182,6 +186,24 @@ router.get('/statusChange',(req,res)=> {
 	//but now I'm thinking it should be handled here, with a db select from connectionLog
 	//(see comments in handleHostResponseToOfferedGuest)
 	
+	
+	
+	hostCallSid=req.query.CallSid;
+	console.log("/statusChange: hostCallSid "+hostCallSid);
+	
+	db.getConnectionByHostCallSid(hostCallSid)
+	.then(connection=>{
+		//todo: change that field name from hostresult to hoststatus
+		hoststatus=connection["hostresult"];
+		if (hoststatus=="requested"&&status=="completed"){
+			guestCallSid=connection["guestCallSid"];
+			console.log("/statusChange: host refused, going to call another");
+		}
+	})
+	.catch(err=>{
+		console.log("/statusChange: getConnectionByHostCallSid error "+err.toString());
+	});
+	//db.updateConnection(callSid,)
 	
 
 
@@ -199,15 +221,22 @@ router.get('/statusChangeConference',(req,res)=>{
 	console.log("/statusChangeConference: req.query properties: "+JSON.stringify(req.query));
 	
 	status=req.query.StatusCallbackEvent;
+	callSid=req.query.CallSid;
 	//note that FriendlyName is capitalized as this incoming parameter
 	//but friendlyName as a property of conference when retrieved via client.conferences()
 	friendlyName=req.query.FriendlyName;
 	
-	/*
-	if (status=="participant-join"){
-		handler.listConferences(friendlyName);
+	switch(status){
+		case "participant-join":
+			db.updateConnection(callSid,'accepted')
+			.catch(err=>{
+				console.log("/statusChangeConference participant-join: error "+err.toString());
+			});
+		
+			break;
+		case "participant-leave":
+			break;
 	}
-	*/
 	
 	console.log("/statusChangeConference: status has changed to "+status);
 	sendValue=handler.statusChangeConference(status);
