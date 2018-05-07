@@ -211,10 +211,11 @@ router.get('/statusChange',(req,res)=> {
 				
 				//let's just pretend that we have params accessible somehow (e.g. database call)
 				//and mock up a set to test the createCallToHost here
+				//todo: eventually we will need to replace this with actual params access
 				
 				var params={};
 				params.id=null;
-				params.sid=sid;
+				params.sid='0';
 				params.phonenumber=process.env.GVOICE_PHONE_NUMBER;
 				
 				
