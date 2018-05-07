@@ -242,46 +242,13 @@ exports.statusChangeConference=function statusChangeConference(status){
 }
 
 
-
+//creates call to host,
+//and returns Twiml for sending guest to conference
+//this function is only called when the guest initially requests their host,
+//when other host requests are made (in response to host refusing),
+//only createCallToHost() is called (in ivr/statusChange)
 exports.guestCallsHost=function guestCallsHost(params){
 
-/*
-	baseUrl=process.env.PHONETREETESTER_URL+'ivr/callHost';
-	console.log("guestCallsHost: baseUrl "+baseUrl);
-	
-	//todo: find more secure source of unique conference ID (maybe hash of sid plus timestamp)
-	//we append timestamp because if we just use sid hash then we'll get the same conference ID if the guest
-	//contacts multiple hosts on the same call, and we want to have a unique conference ID for each guest/host interaction
-	timestamp=Date.now();
-	params.conferenceName=params.sid+timestamp;
-	
-	//actual value of hostPhoneNumber will be used here in production
-	//but during early testing we send to process.env.CELL_PHONE_NUMBER
-	//whenever there is a call from the google voice number
-	if (params.phonenumber==process.env.GVOICE_PHONE_NUMBER)
-	{
-		console.log("guestCallsHost: setting cell phone number");
-		params.hostPhoneNumber=process.env.CELL_PHONE_NUMBER;
-	}
-	
-	url=addArrayToGetRequest(baseUrl,params,"params");
-	console.log("guestCallsHost: url "+url);
-	
-	statusCallback=process.env.PHONETREETESTER_URL+'ivr/statusChange';
-	console.log('guestCallsHost: statusCallback '+statusCallback);
-	
-	var call=client.calls.create({
-		url:url,
-		to: params.hostPhoneNumber,
-		from: process.env.TWILIO_PHONE_NUMBER,
-		method: 'GET',
-		statusCallback:statusCallback,
-		statusCallbackMethod:'GET',
-		statusCallbackEvent:['initiated', 'ringing', 'answered', 'completed']
-		
-	}).then(x=>console.log("guestCallsHost: logging return value of client calls create "+x));
-	
-*/
 	exports.createCallToHost(params);
 	const response = new VoiceResponse();
 	sayAlice(response,languageConfig,"Thank you for calling Vent. Please wait while we find a host.");

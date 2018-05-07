@@ -208,6 +208,16 @@ router.get('/statusChange',(req,res)=> {
 				hostId=value.rows[0].id;
 				console.log("/statusChange: hostPhoneNumber "+hostPhoneNumber);
 				console.log("/statusChange: hostId "+hostId);
+				
+				//let's just pretend that we have params accessible somehow (e.g. database call)
+				//and mock up a set to test the createCallToHost here
+				
+				var params={};
+				params.id=null;
+				params.sid=sid;
+				params.phonenumber=null;
+				
+				
 				params.hostPhoneNumber=hostPhoneNumber;
 				params.hostId=hostId;
 				handler.createCallToHost(params);
@@ -215,6 +225,8 @@ router.get('/statusChange',(req,res)=> {
 				//maybe after all that, we actually need to have params implemented in a database table
 				//so that we can update them here with a db call and then have them be accessible to the guest
 				//the next time the guest requests their own params;
+				//todo: big problem here, guest params are not sent to statusChange;
+				//that means we will definitely need a database solution or some other kind of globally accessible session
 			},error=>{
 				console.log("/menu: error "+error.toString());
 				responseTwiml=handler.noHostAvailable(params);
