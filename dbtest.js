@@ -64,7 +64,8 @@ db.getUser('+19991112222', function(err, user) {
 //testAddUser(number);
 //testGetAvailableUsers();
 //testGetAllUsers();
-testAddConnection();
+//testAddConnection();
+testgetConnectionByHostCallSid();
 
 
 function testAddUser(phonenumber){
@@ -78,6 +79,17 @@ function testAddConnection(){
 								
 }
 
+function testgetConnectionByHostCallSid(){
+	hostcallsid='CA388b1e06e287aa3fa462990c11f6d136';
+	db.getConnectionByHostCallSid(hostcallsid)
+	.then(val=>{
+		console.log("reached then");
+	})
+	.catch(err=>{
+		console.log("reached catch");
+		console.log("err: "+err.toString());
+	});
+}
 
 
 function testGetAvailableUsers(){

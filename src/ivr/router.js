@@ -193,8 +193,13 @@ router.get('/statusChange',(req,res)=> {
 	
 	db.getConnectionByHostCallSid(hostCallSid)
 	.then(connection=>{
+		console.log("/statusChange: reached getConnectionByHostCallSid then");
+		console.log("/statusChange: connection "+JSON.stringify(connection));
+		
 		//todo: change that field name from hostresult to hoststatus
 		hoststatus=connection["hostresult"];
+		console.log("/statusChange: hoststatus "+hoststatus);
+		
 		if (hoststatus=="requested"&&status=="completed"){
 			guestCallSid=connection["guestCallSid"];
 			console.log("/statusChange: host refused, going to call another");
