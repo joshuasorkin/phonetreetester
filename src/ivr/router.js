@@ -197,7 +197,7 @@ router.get('/statusChange',(req,res)=> {
 		console.log("/statusChange: connection "+JSON.stringify(connection));
 		
 		//todo: change that field name from hostresult to hoststatus
-		hoststatus=connection["hostresult"];
+		hoststatus=connection.rows[0]["hostresult"];
 		console.log("/statusChange: hoststatus "+hoststatus);
 		
 		if (hoststatus=="requested"&&status=="completed"){
