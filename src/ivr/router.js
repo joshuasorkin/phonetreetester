@@ -203,6 +203,23 @@ router.get('/statusChange',(req,res)=> {
 		if (hoststatus=="requested"&&status=="completed"){
 			guestCallSid=connection["guestCallSid"];
 			console.log("/statusChange: host refused, going to call another");
+			db.getRandomAvailableUser().then(value=>{
+				hostPhoneNumber=value.rows[0].phonenumber;
+				hostId=value.rows[0].id;
+				console.log("/statusChange: hostPhoneNumber "+hostPhoneNumber);
+				console.log("/statusChange: hostId "+hostId);
+				params.hostPhoneNumber=hostPhoneNumber;
+				params.hostId=hostId;
+				handler.createCallToHost(params);
+				//todo: how are we going to update the guest's params with the new values of hostPhoneNumber and hostId?
+				//maybe after all that, we actually need to have params implemented in a database table
+				//so that we can update them here with a db call and then have them be accessible to the guest
+				//the next time the guest requests their own params;
+			},error=>{
+				console.log("/menu: error "+error.toString());
+				responseTwiml=handler.noHostAvailable(params);
+				res.send(responseTwiml);
+			});
 		}
 	})
 	.catch(err=>{
