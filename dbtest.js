@@ -84,6 +84,7 @@ function testgetConnectionByHostCallSid(){
 	db.getConnectionByHostCallSid(hostcallsid)
 	.then(val=>{
 		console.log("reached then");
+		console.log("val: "+JSON.stringify(val));
 	})
 	.catch(err=>{
 		console.log("reached catch");
