@@ -244,8 +244,7 @@ router.get('/statusChange',(req,res)=> {
 		console.log("/statusChange: getConnectionByHostCallSid error "+err.toString());
 	});	
 
-	if(status=="completed"){
-		if 
+	if(status=="completed"){ 
 		db.updateUserStatusToExitStatusFromPhoneNumber(req.query.Caller).then(value=>{
 			sendValue=handler.statusChange(status);
 			if (sendValue!=null){
