@@ -187,65 +187,69 @@ router.get('/statusChange',(req,res)=> {
 	//but now I'm thinking it should be handled here, with a db select from connectionLog
 	//(see comments in handleHostResponseToOfferedGuest)
 	
-	
+	if (req.query.From==process.env.TWILIO_PHONE_NUMBER){
+		phonenumber=req.query.To;
+	}
+	else{
+		phonenumber=req.query.From;
+	}
 	
 	hostCallSid=req.query.CallSid;
 	console.log("/statusChange: hostCallSid "+hostCallSid);
 	
+	if (status=="completed"){
 	
-	
-	db.getConnectionByHostCallSid(hostCallSid)
-	.then(connection=>{
-		console.log("/statusChange: reached getConnectionByHostCallSid then");
-		console.log("/statusChange: connection "+JSON.stringify(connection));
-		
-		//todo: change that field name from hostresult to hoststatus
-		hoststatus=connection.rows[0]["hostresult"];
-		console.log("/statusChange: hoststatus "+hoststatus);
-		
-		if (hoststatus=="requested"&&status=="completed"){
-			guestCallSid=connection.rows[0]["guestCallSid"];
-			console.log("/statusChange: host refused, going to call another");
-			db.getRandomAvailableUser().then(value=>{
-				hostPhoneNumber=value.rows[0].phonenumber;
-				hostId=value.rows[0].id;
-				console.log("/statusChange: hostPhoneNumber "+hostPhoneNumber);
-				console.log("/statusChange: hostId "+hostId);
-				
-				//let's just pretend that we have params accessible somehow (e.g. database call)
-				//and mock up a set to test the createCallToHost here
-				//todo: eventually we will need to replace this with actual params access
-				
-				var params={};
-				params.id=connection.rows[0]["guestuserid"];
-				params.sid=guestCallSid;
-				//here we need to use params.id
-				params.phonenumber=process.env.GVOICE_PHONE_NUMBER; 
-				
-				
-				params.hostPhoneNumber=hostPhoneNumber;
-				params.hostId=hostId;
-				handler.createCallToHost(params);
-				//todo: how are we going to update the guest's params with the new values of hostPhoneNumber and hostId?
-				//maybe after all that, we actually need to have params implemented in a database table
-				//so that we can update them here with a db call and then have them be accessible to the guest
-				//the next time the guest requests their own params;
-				//todo: big problem here, guest params are not sent to statusChange;
-				//that means we will definitely need a database solution or some other kind of globally accessible session
-				
-			},error=>{
-				console.log("/menu: error "+error.toString());
-				responseTwiml=handler.noHostAvailable(params);
-				res.send(responseTwiml);
-			});
-		}
-	})
-	.catch(err=>{
-		console.log("/statusChange: getConnectionByHostCallSid error "+err.toString());
-	});	
+		db.getConnectionByHostCallSid(hostCallSid)
+		.then(connection=>{
+			console.log("/statusChange: reached getConnectionByHostCallSid then");
+			console.log("/statusChange: connection "+JSON.stringify(connection));
+			
+			//todo: change that field name from hostresult to hoststatus
+			hoststatus=connection.rows[0]["hostresult"];
+			console.log("/statusChange: hoststatus "+hoststatus);
+			
+			if (hoststatus=="requested"&&status=="completed"){
+				guestCallSid=connection.rows[0]["guestCallSid"];
+				console.log("/statusChange: host refused, going to call another");
+				db.getRandomAvailableUser().then(value=>{
+					hostPhoneNumber=value.rows[0].phonenumber;
+					hostId=value.rows[0].id;
+					console.log("/statusChange: hostPhoneNumber "+hostPhoneNumber);
+					console.log("/statusChange: hostId "+hostId);
+					
+					//let's just pretend that we have params accessible somehow (e.g. database call)
+					//and mock up a set to test the createCallToHost here
+					//todo: eventually we will need to replace this with actual params access
+					
+					var params={};
+					params.id=connection.rows[0]["guestuserid"];
+					params.sid=guestCallSid;
+					//here we need to use params.id
+					params.phonenumber=process.env.GVOICE_PHONE_NUMBER; 
+					
+					
+					params.hostPhoneNumber=hostPhoneNumber;
+					params.hostId=hostId;
+					handler.createCallToHost(params);
+					//todo: how are we going to update the guest's params with the new values of hostPhoneNumber and hostId?
+					//maybe after all that, we actually need to have params implemented in a database table
+					//so that we can update them here with a db call and then have them be accessible to the guest
+					//the next time the guest requests their own params;
+					//todo: big problem here, guest params are not sent to statusChange;
+					//that means we will definitely need a database solution or some other kind of globally accessible session
+					
+				},error=>{
+					console.log("/menu: error "+error.toString());
+					responseTwiml=handler.noHostAvailable(params);
+					res.send(responseTwiml);
+				});
+			}
+		})
+		.catch(err=>{
+			console.log("/statusChange: getConnectionByHostCallSid error "+err.toString());
+		});	
 
-	if(status=="completed"){ 
-		db.updateUserStatusToExitStatusFromPhoneNumber(req.query.Caller).then(value=>{
+		db.updateUserStatusToExitStatusFromPhoneNumber(phonenumber).then(value=>{
 			sendValue=handler.statusChange(status);
 			if (sendValue!=null){
 				res.send(sendValue);
