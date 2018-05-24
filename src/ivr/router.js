@@ -174,6 +174,7 @@ router.get('/handleHostResponseToOfferedGuest',(req,res)=>{
 //completed
 
 router.get('/statusChange',(req,res)=> {
+	console.log("/statusChange: req.query "+JSON.stringify(req.query));
 	status=req.query.CallStatus;
 	console.log("/statusChange: status has changed to "+req.query.CallStatus);
 	console.log("/statusChange: call came from "+req.query.Caller);
@@ -191,6 +192,8 @@ router.get('/statusChange',(req,res)=> {
 	hostCallSid=req.query.CallSid;
 	console.log("/statusChange: hostCallSid "+hostCallSid);
 	
+	
+	
 	db.getConnectionByHostCallSid(hostCallSid)
 	.then(connection=>{
 		console.log("/statusChange: reached getConnectionByHostCallSid then");
@@ -201,7 +204,7 @@ router.get('/statusChange',(req,res)=> {
 		console.log("/statusChange: hoststatus "+hoststatus);
 		
 		if (hoststatus=="requested"&&status=="completed"){
-			guestCallSid=connection["guestCallSid"];
+			guestCallSid=connection.rows[0]["guestCallSid"];
 			console.log("/statusChange: host refused, going to call another");
 			db.getRandomAvailableUser().then(value=>{
 				hostPhoneNumber=value.rows[0].phonenumber;
@@ -214,9 +217,10 @@ router.get('/statusChange',(req,res)=> {
 				//todo: eventually we will need to replace this with actual params access
 				
 				var params={};
-				params.id=null;
-				params.sid='0';
-				params.phonenumber=process.env.GVOICE_PHONE_NUMBER;
+				params.id=connection.rows[0]["guestuserid"];
+				params.sid=guestCallSid;
+				//here we need to use params.id
+				params.phonenumber=process.env.GVOICE_PHONE_NUMBER; 
 				
 				
 				params.hostPhoneNumber=hostPhoneNumber;
@@ -228,6 +232,7 @@ router.get('/statusChange',(req,res)=> {
 				//the next time the guest requests their own params;
 				//todo: big problem here, guest params are not sent to statusChange;
 				//that means we will definitely need a database solution or some other kind of globally accessible session
+				
 			},error=>{
 				console.log("/menu: error "+error.toString());
 				responseTwiml=handler.noHostAvailable(params);
@@ -237,17 +242,17 @@ router.get('/statusChange',(req,res)=> {
 	})
 	.catch(err=>{
 		console.log("/statusChange: getConnectionByHostCallSid error "+err.toString());
-	});
-	//db.updateConnection(callSid,)
-	
+	});	
 
-
-	db.updateUserStatusToExitStatusFromPhoneNumber(req.query.Caller).then(value=>{
-		sendValue=handler.statusChange(status);
-		if (sendValue!=null){
-			res.send(sendValue);
-		}
-	});
+	if(status=="completed"){
+		if 
+		db.updateUserStatusToExitStatusFromPhoneNumber(req.query.Caller).then(value=>{
+			sendValue=handler.statusChange(status);
+			if (sendValue!=null){
+				res.send(sendValue);
+			}
+		});
+	}
 	
 });
 
@@ -261,6 +266,8 @@ router.get('/statusChangeConference',(req,res)=>{
 	//but friendlyName as a property of conference when retrieved via client.conferences()
 	friendlyName=req.query.FriendlyName;
 	
+	//todo: how are we going to deal with the fact that this conference status changes
+	//every time a guest goes to the conference menu by pressing "*"?
 	switch(status){
 		case "participant-join":
 			db.updateConnection(callSid,'accepted')
