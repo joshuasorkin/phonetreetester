@@ -187,6 +187,12 @@ router.get('/statusChange',(req,res)=> {
 	//but now I'm thinking it should be handled here, with a db select from connectionLog
 	//(see comments in handleHostResponseToOfferedGuest)
 	
+	//todo: determine how to differentiate between:
+	//1. host receives call, accepts, then exits during call
+	//2. host receives call, accepts, completes, makes guest call, then exits during call
+	//maybe we get the highest number id where this sid is either hostCallSid or guestCallSid,
+	//then set isHost=(sid==hostCallSid)
+	
 	if (req.query.From==process.env.TWILIO_PHONE_NUMBER){
 		phonenumber=req.query.To;
 	}
@@ -204,8 +210,7 @@ router.get('/statusChange',(req,res)=> {
 			console.log("/statusChange: reached getConnectionByHostCallSid then");
 			console.log("/statusChange: connection "+JSON.stringify(connection));
 			
-			//todo: change that field name from hostresult to hoststatus
-			hoststatus=connection.rows[0]["hostresult"];
+			hoststatus=connection.rows[0]["hoststatus"];
 			console.log("/statusChange: hoststatus "+hoststatus);
 			guestCallSid=connection.rows[0]["guestCallSid"];
 			hostCallSid=connection.rows[0]["hostCallSid"];

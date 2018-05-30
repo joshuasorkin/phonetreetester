@@ -64,7 +64,7 @@ module.exports = {
 	addConnection: function(guestUserId,hostUserId,guestCallSid,
 							hostCallSid,conferenceName){
 		return new Promise(function(resolve,reject){
-			queryStr='insert into connection (guestUserId,hostUserId,guestCallSid,hostCallSid,conferenceName,hostResult) values ($1,$2,$3,$4,$5,$6) returning *';
+			queryStr='insert into connection (guestUserId,hostUserId,guestCallSid,hostCallSid,conferenceName,hoststatus) values ($1,$2,$3,$4,$5,$6) returning *';
 			console.log("addConnection: queryStr "+queryStr);
 			pool.query(queryStr,
 			[guestUserId,hostUserId,guestCallSid,hostCallSid,conferenceName,'requested'],
@@ -106,7 +106,7 @@ module.exports = {
 	
 	updateConnection: function(callSid,connectionStatus){
 		return new Promise(function(resolve,reject){
-			queryStr='update connection set hostresult=\''+connectionStatus+'\' where hostCallSid=\''+callSid+'\' returning *';
+			queryStr='update connection set hoststatus=\''+connectionStatus+'\' where hostCallSid=\''+callSid+'\' returning *';
 			console.log("updateConnectionIfHostJoined: queryStr "+queryStr);
 			pool.query(queryStr,
 			(err,res)=>{
