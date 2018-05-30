@@ -207,9 +207,13 @@ router.get('/statusChange',(req,res)=> {
 			//todo: change that field name from hostresult to hoststatus
 			hoststatus=connection.rows[0]["hostresult"];
 			console.log("/statusChange: hoststatus "+hoststatus);
+			guestCallSid=connection.rows[0]["guestCallSid"];
+			hostCallSid=connection.rows[0]["hostCallSid"];
+			console.log("/statusChange: guestCallSid "+guestCallSid);
+			console.log("/statusChange: hostCallSid "+hostCallSid);
 			
-			if (hoststatus=="requested"&&status=="completed"){
-				guestCallSid=connection.rows[0]["guestCallSid"];
+			if (hoststatus=="requested"){
+				
 				console.log("/statusChange: host refused, going to call another");
 				db.getRandomAvailableUser().then(value=>{
 					hostPhoneNumber=value.rows[0].phonenumber;
@@ -243,6 +247,9 @@ router.get('/statusChange',(req,res)=> {
 					responseTwiml=handler.noHostAvailable(params);
 					res.send(responseTwiml);
 				});
+			}
+			else if (hoststatus=="accepted"){
+				
 			}
 		})
 		.catch(err=>{
