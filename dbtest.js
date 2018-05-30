@@ -65,8 +65,13 @@ db.getUser('+19991112222', function(err, user) {
 //testGetAvailableUsers();
 //testGetAllUsers();
 //testAddConnection();
-testgetConnectionByHostCallSid();
+//testgetConnectionByHostCallSid();
+testUpdateConnection();
 
+function testUpdateConnection(){
+	hostCallSid="CA7adca47a687fe609f0f6788f3a6ba42e";
+	db.updateConnection(hostCallSid,"accepted").then(val=>{console.log(val.rows[0]));
+}
 
 function testAddUser(phonenumber){
 	db.addUser(phonenumber).then(val=>{console.log(val.rows[0])});
