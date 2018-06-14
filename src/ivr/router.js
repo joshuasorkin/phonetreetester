@@ -313,6 +313,11 @@ router.get('/conferenceControl',(req,res)=>{
 router.get('/waitForConferenceControlReturn',(req,res)=>{
 	var params=handler.getArrayFromGetRequest(req,'params');
 	console.log("/ivr/waitForConferenceControlReturn: params "+JSON.stringify(params));
+	
+	//todo: this is where the other user gets sent if one of the users hangs up, so need to check first
+	//that the other user hasn't hung up, maybe by checking params.hostCallSid in connection table
+	//hopefully it will be updated before this function is called?  maybe instead we should check Twilio's Calls collection
+	
 	res.send(handler.messageOtherUserAboutConferenceControl(params));
 });
 

@@ -104,9 +104,19 @@ module.exports = {
 	},
 	
 	
+	getActiveConnectionByCallSid: function(CallSid){
+		
+	},
+	
+	
 	updateConnection: function(callSid,connectionStatus){
+		queryStr='update connection set hoststatus=\''+connectionStatus+'\' where hostCallSid=\''+callSid+'\' returning *';
+		return update(queryStr,"updateConnection");
+		
+		
+		/*
 		return new Promise(function(resolve,reject){
-			queryStr='update connection set hoststatus=\''+connectionStatus+'\' where hostCallSid=\''+callSid+'\' returning *';
+			
 			console.log("updateConnectionIfHostJoined: queryStr "+queryStr);
 			pool.query(queryStr,
 			(err,res)=>{
@@ -120,6 +130,7 @@ module.exports = {
 				}
 			});
 		});
+		*/
 	},
 	
 	
@@ -156,6 +167,9 @@ module.exports = {
 	},
 	updateUserStatus: function(statusValue,id,callback){
 		queryStr='update users set status=\''+statusValue+'\' where id='+id+' returning *';
+		return update(queryStr,"updateUserStatus");
+		
+		/*
 		console.log(queryStr);
 		return new Promise(function(resolve,reject){
 			pool.query(queryStr,(err,res)=>{
@@ -169,9 +183,13 @@ module.exports = {
 				}
 			});
 		});
+		*/
 	},
 	updateUserExitStatus: function(exitStatusValue,id){
 		queryStr='update users set exitStatus=\''+exitStatusValue+'\' where id='+id+' returning *';
+		return update(queryStr,"updateUserExitStatus");
+		
+		/*
 		console.log(queryStr);
 		return new Promise(function(resolve,reject){
 			pool.query(queryStr,(err,res)=>{
@@ -185,9 +203,13 @@ module.exports = {
 				}
 			});
 		});
+		*/
 	},
 	updateUserStatusToExitStatusFromPhoneNumber: function(phonenumber){
 		queryStr='update users set status=exitStatus where phonenumber=\''+phonenumber+'\'';
+		return update(queryStr,"updateUserStatusToExitStatusFromPhoneNumber");
+		
+		/*
 		console.log(queryStr);
 		return new Promise(function(resolve,reject){
 			pool.query(queryStr,(err,res)=>{
@@ -201,6 +223,7 @@ module.exports = {
 				}
 			});
 		});
+		*/
 	},
 	testFromSite:function(){
 		var number=Math.floor(Math.random()*90000) + 10000;
@@ -221,15 +244,16 @@ module.exports = {
 
 
 
-function update(sql){
+function update(sql,functionName){
+	console.log(sql);
 	return new Promise(function(resolve,reject){
 			pool.query(sql,(err,res)=>{
 				if (err){
-					console.log("error");
+					console.log(functionName+": error "+err.toString());
 					reject(res);
 				}
 				else{
-					console.log("non-null");
+					console.log(functionName+": non-null");
 					resolve(res.rows[0]);
 				}
 			});

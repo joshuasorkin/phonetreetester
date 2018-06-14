@@ -447,6 +447,14 @@ exports.messageOtherUserAboutConferenceControl=function(params){
 	return response.toString();
 }
 
+exports.callHasEnded=function(callSid){
+	client.calls(callSid)
+	.fetch()
+	.then(call=>{
+		return call.status=="completed";
+	})
+}
+
 exports.listConferences=function listConferences(friendlyName){
 	
 	const opts = {status: 'in-progress',
