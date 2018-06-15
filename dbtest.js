@@ -70,7 +70,7 @@ testUpdateConnection();
 
 function testUpdateConnection(){
 	hostCallSid="CA7adca47a687fe609f0f6788f3a6ba42e";
-	db.updateConnection(hostCallSid,"accepted").then(val=>{console.log(val.rows[0])});
+	db.updateConnection(hostCallSid,"accepted").then(val=>{console.log(val)});
 }
 
 function testAddUser(phonenumber){
