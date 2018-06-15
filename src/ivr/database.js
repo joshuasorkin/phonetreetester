@@ -254,6 +254,7 @@ function update(sql,functionName){
 				}
 				else{
 					console.log(functionName+": non-null");
+					console.log(functionName+": result "+JSON.stringify(res.rows[0]));
 					resolve(res.rows[0]);
 				}
 			});

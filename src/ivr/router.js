@@ -318,6 +318,7 @@ router.get('/waitForConferenceControlReturn',(req,res)=>{
 	//that the other user hasn't hung up, maybe by checking params.hostCallSid in connection table
 	//hopefully it will be updated before this function is called?  maybe instead we should check Twilio's Calls collection
 	
+	
 	res.send(handler.messageOtherUserAboutConferenceControl(params));
 });
 
