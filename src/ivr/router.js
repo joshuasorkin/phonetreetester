@@ -49,10 +49,10 @@ router.post('/welcome_promise',(req,res) => {
 		console.log("/welcome_promise: "+error.toString());	
 	}).then(value=>{
 		console.log("/welcome_promise: second then");
-		console.log("/welcome_promise: value ",value.rows[0]);
+		console.log("/welcome_promise: value ",value);
 		if (params.id==null){
-			params.id=value.rows[0]['id'];
-			params.exitStatus=value.rows[0]['exitstatus'];
+			params.id=value['id'];
+			params.exitStatus=value['exitstatus'];
 			console.log("/welcome_promise: setting id from null to "+params.id);
 		}
 		console.log("/welcome_promise: id from getUser/addUser: "+params.id);
