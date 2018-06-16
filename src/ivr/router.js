@@ -173,7 +173,7 @@ router.get('/handleHostResponseToOfferedGuest',(req,res)=>{
 //accepted
 //completed
 
-router.get('/statusChange',(req,res)=> {
+router.get('/statusChange',async (req,res)=> {
 	console.log("/statusChange: req.query "+JSON.stringify(req.query));
 	status=req.query.CallStatus;
 	console.log("/statusChange: status has changed to "+req.query.CallStatus);
@@ -203,10 +203,11 @@ router.get('/statusChange',(req,res)=> {
 	hostCallSid=req.query.CallSid;
 	console.log("/statusChange: hostCallSid "+hostCallSid);
 	
-	if (status=="completed"){
+	await Promise.all([doSomething(x),doSomething2(y)])
 	
-		db.getConnectionByHostCallSid(hostCallSid)
-		.then(connection=>{
+	if (status=="completed"){
+		try{
+			let connection=await db.getConnectionByHostCallSid(hostCallSid)
 			console.log("/statusChange: reached getConnectionByHostCallSid then");
 			console.log("/statusChange: connection "+JSON.stringify(connection));
 			
@@ -220,7 +221,8 @@ router.get('/statusChange',(req,res)=> {
 			if (hoststatus=="requested"){
 				
 				console.log("/statusChange: host refused, going to call another");
-				db.getRandomAvailableUser().then(value=>{
+				try{
+					let value=db.getRandomAvailableUser()
 					hostPhoneNumber=value.rows[0].phonenumber;
 					hostId=value.rows[0].id;
 					console.log("/statusChange: hostPhoneNumber "+hostPhoneNumber);
@@ -247,19 +249,20 @@ router.get('/statusChange',(req,res)=> {
 					//todo: big problem here, guest params are not sent to statusChange;
 					//that means we will definitely need a database solution or some other kind of globally accessible session
 					
-				},error=>{
+				}
+				catch(error){
 					console.log("/menu: error "+error.toString());
 					responseTwiml=handler.noHostAvailable(params);
 					res.send(responseTwiml);
-				});
+				};
 			}
 			else if (hoststatus=="accepted"){
 				
 			}
-		})
-		.catch(err=>{
+		}
+		catch(err){
 			console.log("/statusChange: getConnectionByHostCallSid error "+err.toString());
-		});	
+		};	
 
 		db.updateUserStatusToExitStatusFromPhoneNumber(phonenumber).then(value=>{
 			sendValue=handler.statusChange(status);

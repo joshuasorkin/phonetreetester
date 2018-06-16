@@ -452,7 +452,7 @@ exports.callHasEnded=function(callSid){
 	.fetch()
 	.then(call=>{
 		return call.status=="completed";
-	})
+	});
 }
 
 exports.listConferences=function listConferences(friendlyName){
