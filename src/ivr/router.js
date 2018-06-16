@@ -23,7 +23,7 @@ router.post('/welcome', (req, res) => {
 router.post('/welcome_promise',(req,res) => {
 	const fromNum=req.body.From;
 	const sid=req.body.CallSid;
-	console.log("/welcome_promise: sid "+sid);
+	console.log("/welcome_promise change log message: sid "+sid);
 	var user;
 	var params={};
 	params.id=null;
