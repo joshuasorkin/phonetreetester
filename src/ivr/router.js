@@ -203,7 +203,7 @@ router.get('/statusChange',async (req,res)=> {
 	hostCallSid=req.query.CallSid;
 	console.log("/statusChange: hostCallSid "+hostCallSid);
 	
-	await Promise.all([doSomething(x),doSomething2(y)])
+	//await Promise.all([doSomething(x),doSomething2(y)])
 	
 	if (status=="completed"){
 		try{
